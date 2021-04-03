@@ -8,8 +8,9 @@
 <body>
     <h1>Registration</h1>
     <form id="reg-form">
-        <input type="text" id="username" placeholder="Username" />
-        <input type="password" id="password" placeholder="Password" />
+        <input type="text" autocomplete="off" id="username" placeholder="Username" />
+        <input type="password" autocomplete="off" id="password" placeholder="Password" />
+        <input type="submit" value="Submit Form"/>
     </form>
 
     <script>
@@ -18,10 +19,24 @@
         // Waits until the submit button is clicked
         form.addEventListener('submit', registerUser)
 
-        function registerUser(event) {
+        async function registerUser(event) {
             event.preventDefault() // Prevents page from being reset when form is clicked
-            const username = document.getElementById('username')
-            const password = document.getElementById('password')
+            const username = document.getElementById('username').value
+            const password = document.getElementById('password').value
+
+            // 'POST' request to the server
+            const result = await fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username, 
+                    password
+                })
+            }).then((res) => res.json())
+
+            console.log(result)
         }
     </script>
 </body>
