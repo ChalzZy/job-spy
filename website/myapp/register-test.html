@@ -1,0 +1,28 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Registration</h1>
+    <form id="reg-form">
+        <input type="text" id="username" placeholder="Username" />
+        <input type="password" id="password" placeholder="Password" />
+    </form>
+
+    <script>
+        // Finds regististration form in 
+        const form = document.getElementById('reg-form')
+        // Waits until the submit button is clicked
+        form.addEventListener('submit', registerUser)
+
+        function registerUser(event) {
+            event.preventDefault() // Prevents page from being reset when form is clicked
+            const username = document.getElementById('username')
+            const password = document.getElementById('password')
+        }
+    </script>
+</body>
+</html>
