@@ -5,9 +5,10 @@ const mongoose = require('mongoose')
 const User = require('./model/user.js')
 const port = 3000
 
-mongoose.connect('mongodb://localhost:27017/login-app-db' {
+mongoose.connect('mongodb://localhost:27017/login-app-db', {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useCreateIndex: true
 }) 
 app.use(express.static('public'))
 app.use(bodyParser.json())
