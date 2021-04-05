@@ -36,7 +36,11 @@
                 })
             }).then((res) => res.json())
 
-            console.log(result)
+            if(result.status === 'ok') {
+                alert('Account created successfully')
+            } else {
+                alert(result.error)
+            }
         }
     </script>
 </body>
