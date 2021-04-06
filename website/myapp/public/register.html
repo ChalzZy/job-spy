@@ -7,7 +7,6 @@
             integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
             <link rel="stylesheet" href="css/index.css" />
             <link rel="icon" type="image/x-icon" href="assets/JSIcon.png" />
-            <script defer src="js/script.js"></script>
         </head>
 
         <body>
@@ -50,36 +49,7 @@
                 </div>
             </footer>
 
-            <script>
-                // Finds regististration form in 
-                const form = document.getElementById('reg-form')
-                // Waits until the submit button is clicked
-                form.addEventListener('submit', registerUser)
-        
-                async function registerUser(event) {
-                    event.preventDefault() // Prevents page from being reset when form is clicked
-                    const username = document.getElementById('floatingInput').value
-                    const password = document.getElementById('floatingPassword').value
-        
-                    // 'POST' request to the server
-                    const result = await fetch('/api/register', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            username, 
-                            password
-                        })
-                    }).then((res) => res.json())
-        
-                    if(result.status === 'ok') {
-                        alert('Account created successfully')
-                        window.location.assign("/sign-in.html")
-                    } else {
-                        alert(result.error)
-                    }
-                }
-            </script>
+            <!-- Register user js -->
+            <script src="js/register.js"></script>
         </body>
 </html>
