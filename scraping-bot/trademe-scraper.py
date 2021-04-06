@@ -6,8 +6,8 @@ from bs4 import BeautifulSoup
 
 
 # Notes [testing purpose]:
-# -TEMPORARILY PRINTS RESULTS TO TERMINAL INSTEAD OF DB
-# -TEMPORARILY EXECUTES WHEN RUN INSTEAD OF ON A SCHEDULE
+# -TEMPORARILY PRINTS RESULTS TO TERMINAL INSTEAD OF INSERTING TO DB
+# -TEMPORARILY EXECUTES WHEN RUN INSTEAD OF ON A SET SCHEDULE
 
 
 # Connects to MongoDB.
@@ -24,7 +24,6 @@ def urlModifier(searchTerm):
     while x < len(split):
         url += f'{split[x]}%20'
         x += 1
-    print('URL: ' + url)
     return url
 
 
@@ -70,5 +69,13 @@ def transformOne(soup):
 
 # Runs the extract and transform methods to fetch the data.
 # def scrape():
-c = extractOne('painter')
+c = extractOne('junior developer')
 transformOne(c)
+
+# Schedules the scraper to run once per day at 12:00.
+'''
+schedule.every().day.at("12:00").do(scrape)
+while True:
+    schedule.run_pending()
+    time.sleep(30)
+'''
