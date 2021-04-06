@@ -75,6 +75,7 @@
         
                     if(result.status === 'ok') {
                         alert('Account created successfully')
+                        window.location.assign("/sign-in.html")
                     } else {
                         alert(result.error)
                     }

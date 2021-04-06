@@ -76,7 +76,8 @@
                     if(result.status === 'ok') {
                         console.log('Got the token: ', result.data)
                         localStorage.setItem('token', result.data)
-                        alert('Success')
+                        alert('Successfully logged in. Click ok to return to home screen.')
+                        window.location.assign("/index.html")
                     } else {
                         alert(result.error)
                     }
