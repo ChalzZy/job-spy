@@ -16,38 +16,42 @@
         </head>
 
         <body>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light fade">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="index.html"><img src="assets/JSLogo.png" alt="Job Spy Logo" height="32"></a>
+                    <a class="navbar-brand" href="#"><img src="assets/JSLogo.png" alt="Job Spy Logo" height="32"></a>
+                    <form class="d-flex">
+                        <div id="navbarNav">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Sign in</a>
+                                </li>
+                            </ul>
+                        </div>
                 </div>
+                </form>
             </nav>
             
-            <h1 class="fade">Get Started</h1>
+            <!-- Login form -->
+            <form class="container-sm text-center p-5">
+                <h1>Sign in</h1>
+                <p>Don't have an account? Click here to register</p>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Email address</label>
+                  <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                  <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="exampleInputPassword1">
+                </div>
+              </form>
 
-            <div class="container1 fade">
-            <a href="#" class="arrow down">Down</a>
-        </div>
-        
-        <div class="container fade">
-                <h2>Sign In</h2>
-                 <!-- 
-                     <form action="/action_page.php">
-                    <label for="fname"></label><br>
-                    <input type="text" id="fname" name="fname" value="UserName"><br>
-                    <label for="lname"></label><br>
-                    <input type="text" id="lname" name="lname" value="Password"><br><br>
-                    <input type="submit" value="Submit">
-                    </form>  -->
-                    <div class="form-floating mb-3">
-                        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                        <label for="floatingInput">Email address</label>
-                    </div>
-                    <div class="form-floating">
-                        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-                        <label for="floatingPassword">Password</label>
-                    </div>
-
-                    <input type="submit" class="fadeIn fourth" value="Log In">
-            </div>
+            <!-- Footer -->
+            <footer class="mastfoot text-center fixed-bottom">
+                <div class="inner">
+                    <p>Made by Team JobSpy, <a href="https://github.com/ChalzZy/job-spy">Github</a>.</p>
+                </div>
+            </footer>
         </body>
 </html>
