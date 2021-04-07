@@ -11,7 +11,9 @@ from bs4 import BeautifulSoup
 
 
 # Connects to MongoDB.
-myClient = pymongo.MongoClient('mongodb://localhost:27017/')
+#myClient = pymongo.MongoClient('mongodb://localhost:27017/')
+myClient = pymongo.MongoClient(
+    'mongodb+srv://jobspy:IvVsymrHvv5hEYhr@jobspy.luh0b.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
 myDb = myClient['jobdb']
 myCol = myDb['jobs']
 
@@ -71,6 +73,7 @@ def transformOne(soup):
 # def scrape():
 c = extractOne('junior developer')
 transformOne(c)
+
 
 # Schedules the scraper to run once per day at 12:00.
 '''
