@@ -1,13 +1,6 @@
-import schedule
-import time
 import pymongo
 import requests
 from bs4 import BeautifulSoup
-
-
-# Notes [testing purpose]:
-# -TEMPORARILY PRINTS RESULTS TO TERMINAL INSTEAD OF INSERTING TO DB
-# -TEMPORARILY EXECUTES WHEN RUN INSTEAD OF ON A SET SCHEDULE
 
 
 # Connects to MongoDB.
@@ -19,22 +12,23 @@ myCol = myDb['jobs']
 
 
 # Dynamically modifies the TradeMe URL based on the search term.
-def urlModifier(searchTerm):
+def urlModifier(searchTerm, numOfPages):
     split = str.split(searchTerm)
     url = f'https://www.trademe.co.nz/a/jobs/search?search_string='
     x = 0
     while x < len(split):
         url += f'{split[x]}%20'
         x += 1
-    return url
+    print(url + f'&page={numOfPages}\n')
+    return url + f'&page={numOfPages}'
 
 
 # Calls GET on the specified indeed page, and passes it to a new BeautifulSoup instnace.
-def extractOne(searchTerm):
+def extractOne(searchTerm, numOfPages):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36'}
 
-    r = requests.get(urlModifier(searchTerm), headers)
+    r = requests.get(urlModifier(searchTerm, numOfPages), headers)
     soup = BeautifulSoup(r.content, 'html.parser')
     return soup
 
@@ -65,20 +59,12 @@ def transformOne(soup):
         job = {'jobTitle': jobTitle, 'company': company, 'summary': summary, 'salary': salary,
                'location': location, 'time': time, 'link': f'https://trademe.co.nz/a/{link}'}
         # Inserts each dictionary (1 job) into MongoDB.
-        # x = myCol.insert_one(job)
-        print(job)
+        x = myCol.insert_one(job)
 
 
-# Runs the extract and transform methods to fetch the data.
-# def scrape():
-c = extractOne('junior developer')
-transformOne(c)
-
-
-# Schedules the scraper to run once per day at 12:00.
-'''
-schedule.every().day.at("12:00").do(scrape)
-while True:
-    schedule.run_pending()
-    time.sleep(30)
-'''
+# Runs the extract and transform methods to fetch the data, for 4 pages of the website.
+for i in range(1, 5, 1):
+    print(f'Scraping page {i}')
+    c = extractOne('software developer', i)
+    transformOne(c)
+    print('\n\n')
