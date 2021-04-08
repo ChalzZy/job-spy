@@ -13,6 +13,7 @@
   } */
 
 
+
   /*Fields that have the container tag for the div class*/
   .container {
     -webkit-border-radius: 10px 10px 10px 10px;
@@ -61,8 +62,6 @@
     from {opacity: 0.4} 
     to {opacity: 1}
   } */
-  
-
 
 .container1 {
     top: 50px;;
@@ -184,8 +183,7 @@ input[type=password] {
         line-height: 56px;
     }
 
-    .container1{
-
+    .container1 {
         width: auto;
         height: auto;
     }
@@ -221,4 +219,4 @@ input[type=password] {
     -webkit-animation: downarrow 0.6s infinite alternate ease-in-out;
     border-top:2em solid #00b6f1;
   }
-  
+
