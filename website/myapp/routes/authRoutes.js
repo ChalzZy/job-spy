@@ -17,7 +17,12 @@ router.get('/logout', authController.logout_get)
 // job search
 router.get('/jobsearch', authController.jobsearch_get)
 
+// profile page
 router.get('/profile', authController.profile_get)
+
+// change password
+router.get('/password', authController.password_get)
+//router.post('/password', authController.changePassword_post)
 
 
 module.exports = router;

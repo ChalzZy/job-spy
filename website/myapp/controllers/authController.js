@@ -87,3 +87,8 @@ module.exports.jobsearch_get = (req, res) => {
 module.exports.profile_get = (req, res) => {
   res.render('profile');
 }
+
+module.exports.password_get = (req, res) => {
+  res.render('password');
+}
+
