@@ -24,16 +24,8 @@
             <div class="tab-pane fade show" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
                 <div class="card bg-light">
                     <article class="card-body mx-auto" style="max-width: 400px;"> 
-                    <h4 class="card-title mt-3 text-center">Change password</h4>
+                    <h4 class="card-title mt-3 text-center pb-3">Change password</h4>
                         <form>
-                            <!-- Enter email -->
-                            <div class="form-group input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-envelope"></i></span>
-                                </div>
-                                <input name="" class="form-control" placeholder="Email address" type="email">
-                            </div> 
-
                             <!-- Enter current password -->
                             <div class="form-group input-group">
                                 <div class="input-group-prepend">
@@ -43,7 +35,7 @@
                             </div> 
                             
                             <!-- Enter new password -->
-                            <div class="form-group input-group">
+                            <div class="form-group input-group pt-3 pb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                                 </div>
@@ -59,8 +51,8 @@
                             </div> 
                             
                             <!-- Submit button -->                                      
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block"> Edit   </button>
+                            <div class="d-flex form-group pt-3 justify-content-center">
+                                <button type="submit" class="btn btn-primary btn-block">Edit</button>
                             </div>                                                                  
                         </form>
                     </article>
@@ -109,7 +101,7 @@
         userTab.className = "list-group-item list-group-item-action"
         // Settings content
         let tab = document.getElementById('list-settings') 
-        tab.className = "tab-pane fade"
+        tab.className = "tab-pane fade show"
     }
 
     function userSettings(){
