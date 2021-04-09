@@ -58,8 +58,7 @@ def transformOne(soup):
                'summary': summary, 'salary': salary, 'location': location, 'time': time,
                'link': f'https://nz.indeed.com{link}'}
         # Inserts each dictionary (1 job) into MongoDB.
-        #x = myCol.insert_one(job)
-        print(jobTitle)
+        x = myCol.insert_one(job)
 
 
 # Runs the extract and transform methods to fetch the data, for 4 pages of the website.
