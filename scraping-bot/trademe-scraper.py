@@ -4,8 +4,7 @@ from bs4 import BeautifulSoup
 
 
 # Connects to MongoDB.
-#myClient = pymongo.MongoClient('mongodb://localhost:27017/')
-myClient = pymongo.MongoClient('URI HERE')
+myClient = pymongo.MongoClient('URI_HERE')
 myDb = myClient['jobdb']
 myCol = myDb['jobs']
 
