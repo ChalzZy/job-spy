@@ -83,3 +83,7 @@ module.exports.logout_get = (req, res) => {
 module.exports.jobsearch_get = (req, res) => {
   res.render('jobsearch');
 }
+
+module.exports.profile_get = (req, res) => {
+  res.render('profile');
+}

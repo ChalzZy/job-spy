@@ -17,5 +17,7 @@ router.get('/logout', authController.logout_get)
 // job search
 router.get('/jobsearch', authController.jobsearch_get)
 
+router.get('/profile', authController.profile_get)
+
 
 module.exports = router;
