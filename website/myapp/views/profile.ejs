@@ -18,9 +18,10 @@
           </div>
         </div>
         
-        <!-- Change password -->
+        
         <div class="col-8">
           <div class="tab-content" id="nav-tabContent">
+            <!-- Change password -->
             <div class="tab-pane fade show" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
                 <div class="card bg-light">
                     <article class="card-body mx-auto" style="max-width: 400px;"> 
@@ -58,9 +59,53 @@
                     </article>
                 </div> 
             </div> 
+            <!-- Change email -->
+            <div class="tab-pane fade show" id="list-email" role="tabpanel" aria-labelledby="list-email-list">
+                <div class="card bg-light">
+                    <article class="card-body mx-auto" style="max-width: 400px;"> 
+                    <h4 class="card-title mt-3 text-center pb-3">Change Email</h4>
+                        <form>
+                            <!-- Enter current password -->
+                            <div class="form-group input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+                                </div>
+                                <input class="form-control" placeholder="New Email" type="text">
+                            </div> 
+                            
+                            <!-- Submit button -->                                      
+                            <div class="d-flex form-group pt-3 justify-content-center">
+                                <button type="submit" class="btn btn-primary btn-block">Edit</button>
+                            </div>                                                                  
+                        </form>
+                    </article>
+                </div> 
+            </div> 
+            <!-- Settings -->
+            <div class="tab-pane fade show" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
+                <div class="card bg-light">
+                    <article class="card-body mx-auto" style="max-width: 400px;"> 
+                    <h4 class="card-title mt-3 text-center pb-3">Settings</h4>
+                        <form>
+                            <!-- Settings -->
+                            <div class="form-group input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+                                </div>
+                                <input class="form-control" placeholder="<!-PLACEHOLDER->" type="text">
+                            </div> 
+                            
+                            <!-- Submit button -->                                      
+                            <div class="d-flex form-group pt-3 justify-content-center">
+                                <button type="submit" class="btn btn-primary btn-block">Edit</button>
+                            </div>                                                                  
+                        </form>
+                    </article>
+                </div> 
+            </div> 
         </div>
-        <div class="tab-pane fade " id="list-settings" role="tabpanel" aria-labelledby="list-settings-list"></div>
-    </div>
+        <!--<div class="tab-pane fade " id="list-settings" role="tabpanel" aria-labelledby="list-settings-list"></div>-->
+    </div>   
 </div>
 
 <%- include('partials/footer'); -%>
@@ -72,59 +117,37 @@
     let email = document.getElementById("email") // 'Change email'
     let settings = document.getElementById("settings") // 'Settings'
 
-    profile.addEventListener("click", userProfile)
-    email.addEventListener('click', userSettings)
+    profile.addEventListener("click", userPassword)
+    email.addEventListener('click', userEmail)
     settings.addEventListener("click", userSettings)
 
-    // Control each tab and its content
-    function userProfile() {
+    // Password
+    function userPassword() {
         // Profile tab
         let maptab = document.getElementById('home') 
-        maptab.className = maptab.className + ' active'
+        maptab.className = maptab.className + 'active'
         // Profile content
         let showProfile = document.getElementById('list-home') 
         showProfile.className = showProfile.className + ' active'
-
-        // --------------------------------------------------------
-        
-        // Email tab 
-        let emailTab = document.getElementById('email') 
-        emailTab.className = "list-group-item list-group-item-action"
-        // Email content
-        let showEmail = document.getElementById('list-email') 
-        showEmail.className = "tab-pane fade"
-        
-        // --------------------------------------------------------
-
-        // Settings tab 
-        let userTab = document.getElementById('settings') 
-        userTab.className = "list-group-item list-group-item-action"
-        // Settings content
-        let tab = document.getElementById('list-settings') 
-        tab.className = "tab-pane fade show"
     }
 
+    // Email
+    function userEmail() {
+        // Email tab
+        let maptab = document.getElementById('email') 
+        maptab.className = maptab.className + 'active'
+        // Email content
+        let showProfile = document.getElementById('list-email') 
+        showProfile.className = showProfile.className + ' active'
+    }
+
+    // Settings
     function userSettings(){
-        let changeProfileSettings = document.getElementById('home')
-        changeProfileSettings.className = "list-group-item list-group-item-action"
-        
-        let changeShowProfile = document.getElementById('list-home')
-        changeShowProfile.className = "tab-pane fade show"
-
-        // --------------------------------------------------------
-
-        let changeEmailSettings = document.getElementById('email')
-        changeEmailSettings.className = changeEmailSettings.className + 'active'
-
-        let changeShowEmail = document.getElementById('list-email')
-        changeShowEmail.className = changeShowEmail.className + 'show active'
-
-        // --------------------------------------------------------
-
+        // Settings tab
         let userSettingsChange = document.getElementById('settings')
         userSettingsChange.className = userSettingsChange.className + 'active'
-        
+        // Settings content
         let userTab = document.getElementById('list-settings')
-        userTab.className = userTab.className + 'show active'
+        userTab.className = userTab.className + ' active'
     }
 </script>
