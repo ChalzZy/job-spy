@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const authRoutes = require('./routes/authRoutes')
 const cookieParser = require('cookie-parser')
 const { requireAuth, checkUser } = require('./middleware/authMidderware')
+const MongoClient = require('mongodb').MongoClient;
 
 const app = express();
 
@@ -26,3 +27,17 @@ app.get('*', checkUser)
 app.get('/', (req, res) => res.render('home'))
 app.get('/smoothies', requireAuth, (req, res) => res.render('smoothies'))
 app.use(authRoutes)
+
+// job search funtionality
+const url = 'URI_HERE';
+app.get('/data', function(req, res) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    let dbo = db.db("jobdb");
+    dbo.collection("jobs").find({}).toArray(function(err, result) {
+      if (err) throw err;
+      res.json(result)
+      db.close();
+    });
+  });
+});

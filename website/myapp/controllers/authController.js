@@ -79,3 +79,7 @@ module.exports.logout_get = (req, res) => {
   res.cookie('jwt', '', { maxAge: 1 }) // logs user out
   res.redirect('/') // return to homepage
 }
+
+module.exports.jobsearch_get = (req, res) => {
+  res.render('jobsearch');
+}

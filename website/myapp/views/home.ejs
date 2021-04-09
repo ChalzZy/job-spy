@@ -1,62 +1,25 @@
 <%- include('partials/header'); -%>
 
-<div class="cover-container d-flex h-100 p-5 mx-auto flex-column text-center m-5">
-    <main role="main" class="inner cover">
-        <h1 class="cover-heading">Find all the junior software jobs.</h1>
-        <p class="lead">JobSpy will help you find a junior job etc.</p>
-        <div class="input-group rounded">
-            <form class="d-flex mx-auto">
-                <input class="form-control me-2" type="search" placeholder="Search for a job" aria-label="Search">
-                <button class="btn btn-primary" type="submit">Search</button>
-            </form>
-        </div>
-    </main>
-</div>
+<body>
+    <div class="cover-container d-flex h-100 p-5 mx-auto flex-column text-center m-5">
+        <main role="main" class="inner cover">
+            <h1 class="cover-heading">Find all the junior software jobs.</h1>
+            <p class="lead">JobSpy will help you find a junior job etc.</p>
+            <div class="input-group rounded">
+                <form class="d-flex mx-auto">
+                    <input class="form-control me-2" type="search" placeholder="Search for a job" aria-label="Search">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+            </div>
+        </main>
+    </div>
+    <div class="recent-job-list" data-url="/data" style="padding-bottom: 30px;">
+        <p class="lead text-center">Recent Job Listings: </p>
+        <ol class="list-group list-group w-50 mx-auto">
+            <div id="results"></div>
+        </ol>
+    </div>
+<script src="js/recent-jobs.js"></script>
 
-
-<div>
-    <ol class="list-group list-group w-50 mx-auto">
-        <!--Placeholder List (generate list in Javascript)-->
-        <li class="list-group-item d-flex justify-content-between align-items-start">
-            <div class="ms-2 me-auto">
-                <div class="fw-lighter">Trade Me</div>
-                <div class="fs-5">Junior Java Developer</div>
-                <span class="badge rounded-pill bg-primary">Java</span>
-                <span class="badge rounded-pill bg-primary">Backend</span>
-            </div>
-            <div class="mx-2 my-auto">
-                <button type="button" class="btn btn-outline-primary">♡</button>
-                <button type="button" class="btn btn-primary">Apply</button>
-            </div>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-start">
-            <div class="ms-2 me-auto">
-                <div class="fw-lighter">Seek</div>
-                <div class="fs-5">Python Developer</div>
-                <span class="badge rounded-pill bg-primary">Python</span>
-                <span class="badge rounded-pill bg-primary">Scraping</span>
-                <span class="badge rounded-pill bg-primary">Database</span>
-            </div>
-            <div class="mx-2 my-auto">
-                <button type="button" class="btn btn-outline-primary">♡</button>
-                <button type="button" class="btn btn-primary">Apply</button>
-            </div>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-start">
-            <div class="ms-2 me-auto">
-                <div class="fw-lighter">Seek</div>
-                <div class="fs-5">Frontend Developer</div>
-                <span class="badge rounded-pill bg-primary">Javascript</span>
-                <span class="badge rounded-pill bg-primary">HTML</span>
-                <span class="badge rounded-pill bg-primary">CSS</span>
-                <span class="badge rounded-pill bg-primary">UX</span>
-            </div>
-            <div class="mx-2 my-auto">
-                <button type="button" class="btn btn-outline-primary">♡</button>
-                <button type="button" class="btn btn-primary">Apply</button>
-            </div>
-        </li>
-    </ol>
-</div>
 
 <%- include('partials/footer'); -%>
