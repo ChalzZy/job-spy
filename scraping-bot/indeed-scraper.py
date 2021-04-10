@@ -63,7 +63,7 @@ def transformOne(soup):
             time = ''
         link = listing.find('a').attrs['href'].strip()
 
-        job = {'title': jobTitle, 'company': company,
+        job = {'jobTitle': jobTitle, 'company': company,
                'summary': summary, 'salary': salary, 'location': location, 'time': time,
                'link': f'https://nz.indeed.com{link}'}
         # Inserts each dictionary (1 job) into MongoDB.
