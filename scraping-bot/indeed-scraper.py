@@ -35,7 +35,10 @@ def transformOne(soup):
     jobCards = soup.find_all('div', class_='jobsearch-SerpJobCard')
 
     for listing in jobCards:
-        jobTitle = listing.find('a').text.strip()
+        try:
+            jobTitle = listing.find('a').text.strip()
+        except:
+            jobTitle = ''
         try:
             company = listing.find('span', class_='company').text.strip()
         except:
@@ -44,17 +47,23 @@ def transformOne(soup):
             salary = listing.find('span', class_='salaryText').text.strip()
         except:
             salary = ''
-        summary = listing.find(
-            'div', class_='summary').text.strip().replace('\n', '')
+        try:
+            summary = listing.find(
+                'div', class_='summary').text.strip().replace('\n', '')
+        except:
+            summary = ''
         try:
             location = listing.find(
                 'span', class_='location accessible-contrast-color-location').text.strip()
         except:
             location = ''
-        time = listing.find('span', class_='date date-a11y').text.strip()
+        try:
+            time = listing.find('span', class_='date date-a11y').text.strip()
+        except:
+            time = ''
         link = listing.find('a').attrs['href'].strip()
 
-        job = {'title': jobTitle, 'company': company,
+        job = {'jobTitle': jobTitle, 'company': company,
                'summary': summary, 'salary': salary, 'location': location, 'time': time,
                'link': f'https://nz.indeed.com{link}'}
         # Inserts each dictionary (1 job) into MongoDB.
