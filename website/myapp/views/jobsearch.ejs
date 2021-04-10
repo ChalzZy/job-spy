@@ -105,7 +105,7 @@
 
     let tagDirectory = [
       '.NET',
-      'Java',
+      'JavaScript',
       'React',
       'Frontend',
       'Angular',
@@ -116,15 +116,11 @@
       'Front End',
       'Full Stack',
       'Fullstack',
+      'Senior',
+      'Junior',
     ]
 
     for (i; i < jobs.length; i++) {
-      console.log(jobs[i].jobTitle)
-
-      console.log(jobs[14].jobTitle)
-      console.log(jobs[15].jobTitle)
-      console.log(jobs[16].jobTitle)
-
       jobText += `
         <div style="padding-top: 20px">
             <ol class="list-group list-group mx-auto" style="max-width: 55%">
@@ -135,18 +131,18 @@
                         <div class="fs-5">Company: ${jobs[i].company}</div>
                         <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${jobs[i].summary}</div>
                         `
-      /*
-      for (let g = 0; g < tagDirectory.length; g++) {
+
+      // Assigns each job tags if keywords found in tagDirectory can be matched job's against title & summary
+      for (let tagIndex = 0; tagIndex < tagDirectory.length; tagIndex++) {
         if (
           (
             jobs[i].jobTitle.toLowerCase() || jobs[i].summary.toLowerCase()
-          ).includes(tagDirectory[g].toLowerCase())
+          ).includes(tagDirectory[tagIndex].toLowerCase())
         ) {
           jobText += `
-        <span class="badge rounded-pill bg-primary">${tagDirectory[g]}</span> `
+        <span class="badge rounded-pill bg-primary">${tagDirectory[tagIndex]}</span> `
         }
       }
-      */
 
       jobText += `
                     </div>
