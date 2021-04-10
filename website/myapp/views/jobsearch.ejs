@@ -101,8 +101,46 @@
   function buildJobList(jobs) {
     let i = 0
     let jobText = ''
+    let tagOne = 'a'
+    let tagTwo = 'b'
+
+    let firstTagDirectory = [
+      '.NET',
+      'Java',
+      'React',
+      'Frontend',
+      'Angular',
+      'Backend',
+      'C#',
+    ]
+    let secondTagDirectory = [
+      'Fullstack',
+      'Full stack',
+      'Senior',
+      'Junior',
+      'Remote',
+      'AWS',
+    ]
 
     for (i; i < jobs.length; i++) {
+      for (let x = 0; x < firstTagDirectory.length; x++) {
+        if (
+          jobs[i].jobTitle.toLowerCase() ||
+          jobs[i].summary.toLowerCase() === firstTagDirectory[x].toLowerCase()
+        ) {
+          tagOne = firstTagDirectory[x]
+        }
+      }
+
+      for (let x = 0; x < secondTagDirectory.length; x++) {
+        if (
+          jobs[i].jobTitle.toLowerCase() ||
+          jobs[i].summary.toLowerCase() === secondTagDirectory[x].toLowerCase()
+        ) {
+          tagTwo = secondTagDirectory[x]
+        }
+      }
+
       jobText += `
         <div style="padding-top: 20px">
             <ol class="list-group list-group mx-auto" style="max-width: 55%">
@@ -112,8 +150,17 @@
                         <div class="fw-lighter">${jobs[i].jobTitle}</div>
                         <div class="fs-5">Company: ${jobs[i].company}</div>
                         <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${jobs[i].summary}</div>
-                        <span class="badge rounded-pill bg-primary">Tag 1</span>
-                        <span class="badge rounded-pill bg-primary">Tag 2</span>
+                        `
+      if (tagOne != '') {
+        jobText += `
+                        <span class="badge rounded-pill bg-primary">${tagOne}</span> `
+      }
+      if (tagTwo != '') {
+        jobText += `
+                        <span class="badge rounded-pill bg-primary">${tagTwo}</span> `
+      }
+
+      jobText += `
                     </div>
                     <div class="mx-2 my-auto">
                         <button type="button" class="btn btn-outline-primary">♡</button>
