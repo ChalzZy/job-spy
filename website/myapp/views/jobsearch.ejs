@@ -86,6 +86,7 @@
           if (jobJSON.length !== 0) {
             console.log('Fetched array has ' + jobJSON.length + ' entries')
             jobText = buildJobList(jobJSON)
+            console.log(jobJSON)
           } else {
             jobText += `<center><h3>No results.</h3></center>`
             jobText += `<center><p>Please try again.</p></center>`
@@ -101,10 +102,8 @@
   function buildJobList(jobs) {
     let i = 0
     let jobText = ''
-    let tagOne = 'a'
-    let tagTwo = 'b'
 
-    let firstTagDirectory = [
+    let tagDirectory = [
       '.NET',
       'Java',
       'React',
@@ -112,34 +111,19 @@
       'Angular',
       'Backend',
       'C#',
-    ]
-    let secondTagDirectory = [
-      'Fullstack',
-      'Full stack',
-      'Senior',
-      'Junior',
-      'Remote',
       'AWS',
+      'AZURE',
+      'Front End',
+      'Full Stack',
+      'Fullstack',
     ]
 
     for (i; i < jobs.length; i++) {
-      for (let x = 0; x < firstTagDirectory.length; x++) {
-        if (
-          jobs[i].jobTitle.toLowerCase() ||
-          jobs[i].summary.toLowerCase() === firstTagDirectory[x].toLowerCase()
-        ) {
-          tagOne = firstTagDirectory[x]
-        }
-      }
+      console.log(jobs[i].jobTitle)
 
-      for (let x = 0; x < secondTagDirectory.length; x++) {
-        if (
-          jobs[i].jobTitle.toLowerCase() ||
-          jobs[i].summary.toLowerCase() === secondTagDirectory[x].toLowerCase()
-        ) {
-          tagTwo = secondTagDirectory[x]
-        }
-      }
+      console.log(jobs[14].jobTitle)
+      console.log(jobs[15].jobTitle)
+      console.log(jobs[16].jobTitle)
 
       jobText += `
         <div style="padding-top: 20px">
@@ -151,14 +135,18 @@
                         <div class="fs-5">Company: ${jobs[i].company}</div>
                         <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${jobs[i].summary}</div>
                         `
-      if (tagOne != '') {
-        jobText += `
-                        <span class="badge rounded-pill bg-primary">${tagOne}</span> `
+      /*
+      for (let g = 0; g < tagDirectory.length; g++) {
+        if (
+          (
+            jobs[i].jobTitle.toLowerCase() || jobs[i].summary.toLowerCase()
+          ).includes(tagDirectory[g].toLowerCase())
+        ) {
+          jobText += `
+        <span class="badge rounded-pill bg-primary">${tagDirectory[g]}</span> `
+        }
       }
-      if (tagTwo != '') {
-        jobText += `
-                        <span class="badge rounded-pill bg-primary">${tagTwo}</span> `
-      }
+      */
 
       jobText += `
                     </div>
