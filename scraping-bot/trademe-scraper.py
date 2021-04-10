@@ -37,21 +37,36 @@ def transformOne(soup):
         'tg-col', class_='l-col l-col--has-flex-contents ng-star-inserted')
 
     for listing in jobCards:
-        jobTitle = listing.find(
-            'div', class_='tm-jobs-search-card__title').text.strip()
-        company = listing.find(
-            'div', class_='tm-jobs-search-card__company').text.strip()
-        summary = listing.find(
-            'div', class_='tm-jobs-search-card__short-description').text.strip()
+        try:
+            jobTitle = listing.find(
+                'div', class_='tm-jobs-search-card__title').text.strip()
+        except:
+            jobTitle = ''
+        try:
+            company = listing.find(
+                'div', class_='tm-jobs-search-card__company').text.strip()
+        except:
+            company = ''
+        try:
+            summary = listing.find(
+                'div', class_='tm-jobs-search-card__short-description').text.strip()
+        except:
+            summary = ''
         try:
             salary = listing.find(
                 'div', class_='tm-jobs-search-card__pay-benefits ng-star-inserted').text.strip()
         except:
             salary = ''
-        location = listing.find(
-            'div', class_='tm-jobs-search-card__location').text.strip()
-        time = listing.find(
-            'div', class_='tm-jobs-search-card__time').text.strip()
+        try:
+            location = listing.find(
+                'div', class_='tm-jobs-search-card__location').text.strip()
+        except:
+            location = ''
+        try:
+            time = listing.find(
+                'div', class_='tm-jobs-search-card__time').text.strip()
+        except:
+            time = ''
         link = listing.find('a').attrs['href'].strip()
 
         job = {'jobTitle': jobTitle, 'company': company, 'summary': summary, 'salary': salary,
