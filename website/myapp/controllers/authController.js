@@ -92,3 +92,7 @@ module.exports.password_get = (req, res) => {
   res.render('password');
 }
 
+module.exports.password_post = (req, res) => {
+  console.log('got password!')
+}
+

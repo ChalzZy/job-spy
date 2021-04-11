@@ -22,7 +22,7 @@ router.get('/profile', authController.profile_get)
 
 // change password
 router.get('/password', authController.password_get)
-//router.post('/password', authController.changePassword_post)
+router.post('/password', authController.password_post)
 
 
 module.exports = router;
