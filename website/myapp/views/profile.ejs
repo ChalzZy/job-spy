@@ -12,9 +12,9 @@
     <div class="row">
         <div class="col-4">
           <div class="list-group" id="list-tab" role="tablist">
-            <a class="list-group-item list-group-item-action " id="home" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Change password</a>
-            <a class="list-group-item list-group-item-action " id="email" data-toggle="list" href="#list-email" role="tab" aria-controls="email">Change email</a>
-            <a class="list-group-item list-group-item-action " id="settings" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Settings</a>
+            <a class="list-group-item list-group-item-action block" id="home" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Change password</a>
+            <a class="list-group-item list-group-item-action block" id="email" data-toggle="list" href="#list-email" role="tab" aria-controls="email">Change email</a>
+            <a class="list-group-item list-group-item-action block" id="settings" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Settings</a>
           </div>
         </div>
         
@@ -22,7 +22,7 @@
         <div class="col-8">
           <div class="tab-content" id="nav-tabContent">
             <!-- Change password -->
-            <div class="tab-pane fade show" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+            <div class="tab-pane fade show block" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
                 <div class="card bg-light">
                     <article class="card-body mx-auto" style="max-width: 400px;"> 
                     <h4 class="card-title mt-3 text-center pb-3">Change password</h4>
@@ -61,7 +61,7 @@
                 </div> 
             </div> 
             <!-- Change email -->
-            <div class="tab-pane fade show" id="list-email" role="tabpanel" aria-labelledby="list-email-list">
+            <div class="tab-pane fade show block" id="list-email" role="tabpanel" aria-labelledby="list-email-list">
                 <div class="card bg-light">
                     <article class="card-body mx-auto" style="max-width: 400px;"> 
                     <h4 class="card-title mt-3 text-center pb-3">Change Email</h4>
@@ -83,7 +83,7 @@
                 </div> 
             </div> 
             <!-- Settings -->
-            <div class="tab-pane fade show" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
+            <div class="tab-pane fade show block" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
                 <div class="card bg-light">
                     <article class="card-body mx-auto" style="max-width: 400px;"> 
                     <h4 class="card-title mt-3 text-center pb-3">Settings</h4>
@@ -124,31 +124,79 @@
 
     // Password
     function userPassword() {
+
+        // Email tab not active
+        let emailTab = document.getElementById('email') 
+        emailTab.className = emailTab.className.replace('active', 'block')
+        // Email content not active
+        let emailContent = document.getElementById('list-email') 
+        emailContent.className = emailContent.className.replace('active', 'block')
+
+        // not active Settings tab
+        let userSettingsChange = document.getElementById('settings')
+        userSettingsChange.className = userSettingsChange.className.replace('active', 'block')
+        // not active Settings content
+        let userTab = document.getElementById('list-settings')
+        userTab.className = userTab.className.replace('active', 'block')
+
         // Profile tab
         let maptab = document.getElementById('home') 
-        maptab.className = maptab.className + 'active'
+        maptab.className = maptab.className.replace('block', 'active')
         // Profile content
         let showProfile = document.getElementById('list-home') 
-        showProfile.className = showProfile.className + ' active'
+        showProfile.className = showProfile.className.replace('block', 'active')
+
+        console.log(emailContent.className)
+
     }
 
-    // Email
+    Email
     function userEmail() {
+        //not active password
+        let changePass = document.getElementById('home') 
+        changePass.className = changePass.className.replace('active', 'block')
+        //Not active pasword content
+        let userProfile = document.getElementById('list-home') 
+        userProfile.className = userProfile.className.replace('active', 'block')
+
+        // not active Settings tab
+        let userSettingsChange = document.getElementById('settings')
+        userSettingsChange.className = userSettingsChange.className.replace('active', 'block')
+        // not active Settings content
+        let userTab = document.getElementById('list-settings')
+        userTab.className = userTab.className.replace('active', 'block')
+
         // Email tab
         let maptab = document.getElementById('email') 
-        maptab.className = maptab.className + 'active'
+        maptab.className = maptab.className.replace('block', 'active')
         // Email content
         let showProfile = document.getElementById('list-email') 
-        showProfile.className = showProfile.className + ' active'
+        showProfile.className = showProfile.className.replace('block', 'active')
     }
 
-    // Settings
+    Settings
     function userSettings(){
+
+        //not active password
+        let changePass = document.getElementById('home') 
+        changePass.className = changePass.className.replace('active', 'block')
+        //Not active pasword content
+        let userProfile = document.getElementById('list-home') 
+        userProfile.className = userProfile.className.replace('active', 'block')
+
+        // Email tab not active
+        let emailTab = document.getElementById('email') 
+        emailTab.className = emailTab.className.replace('active', 'block')
+        // Email content not active
+        let emailContent = document.getElementById('list-email') 
+        emailContent.className = emailContent.className.replace('active', 'block')
+
         // Settings tab
         let userSettingsChange = document.getElementById('settings')
-        userSettingsChange.className = userSettingsChange.className + 'active'
+        userSettingsChange.className = userSettingsChange.className.replace('block', 'active')
         // Settings content
         let userTab = document.getElementById('list-settings')
-        userTab.className = userTab.className + ' active'
+        userTab.className = userTab.className.replace('block', 'active')
+        
     }
 </script>
