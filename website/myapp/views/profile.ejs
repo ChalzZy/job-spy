@@ -26,7 +26,7 @@
                 <div class="card bg-light">
                     <article class="card-body mx-auto" style="max-width: 400px;"> 
                     <h4 class="card-title mt-3 text-center pb-3">Change password</h4>
-                        <form>
+                        <form class="password-form">
                             
                             <!-- Enter current password -->
                             <!--
@@ -43,7 +43,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                                 </div>
-                                <input class="form-control" placeholder="New password" type="password">
+                                <input class="form-control" placeholder="New password" type="password" name="password">
                             </div> 
                             
                             <!-- Confirm new password -->
@@ -125,6 +125,44 @@
     profile.addEventListener("click", userPassword)
     email.addEventListener('click', userEmail)
     settings.addEventListener("click", userSettings)
+
+    const form = document.querySelector('.password-form')
+    //const emailError = document.querySelector('.email.error')
+    //const passwordError = document.querySelector('.password.error')
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+    
+    // reset errors
+    //emailError.textContent = ''
+    //passwordError.textContent = ''
+
+    // get the values
+    //const email = form.email.value
+    const password = form.password.value
+
+        try {
+            const res = await fetch('/password', {
+                method: 'POST',
+                body: JSON.stringify({ password }),
+                headers: {'Content-Type': 'application/json'}
+            })
+            
+            console.log(data)
+            console.log('got it')
+            /**
+            if (data.errors) {
+                emailError.textContent = data.errors.email
+                passwordError.textContent = data.errors.password
+            }
+            if (data.user) {
+                location.assign('/')
+            }
+            **/
+        } catch (err) {
+            console.log(err)
+        }
+    })
 
     // Password
     function userPassword() {
