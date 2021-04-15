@@ -28,15 +28,13 @@
                     <h4 class="card-title mt-3 text-center pb-3">Change password</h4>
                         <form class="password-form">
                             
-                            <!-- Enter current password -->
-                            <!--
+                            <!-- Enter current email -->
                             <div class="form-group input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                                 </div>
-                                <input class="form-control" placeholder="Current Password" type="password">
+                                <input class="form-control" placeholder="Current Email" type="text" name="email">
                             </div> 
-                        -->
                             
                             <!-- Enter new password -->
                             <div class="form-group input-group pt-3 pb-3">
@@ -140,14 +138,14 @@
     // get the values
     //const email = form.email.value
     const password = form.password.value
+    const email = form.email.value
 
         try {
             const res = await fetch('/password', {
                 method: 'POST',
-                body: JSON.stringify({ password }),
+                body: JSON.stringify({ email, password }),
                 headers: {'Content-Type': 'application/json'}
             })
-            
             console.log(data)
             console.log('got it')
             /**

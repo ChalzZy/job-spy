@@ -93,6 +93,17 @@ module.exports.password_get = (req, res) => {
 }
 
 module.exports.password_post = (req, res) => {
-  console.log('got password!')
+  const { email, password } = req.body
+  
+  console.log('User: ' + email + " Current Password: " + password);
+  try {
+    user = User.cookie
+    console.log(user)
+
+  } catch (err) {
+    const errors = handleErrors(err)
+    res.status(400).json({ errors })
+  }
+
 }
 
