@@ -143,7 +143,10 @@
         try {
             const res = await fetch('/password', {
                 method: 'POST',
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({ 
+                    email, password,
+                    token: localStorage.getItem('token')
+                }),
                 headers: {'Content-Type': 'application/json'}
             })
             console.log(data)

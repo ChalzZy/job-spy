@@ -1,5 +1,7 @@
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
+const SECRET = 'nw8d395d243nj8h90!@#*&!)@(#*0wnp9m8edruq2o98i5'
 
 // handle errors
 const handleErrors = (err) => {
@@ -34,7 +36,7 @@ const handleErrors = (err) => {
 
 const maxAge = 3 * 24 * 60 * 60 // 3 days
 const createToken = (id) => {
-  return jwt.sign({ id }, 'nw8d395d243nj8h90!@#*&!)@(#*0wnp9m8edruq2o98i5', {
+  return jwt.sign({ id }, SECRET, {
     expiresIn: maxAge
   }) // signs JWT
 }
@@ -92,18 +94,24 @@ module.exports.password_get = (req, res) => {
   res.render('password');
 }
 
-module.exports.password_post = (req, res) => {
+module.exports.password_post = async (req, res) => {
   const { email, password } = req.body
   
-  console.log('User: ' + email + " Current Password: " + password);
   try {
-    user = User.cookie
-    console.log(user)
+    const newPassword = await bcrypt.hash(password, 10)
+
+    query = { email: email }
+    newValue = { $set: {password: newPassword }}
+
+    await User.updateOne(query, newValue)
+
+    res.json({ status: 'ok' })
+
+    console.log(newPassword)
 
   } catch (err) {
     const errors = handleErrors(err)
     res.status(400).json({ errors })
   }
-
 }
 
