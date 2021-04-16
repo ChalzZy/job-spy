@@ -1,46 +1,75 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>JobSpy</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-        <!--<link rel="stylesheet" href="css/index.css" />-->
-        <link rel="icon" type="image/x-icon" href="/JSIcon.png" />
-        <link rel="stylesheet" href="/views/css/index.css" />
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
-        <style>
-            body {
-                overflow-x: hidden;
-            }
-        </style>
-    </head>
+<head>
+    <meta charset="UTF-8" />
+    <title>JobSpy</title>
 
-    <body>
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <!-- Logo -->
-                <a class="navbar-brand" href="/"><img src="/JSLogo.png" alt="Job Spy Logo" height="32"></a>
-                <form class="d-flex">
-                    <div id="navbarNav">
-                        <ul class="navbar-nav">
-                            <!-- If user is logged in -->
-                            <% if (user) { %>
-                            <li class="nav-item">
-                                <a class="nav-item"> Welcome, <%= user.email -%></a>
-                                <a class="nav-link" href="/logout">Log out</a>
+    <!-- Bootstrap CSS/JS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+        crossorigin="anonymous"></script>
+
+    <!--<link rel="stylesheet" href="css/index.css" />-->
+    <link rel="icon" type="image/x-icon" href="JSIcon.png" />
+    <link rel="stylesheet" href="/views/css/index.css" />
+
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+    </style>
+    <!--<script defer src="js/script.js"></script>-->
+</head>
+
+<body id="body">
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="JSLogo.png" alt="Home" height="32" class="d-inline-block align-text-top">
+              </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <form class="d-flex my-2">
+                            <a class="btn btn-outline-primary" href="/jobsearch" role="button">Search</a>
+                        </form>
+                    </li>
+                </ul>
+
+                <!--My account drop down for when the user is signed in-->
+                <% if (user) { %>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            My Account
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                            <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                            <li><a class="dropdown-item" href="/settings">Settings</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
                             </li>
-                            <!-- If user isn't logged in-->
-                            <% } else { %>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/signup">Register</a>
-                                <a class="nav-link" href="/login">Login</a>
-                            </li>
-                            <% } %>
+                            <li><a class="dropdown-item" href="/logout">Sign out</a></li>
                         </ul>
                     </div>
-                </form>
+                    <!--Welcome text-->
+                    <span class="navbar-text mx-3">
+                        Welcome, <%= user.email -%>
+                    </span>
+
+
+                    <!--Sign in and Sign up buttons for when the user is not signed in-->
+                    <% } else { %>
+                        <a class="btn btn-outline-primary mx-2" href="/login" role="button">Sign in</a>
+                        <a class="btn btn-primary mx-2" href="/signup" role="button">Sign up</a>
+                        <% } %>
             </div>
-        </nav>
-    
+        </div>
+    </nav>
