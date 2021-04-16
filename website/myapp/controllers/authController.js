@@ -105,9 +105,11 @@ module.exports.password_post = async (req, res) => {
 
     await User.updateOne(query, newValue)
 
-    res.json({ status: 'ok' })
+    //res.json({ status: 'ok' })
+    console.log(email + ' password changed successfully!')
 
-    console.log(newPassword)
+    res.cookie('jwt', '', { maxAge: 1 }) // logs user out
+    res.status(200).json({ isPasswordChanged: true })
 
   } catch (err) {
     const errors = handleErrors(err)
