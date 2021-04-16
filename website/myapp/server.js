@@ -29,7 +29,7 @@ app.get('/smoothies', requireAuth, (req, res) => res.render('smoothies'))
 app.use(authRoutes)
 
 // job search funtionality
-const url = 'URI_HERE';
+const url = 'mongodb+srv://jobspy:QNx1uGkz0DxAurjG@jobspy.luh0b.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 app.get('/data', function(req, res) {
   MongoClient.connect(url, function(err, db) {
     if (err) throw err;
