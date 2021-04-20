@@ -4,6 +4,7 @@ const authRoutes = require('./routes/authRoutes')
 const cookieParser = require('cookie-parser')
 const { requireAuth, checkUser } = require('./middleware/authMidderware')
 const MongoClient = require('mongodb').MongoClient;
+const nodemailer = require('nodemailer');
 
 const app = express();
 
@@ -40,4 +41,35 @@ app.get('/data', function(req, res) {
       db.close();
     });
   });
+
+  // report funtionality
+  var email = 'jobspyreport@gmail.com';
+
+  var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: email,
+      pass: 'Jobspyreport123'
+    }
+  });
+  
+  var mailOptions = {
+    from: email,
+    to: email,
+    subject: 'Report',
+    text: 'That was easy!'
+  };
+  
+  
+
+  app.get('/report', function(req, res) {
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+    });
+
 });

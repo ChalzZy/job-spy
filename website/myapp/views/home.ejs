@@ -35,7 +35,7 @@
 
                     const numOfJobsToDisplay = 4;
                     for (i = 0; i < numOfJobsToDisplay; i++) {
-                        let id = i + 'modal';
+                        
                         jobList += `
             <div class="modal fade" id="modal${[i]}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
@@ -49,6 +49,7 @@
                         <p>
                             ${data[i].summary}
                         </p>
+                        <div  class="fw-light">Is this content irrelevant? <a onclick="report(${data[i].link})" href="#">Report</a>.</div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-primary">♡</button>
@@ -71,6 +72,7 @@
                         <button type="button" class="btn btn-outline-primary">♡</button>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#modal${[i]}">Apply</button>
+
                 </div>
                         
                     </div>
@@ -82,8 +84,19 @@
                     document.getElementById('results').innerHTML = jobList
                 }
 
+                async function promptReport() {
+                    let dialogue = ''
+                }
+
                 listRecentJobs();
+
+                async function report(url){
+                    console.log("test")
+                    const response = await fetch('/report');
+                }
             }
+
+
 
         </script>
 
