@@ -32,10 +32,11 @@
                     let jobList = '';
 
                     const data = await response.json();
+                    console.log(JSON.stringify(data))
 
                     const numOfJobsToDisplay = 4;
                     for (i = 0; i < numOfJobsToDisplay; i++) {
-                        
+
                         jobList += `
             <div class="modal fade" id="modal${[i]}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
@@ -49,7 +50,7 @@
                         <p>
                             ${data[i].summary}
                         </p>
-                        <div  class="fw-light">Is this content irrelevant? <a onclick="report(${data[i].link})" href="#">Report</a>.</div>
+                        <div  class="fw-light">Is this content inappropriate? <a onclick="report('A user', '${data[i]._id}, ${data[i].jobTitle}, ${data[i].company}: ${data[i].link}')" href="/">Report</a>.</div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-primary">♡</button>
@@ -90,14 +91,19 @@
 
                 listRecentJobs();
 
-                async function report(url){
-                    console.log("test")
-                    const response = await fetch('/report');
+                async function report(user, url) {
+                    const data = { user, url };
+                    console.log(url)
+                    const options = {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    };
+                    const response = await fetch('/report', options);
                 }
             }
-
-
-
         </script>
 
 
