@@ -68,7 +68,9 @@
                         <span class="badge rounded-pill bg-primary">Tag 2</span>
                     </div>
                     <div class="mx-2 my-auto">
+                        <% if (user) { %>
                         <button type="button" class="btn btn-outline-primary">♡</button>
+                        <% } %>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#modal${[i]}">Apply</button>
                 </div>
