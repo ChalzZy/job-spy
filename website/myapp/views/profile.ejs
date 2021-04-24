@@ -15,6 +15,7 @@
             <a class="list-group-item list-group-item-action block" id="home" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Change password</a>
             <a class="list-group-item list-group-item-action block" id="email" data-toggle="list" href="#list-email" role="tab" aria-controls="email">Change email</a>
             <a class="list-group-item list-group-item-action block" id="settings" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Settings</a>
+            <a class="list-group-item list-group-item-action block" id="fav" data-toggle="list" href="#list-favs" role="tab" aria-controls="fav">Favourites</a>
           </div>
         </div>
         
@@ -106,6 +107,16 @@
                     </article>
                 </div> 
             </div> 
+            <div class="tab-pane fade show block" id="list-fav" role="tabpanel" aria-labelledby="list-fav-list">
+                <div class="card bg-light">
+                    <article class="card-body mx-auto" style="max-width: 400px;"> 
+                    <h4 class="card-title mt-3 text-center pb-3">Favourites</h4>
+                        <form>
+                                                                                     
+                        </form>
+                    </article>
+                </div> 
+            </div> 
         </div>
         <!--<div class="tab-pane fade " id="list-settings" role="tabpanel" aria-labelledby="list-settings-list"></div>-->
     </div>   
@@ -119,10 +130,12 @@
     let profile = document.getElementById("home") // 'Change password'
     let email = document.getElementById("email") // 'Change email'
     let settings = document.getElementById("settings") // 'Settings'
+    let favourites = document.getElementById("fav")
 
     profile.addEventListener("click", userPassword)
     email.addEventListener('click', userEmail)
     settings.addEventListener("click", userSettings)
+    favourites.addEventListener("click", fav_user_page)
 
     /*
         Change Password
@@ -181,6 +194,13 @@
         let userTab = document.getElementById('list-settings')
         userTab.className = userTab.className.replace('active', 'block')
 
+        // not active Favourites tab
+        let fav_page = document.getElementById('fav')
+        fav_page.className = fav_page.className.replace('active', 'block')
+        // not active Favourites content
+        let fav_content = document.getElementById('list-fav')
+        fav_content.className = fav_content.className.replace('active', 'block')
+
         // Profile tab
         let maptab = document.getElementById('home') 
         maptab.className = maptab.className.replace('block', 'active')
@@ -194,6 +214,14 @@
 
     //Email
     function userEmail() {
+
+        // not active Favourites tab
+        let fav_page = document.getElementById('fav')
+        fav_page.className = fav_page.className.replace('active', 'block')
+        // not active Favourites content
+        let fav_content = document.getElementById('list-fav')
+        fav_content.className = fav_content.className.replace('active', 'block')
+
         //not active password
         let changePass = document.getElementById('home') 
         changePass.className = changePass.className.replace('active', 'block')
@@ -219,6 +247,13 @@
     //Settings
     function userSettings(){
 
+        // not active Favourites tab
+        let fav_page = document.getElementById('fav')
+        fav_page.className = fav_page.className.replace('active', 'block')
+        // not active Favourites content
+        let fav_content = document.getElementById('list-fav')
+        fav_content.className = fav_content.className.replace('active', 'block')
+
         //not active password
         let changePass = document.getElementById('home') 
         changePass.className = changePass.className.replace('active', 'block')
@@ -240,5 +275,37 @@
         let userTab = document.getElementById('list-settings')
         userTab.className = userTab.className.replace('block', 'active')
         
+    }
+
+    function fav_user_page(){
+
+        //not active password
+        let changePass = document.getElementById('home') 
+        changePass.className = changePass.className.replace('active', 'block')
+        //Not active pasword content
+        let userProfile = document.getElementById('list-home') 
+        userProfile.className = userProfile.className.replace('active', 'block')
+
+        // Email tab not active
+        let emailTab = document.getElementById('email') 
+        emailTab.className = emailTab.className.replace('active', 'block')
+        // Email content not active
+        let emailContent = document.getElementById('list-email') 
+        emailContent.className = emailContent.className.replace('active', 'block')
+
+        // not active Settings tab
+        let userSettingsChange = document.getElementById('settings')
+        userSettingsChange.className = userSettingsChange.className.replace('active', 'block')
+        // not active Settings content
+        let userTab = document.getElementById('list-settings')
+        userTab.className = userTab.className.replace('active', 'block')
+
+        // not active Favourites tab
+        let fav_page = document.getElementById('fav')
+        fav_page.className = fav_page.className.replace('block', 'active')
+        // not active Favourites content
+        let fav_content = document.getElementById('list-fav')
+        fav_content.className = fav_content.className.replace('block', 'active')
+
     }
 </script>
