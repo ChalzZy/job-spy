@@ -52,13 +52,13 @@ app.get('/data', function (req, res) {
   })
 
   // report/email funtionality
-  var email = 'jobspyreport@gmail.com'
+  var email = process.env.EMAIL;
 
   var transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
       user: email,
-      pass: 'Jobspyreport123',
+      pass: process.env.PASSWORD,
     },
   })
 
