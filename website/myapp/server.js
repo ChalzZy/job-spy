@@ -4,6 +4,7 @@ const authRoutes = require('./routes/authRoutes')
 const cookieParser = require('cookie-parser')
 const { requireAuth, checkUser } = require('./middleware/authMidderware')
 const MongoClient = require('mongodb').MongoClient
+require('dotenv').config()
 const nodemailer = require('nodemailer')
 
 const app = express()
@@ -35,8 +36,7 @@ app.get('/smoothies', requireAuth, (req, res) => res.render('smoothies'))
 app.use(authRoutes)
 
 // job search funtionality
-const url =
-  'mongodb+srv://jobspy:QNx1uGkz0DxAurjG@jobspy.luh0b.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+const url = process.env.URI;
 app.get('/data', function (req, res) {
   MongoClient.connect(url, function (err, db) {
     if (err) throw err
