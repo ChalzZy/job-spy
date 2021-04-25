@@ -30,7 +30,7 @@
     </div>
   </main>
 </div>
-<div><p id="results" style="font-size: 1.8em"></p></div>
+<div id="results" class=""></div>
 
 <script>
   document
@@ -124,15 +124,67 @@
 
     for (i; i < jobs.length; i++) {
       jobText += `
+                <div class="modal fade" id="thanksModal" tabindex="-1" aria-labelledby="thanksModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="thanksModalLabel">Thank you for reporting.</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        If we find this content is inappropriate, we will remove it.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+            <div class="modal fade" id="modal${[
+              i,
+            ]}" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <div class="fw-lighter" id="job-title"><p></p></div>
+                        <h5 class="modal-title" id="applyModalLabel"><div class="fw-lighter fs-6">${
+                          jobs[i].company
+                        }</div> ${jobs[i].jobTitle}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            ${jobs[i].summary}
+                        </p>
+                        <div class="fw-light">Is this content inappropriate? <a onclick="report('A user', '${
+                          jobs[i]._id
+                        }, ${jobs[i].jobTitle}, ${jobs[i].company}, ${
+        jobs[i].summary
+      }: ${
+        jobs[i].link
+      }')" href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#thanksModal">Report</a></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-primary">♡</button>
+                        <a href="${
+                          jobs[i].link
+                        }"><button type="button" class="btn btn-primary">Apply</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div style="padding-top: 20px">
-            <ol class="list-group list-group mx-auto" style="max-width: 55%">
-                <li class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto" style="max-width: 70%; padding-bottom: 10px">
-                        <div class="fs-6">${jobs[i].location}</div>
-                        <div class="fw-lighter">${jobs[i].jobTitle}</div>
-                        <div class="fs-5">Company: ${jobs[i].company}</div>
-                        <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${jobs[i].summary}</div>
-                        `
+          <ol class="list-group list-group mx-auto" style="max-width: 55%">
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto" style="max-width: 70%;">
+                <div class="fs-6">${jobs[i].location}</div>
+                <div class="fw-lighter" id="job-title">${jobs[i].company}</div>
+                  <div class="fs-5">${jobs[i].jobTitle}</div>
+                  <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${
+                    jobs[i].summary
+                  }</div>
+                  `
 
       // Assigns each job tags if keywords found in tagDirectory can be matched job's against title & summary
       for (let tagIndex = 0; tagIndex < tagDirectory.length; tagIndex++) {
@@ -147,16 +199,41 @@
       }
 
       jobText += `
-                    </div>
-                    <div class="mx-2 my-auto">
-                        <button type="button" class="btn btn-outline-primary">♡</button>
-                        <a href="${jobs[i].link}"><button type="button" class="btn btn-primary">Apply</button></a>
-                    </div>
-                </li>
-            </ol>
-        </div>`
+              </div>
+                <div class="mx-2 my-auto">
+                  <button type="button" class="btn btn-outline-primary">♡</button>
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                  data-bs-target="#modal${[i]}">Apply</button>
+                </div>
+              </div>
+            </li>
+          </ol>
+        </div>
+        `
     }
+
     return jobText
   }
+
+  async function promptReport() {
+    let dialogue = ''
+  }
+
+  /**
+   * Send POST request to server with report data
+   */
+  async function report(user, url) {
+    const data = { user, url }
+    console.log(url)
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    }
+    const response = await fetch('/report', options)
+  }
 </script>
+
 <%- include('partials/footer'); -%>
