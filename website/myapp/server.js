@@ -51,7 +51,7 @@ app.get('/data', function (req, res) {
       })
   })
 
-  // report funtionality
+  // report/email funtionality
   var email = 'jobspyreport@gmail.com'
 
   var transporter = nodemailer.createTransport({

@@ -1,60 +1,90 @@
 <%- include('partials/header'); -%>
 
-    <body>
+<body>
+  <div
+    class="cover-container d-flex h-100 p-5 mx-auto flex-column text-center m-5"
+  >
+    <main role="main" class="inner cover">
+      <h1 class="cover-heading">Find all the junior software jobs.</h1>
+      <p class="lead">JobSpy will help you find a junior job etc.</p>
+      <div class="input-group rounded">
+        <form class="d-flex mx-auto">
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Search for a job"
+            aria-label="Search"
+          />
+          <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+      </div>
+    </main>
+  </div>
+  <div class="recent-job-list" data-url="/data" style="padding-bottom: 30px">
+    <p class="lead text-center">Recent Job Listings:</p>
+    <ol class="list-group list-group w-50 mx-auto">
+      <div id="results" class=""></div>
+    </ol>
+  </div>
+  <script>
+    {
+      /**
+       * Populates the job list with most recent jobs from DB
+       */
+      async function listRecentJobs() {
+        const response = await fetch('/data')
+        let jobList = ''
 
+        const data = await response.json()
+        console.log(JSON.stringify(data))
 
-        <div class="cover-container d-flex h-100 p-5 mx-auto flex-column text-center m-5">
-            <main role="main" class="inner cover">
-                <h1 class="cover-heading">Find all the junior software jobs.</h1>
-                <p class="lead">JobSpy will help you find a junior job etc.</p>
-                <div class="input-group rounded">
-                    <form class="d-flex mx-auto">
-                        <input class="form-control me-2" type="search" placeholder="Search for a job"
-                            aria-label="Search">
-                        <button class="btn btn-primary" type="submit">Search</button>
-                    </form>
+        const numOfJobsToDisplay = 4
+        for (i = 0; i < numOfJobsToDisplay; i++) {
+          jobList += `
+                <div class="modal fade" id="thanksModal" tabindex="-1" aria-labelledby="thanksModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="thanksModalLabel">Thank you for reporting.</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        If we find this content is inappropriate, we will remove it.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                    </div>
                 </div>
-            </main>
-        </div>
-        <div class="recent-job-list" data-url="/data" style="padding-bottom: 30px;">
-            <p class="lead text-center">Recent Job Listings: </p>
-            <ol class="list-group list-group w-50 mx-auto">
-                <div id="results" class=""></div>
-            </ol>
-        </div>
-        <script>
-            {
-                /**
-                 * Populates the job list with most recent jobs from DB
-                 */
-                async function listRecentJobs() {
-                    const response = await fetch('/data');
-                    let jobList = '';
+                </div>
 
-                    const data = await response.json();
-                    console.log(JSON.stringify(data))
-
-                    const numOfJobsToDisplay = 4;
-                    for (i = 0; i < numOfJobsToDisplay; i++) {
-
-                        jobList += `
-            <div class="modal fade" id="modal${[i]}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="modal${[
+              i,
+            ]}" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content ">
                     <div class="modal-header">
                         <div class="fw-lighter" id="job-title"><p></p></div>
-                        <h5 class="modal-title" id="exampleModalLabel"><div class="fw-lighter fs-6">${data[i].company}</div> ${data[i].jobTitle}</h5>
+                        <h5 class="modal-title" id="applyModalLabel"><div class="fw-lighter fs-6">${
+                          data[i].company
+                        }</div> ${data[i].jobTitle}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <p>
                             ${data[i].summary}
                         </p>
-                        <div  class="fw-light">Is this content inappropriate? <a onclick="report('A user', '${data[i]._id}, ${data[i].jobTitle}, ${data[i].company}: ${data[i].link}')" href="/">Report</a>.</div>
+                        <div  class="fw-light">Is this content inappropriate? <a onclick="report('A user', '${
+                          data[i]._id
+                        }, ${data[i].jobTitle}, ${data[i].company}: ${
+            data[i].link
+          }')" href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#thanksModal">Report</a>.</div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-primary">♡</button>
-                        <a href="${data[i].link}"><button type="button" class="btn btn-primary">Apply</button></a>
+                        <a href="${
+                          data[i].link
+                        }"><button type="button" class="btn btn-primary">Apply</button></a>
                     </div>
                 </div>
             </div>
@@ -63,9 +93,13 @@
             <div style="padding-top: 10px">
                 <li class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto" style="max-width: 70%;">
-                        <div class="fw-lighter" id="job-title">${data[i].company}</div>
+                        <div class="fw-lighter" id="job-title">${
+                          data[i].company
+                        }</div>
                         <div class="fs-5">${data[i].jobTitle}</div>
-                        <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${data[i].summary}</div>
+                        <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${
+                          data[i].summary
+                        }</div>
                         <span class="badge rounded-pill bg-primary">Tag 1</span>
                         <span class="badge rounded-pill bg-primary">Tag 2</span>
                     </div>
@@ -79,32 +113,35 @@
                     </div>
                 </li>
             </div>
-            `;
-                    }
+            `
+        }
 
-                    document.getElementById('results').innerHTML = jobList
-                }
+        document.getElementById('results').innerHTML = jobList
+      }
 
-                async function promptReport() {
-                    let dialogue = ''
-                }
+      async function promptReport() {
+        let dialogue = ''
+      }
 
-                listRecentJobs();
+      listRecentJobs()
 
-                async function report(user, url) {
-                    const data = { user, url };
-                    console.log(url)
-                    const options = {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(data)
-                    };
-                    const response = await fetch('/report', options);
-                }
-            }
-        </script>
+      /**
+       * Send POST request to server with report data
+       */
+      async function report(user, url) {
+        const data = { user, url }
+        console.log(url)
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        }
+        const response = await fetch('/report', options)
+      }
+    }
+  </script>
 
-
-        <%- include('partials/footer'); -%>
+  <%- include('partials/footer'); -%>
+</body>
