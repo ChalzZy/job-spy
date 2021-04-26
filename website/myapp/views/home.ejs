@@ -19,9 +19,11 @@
         <div class="recent-job-list" data-url="/data" style="padding-bottom: 30px;">
             <p class="lead text-center">Recent Job Listings: </p>
             <ol class="list-group list-group w-50 mx-auto">
-                <div id="results" class=""></div>
+                <div class="" id="results"></div>
             </ol>
         </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
         <script>
             {
                 /**
@@ -37,7 +39,7 @@
                     for (i = 0; i < numOfJobsToDisplay; i++) {
                         let id = i + 'modal';
                         jobList += `
-            <div class="modal fade" id="modal${[i]}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" type="model-number" id="modal${[i]}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content ">
                     <div class="modal-header">
@@ -67,9 +69,15 @@
                         <span class="badge rounded-pill bg-primary">Tag 1</span>
                         <span class="badge rounded-pill bg-primary">Tag 2</span>
                     </div>
+                    
+       
                     <div class="mx-2 my-auto">
+                        
                         <% if (user) { %>
-                        <button type="button" class="btn btn-outline-primary">♡</button>
+                        
+                        <input type="submit"  value="♡">
+                        
+            
                         <% } %>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#modal${[i]}">Apply</button>
@@ -79,7 +87,7 @@
                 </li>
             </div>
             `;
-                    }
+         }
 
                     document.getElementById('results').innerHTML = jobList
                 }

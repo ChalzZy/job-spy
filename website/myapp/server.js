@@ -4,8 +4,13 @@ const authRoutes = require('./routes/authRoutes')
 const cookieParser = require('cookie-parser')
 const { requireAuth, checkUser } = require('./middleware/authMidderware')
 const MongoClient = require('mongodb').MongoClient;
+const { urlencoded } = require('express');
 
+const path = require('path')
 const app = express();
+
+//data Parsing
+app.use(express.urlencoded({extended:false}));
 
 // middleware
 app.use(express.static('public'))
