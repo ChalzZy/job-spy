@@ -24,5 +24,7 @@ router.get('/profile', authController.profile_get)
 router.get('/password', authController.password_get)
 router.post('/password', authController.password_post)
 
+// about us
+router.get('/aboutus', authController.aboutus_get)
 
 module.exports = router;
