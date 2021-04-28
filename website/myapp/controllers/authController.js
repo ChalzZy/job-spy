@@ -49,6 +49,9 @@ module.exports.login_get = (req, res) => {
   res.render('login');
 }
 
+//fav page module to render
+
+
 module.exports.signup_post = async (req, res) => {
   const { email, password } = req.body;
 
@@ -92,6 +95,11 @@ module.exports.profile_get = (req, res) => {
 
 module.exports.password_get = (req, res) => {
   res.render('password');
+}
+
+//favourites page
+module.exports.user_fav = (req, res) => {
+  res.render('profile#list-favs')
 }
 
 module.exports.password_post = async (req, res) => {
