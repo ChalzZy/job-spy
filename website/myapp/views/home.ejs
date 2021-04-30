@@ -36,7 +36,33 @@
         let jobList = ''
 
         const data = await response.json()
-        console.log(JSON.stringify(data))
+
+        // List of tags which will be applied to each job listing if they contain the matching keyword
+        let tagDirectory = [
+          '.NET',
+          'JavaScript',
+          'React',
+          'Frontend',
+          'Angular',
+          'Backend',
+          'C#',
+          'AWS',
+          'Azure',
+          'Front End',
+          'Full Stack',
+          'Fullstack',
+          'Junior',
+          'Intern',
+          'Internship',
+          'TypeScript',
+          'Senior',
+          'Intermediate',
+          'Python',
+          'Graduate',
+          'Mobile',
+          'iOS',
+          'Android',
+        ]
 
         const numOfJobsToDisplay = 4
         for (i = 0; i < numOfJobsToDisplay; i++) {
@@ -76,7 +102,9 @@
                         </p>
                         <div  class="fw-light">Is this content inappropriate? <a onclick="report('A user', '${
                           data[i]._id
-                        }, ${data[i].jobTitle}, ${data[i].company}, ${data[i].summary}: ${
+                        }, ${data[i].jobTitle}, ${data[i].company}, ${
+            data[i].summary
+          }: ${
             data[i].link
           }')" href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#thanksModal">Report</a>.</div>
                     </div>
@@ -89,7 +117,7 @@
                 </div>
             </div>
         </div>
-        
+
             <div style="padding-top: 10px">
                 <li class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto" style="max-width: 70%;">
@@ -99,20 +127,29 @@
                         <div class="fs-5">${data[i].jobTitle}</div>
                         <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${
                           data[i].summary
-                        }</div>
-                        <span class="badge rounded-pill bg-primary">Tag 1</span>
-                        <span class="badge rounded-pill bg-primary">Tag 2</span>
-                    </div>
+                        }</div> `
+
+          // Assigns each job tags if keywords found in tagDirectory can be matched job's against title & summary
+          for (let tagIndex = 0; tagIndex < tagDirectory.length; tagIndex++) {
+            if (
+              (
+                data[i].jobTitle.toLowerCase() || data[i].summary.toLowerCase()
+              ).includes(tagDirectory[tagIndex].toLowerCase())
+            ) {
+              jobList += `
+        <span class="badge rounded-pill bg-primary">${tagDirectory[tagIndex]}</span> `
+            }
+          }
+
+          jobList += ` </div>
                     <div class="mx-2 my-auto">
                         <button type="button" class="btn btn-outline-primary">♡</button>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#modal${[i]}">Apply</button>
-
-                </div>
-                        
                     </div>
-                </li>
-            </div>
+                  </div>
+              </li>
+          </div>
             `
         }
 
