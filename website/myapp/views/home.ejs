@@ -19,19 +19,23 @@
         <div class="recent-job-list" data-url="/data" style="padding-bottom: 30px;">
             <p class="lead text-center">Recent Job Listings: </p>
             <ol class="list-group list-group w-50 mx-auto">
-                <div class="" id="results"></div>
+                <div class="" id="results">
+                </div>
             </ol>
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
         <script>
             {
+                
+                var jobList = '';
+                var count = 0
                 /**
                  * Populates the job list with most recent jobs from DB
                  */
+
                 async function listRecentJobs() {
                     const response = await fetch('/data');
-                    let jobList = '';
 
                     const data = await response.json();
 
@@ -53,7 +57,9 @@
                         </p>
                     </div>
                     <div class="modal-footer">
+                        <div class="button-footer">
                         <button type="button" class="btn btn-outline-primary">♡</button>
+                        </div>
                         <a href="${data[i].link}"><button type="button" class="btn btn-primary">Apply</button></a>
                     </div>
                 </div>
@@ -74,9 +80,10 @@
                     <div class="mx-2 my-auto">
                         
                         <% if (user) { %>
-                        
-                        <input type="submit"  value="♡">
-                        
+                            <div class="userButton">
+                            <button type="button1" id="button1"class="btn btn-outline-primary">♡</button>
+
+                          </div>
             
                         <% } %>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -87,14 +94,55 @@
                 </li>
             </div>
             `;
+         
+
          }
+          document.getElementById('results').innerHTML = jobList  
+          var j =  document.getElementById('results').getElementsByClassName('userButton')
+          
+          document.getElementById('results').innerHTML = jobList  
+          var button_footer =  document.getElementById('results').getElementsByClassName('button-footer')
 
-                    document.getElementById('results').innerHTML = jobList
-                }
+          for(let i =0; i<numOfJobsToDisplay; i++)
+          {
+              j[i].addEventListener("click", favourite)
 
-                listRecentJobs();
-            }
+              function favourite(){
 
+                  $.ajax({
+                      type:'POST',
+                      url:'/profile',
+                      data:data[i],
+
+                      success: function(data){
+                          location.reload()
+                      }
+                  })
+              }
+          }
+
+          for(let i =0; i<numOfJobsToDisplay; i++)
+          {
+              button_footer[i].addEventListener("click", favourite)
+
+              function favourite(){
+                  
+                $.ajax({
+                      type:'POST',
+                      url:'/profile',
+                      data:data[i],
+
+                      success: function(data){
+                          location.reload()
+                      }
+                  })
+              }
+          }
+        }
+         listRecentJobs();
+        }
+
+                        
         </script>
 
 

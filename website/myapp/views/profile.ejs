@@ -111,7 +111,8 @@
                 <div class="card bg-light">
                     <article class="card-body mx-auto" style="max-width: 400px;"> 
                     <h4 class="card-title mt-3 text-center pb-3">Favourites</h4>
-                        <form>                 
+                        <form>      
+                            <p><%= data%></p>
                         </form>
                     </article>
                 </div> 
@@ -129,7 +130,7 @@
     let profile = document.getElementById("home") // 'Change password'
     let email = document.getElementById("email") // 'Change email'
     let settings = document.getElementById("settings") // 'Settings'
-    let favourites = document.getElementById("fav")
+    let favourites = document.getElementById("fav") //favoutites
 
     profile.addEventListener("click", userPassword)
     email.addEventListener('click', userEmail)

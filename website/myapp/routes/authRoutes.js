@@ -19,14 +19,11 @@ router.get('/jobsearch', authController.jobsearch_get)
 
 // profile page
 router.get('/profile', authController.profile_get)
+router.post('/profile', authController.profile_post)
 
 // change password
 router.get('/password', authController.password_get)
 router.post('/password', authController.password_post)
-
-//fav page
-router.get('/profile#list-favs', authController.user_fav)
-
 
 
 module.exports = router;
