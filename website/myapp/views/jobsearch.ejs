@@ -57,6 +57,7 @@
   }
   form.addEventListener('submit', handleForm)
 
+  // Collects users terms from the search bar and drop-down menu's and returns a job list
   function userAction() {
     let searchString = document.getElementById('userInput').value
     let locationSelection = document.getElementById('location-selection')
@@ -80,6 +81,7 @@
     let webhook_url =
       'https://ap-southeast-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/jobsearchapp-wfuox/service/jobs/incoming_webhook/getJobs'
 
+    // Appends the relevant search terms to the webhook to access search data
     let url =
       webhook_url +
       '?arg=' +
@@ -89,6 +91,7 @@
       '&category=' +
       categorySelectionText
 
+    // Call the buildJobList method on JSON results if they are valid and displays jobs via 'results'
     fetch(url)
       .then(function (response) {
         if (!response.ok) {
@@ -103,13 +106,12 @@
       })
       .then(function (jobJSON) {
         if (jobJSON['$undefined'] === true) {
-          console.log('NO FETCH RESULT')
+          console.log('No results fetched.')
         } else {
-          console.log('FETCHED RESULT... ')
+          console.log('Results fetched...')
           if (jobJSON.length !== 0) {
-            console.log('Fetched array has ' + jobJSON.length + ' entries')
+            console.log('Search results found: ' + jobJSON.length)
             jobText = buildJobList(jobJSON)
-            console.log(jobJSON)
           } else {
             jobText += `<center><h3>No results.</h3></center>`
             jobText += `<center><p>Please try again.</p></center>`
@@ -122,10 +124,12 @@
       })
   }
 
+  // Iterates through the passed jobs JSON file and builds individual job cards, appending them to jobText
   function buildJobList(jobs) {
     let i = 0
     let jobText = ''
 
+    // List of tags which will be applied to each job listing if they contain the matching keyword
     let tagDirectory = [
       '.NET',
       'JavaScript',
