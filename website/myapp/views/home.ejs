@@ -112,10 +112,11 @@
                   $.ajax({
                       type:'POST',
                       url:'/profile',
-                      data:data[i],
+                      contentType: 'application/json',
+                      data:JSON.stringify(data[i]),
 
                       success: function(data){
-                          location.reload()
+                          console.log('success')
                       }
                   })
               }
@@ -130,10 +131,11 @@
                 $.ajax({
                       type:'POST',
                       url:'/profile',
+                      contentType: 'application/json',
                       data:data[i],
 
                       success: function(data){
-                          location.reload()
+                          console.log('success')
                       }
                   })
               }

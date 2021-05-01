@@ -105,7 +105,9 @@ module.exports.profile_post = (req, res) => {
   //   res.json(data)
 
   // // })
-  // res.render('profile', {data:req.body})
+
+  res.json(req.body)
+
 
 }
 
