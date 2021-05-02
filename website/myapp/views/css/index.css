@@ -1,0 +1,222 @@
+/* .container {
+    width: 550px;
+    height: 300px;  
+    padding: 50px;
+    border: 1px solid rgb(61, 60, 60);
+    position: absolute;
+    top: 30%;
+    right: 30%;
+    background-color: darkgray;
+    text-align-last: center;
+    display: none;
+    border-radius: 25px;
+  } */
+
+
+
+  /*Fields that have the container tag for the div class*/
+  .container {
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border-radius: 10px 10px 10px 10px;
+    background: #fff;
+    padding: 30px;
+    width: 90%;
+    max-width: 450px;
+    position: absolute;
+    top: 30%;
+    right: 30%;
+    display: none;
+    min-height: 50%;
+    padding: 0px;
+    -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+    box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+    text-align: center;
+  }
+
+ 
+  h1 {
+    margin-bottom: 30px;
+    font-weight: 700;
+    font-size: 50px;
+    line-height: 134px;
+    color: #398FF7;
+    text-align: center;
+    text-transform: normal;
+    letter-spacing: 1px;
+}
+/* 
+.fade_1{
+      
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fade_1 {
+  from {opacity: .1}
+  to {opacity: 1}
+}
+
+@keyframes fade_1 {
+    from {opacity: 0.4} 
+    to {opacity: 1}
+  } */
+
+.container1 {
+    top: 50px;;
+    bottom:0;
+    left:0;
+    right:0;
+    }
+    
+  h2 {
+    position: relative;
+    bottom: 40px;
+    right: 5px
+  }
+
+/*Any node that has the label tag*/
+  label{
+    position: relative;
+    bottom: 10px;
+    right: 1px
+  }
+
+/* email text field*/
+  input[type=email] {
+  background-color: #d8d1d1;
+  border: none;
+  color: #0d0d0d;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 5px;
+  width: 85%;
+  border: 2px solid #181616;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+}
+
+
+/* Button layout*/
+input[type=button], input[type=submit]  {
+  background-color: #56baed;
+  border: none;
+  color: white;
+  padding: 25px 120px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 13px;
+  -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+  box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+  margin: 30px 20px 40px 20px;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Password text field*/
+input[type=password] {
+  background-color: #d8d1d1;
+  border: none;
+  color: #0d0d0d;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 5px;
+  width: 85%;
+  border: 2px solid #181717;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+}
+
+  /* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+  animation-fill-mode:forwards;
+  animation-delay: 1ms;	
+}
+
+@-webkit-keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+
+@keyframes fade {
+    from {opacity: 0.4} 
+    to {opacity: 1}
+  }
+  
+  /*Respnsive page parameters*/
+  @media (max-width: 600px) {
+    .container {
+        width: auto;
+        height: auto;
+        
+      }
+      h1 {
+        font-size: 48px;
+        line-height: 56px;
+    }
+
+    .container1 {
+        width: auto;
+        height: auto;
+    }
+}
+
+/*Function for the arrow*/
+  @-webkit-keyframes downarrow {
+
+    0% { -webkit-transform: translateY(0); opacity: 0.4 
+    }
+    100% { -webkit-transform: translateY(0.4em); opacity: 0.9 }
+  }
+
+
+  .arrow {
+    
+    border-color:transparent;
+    border-style:solid;
+    border-width:0 1em;
+    display:block;
+    height: 0;;
+    margin:1em auto;
+    opacity:0.4;
+    text-indent:-9999px;
+    transform-origin: 50% 50%;
+    width:0;
+    text-align: center;
+    position: relative;
+    top: 12%;
+  }
+ 
+  .down {
+    -webkit-animation: downarrow 0.6s infinite alternate ease-in-out;
+    border-top:2em solid #00b6f1;
+  }
+
