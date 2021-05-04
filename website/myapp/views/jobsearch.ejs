@@ -132,8 +132,12 @@
   // Iterates through the passed jobs JSON file and builds individual job cards, appending them to jobText
   function buildJobList(currentPage) {
     jobs = jobs
-    let i = 0
-    let max = 7
+    jobLength = jobs.length
+    let i = currentPage
+    let resultsMax = i + 10
+
+    let j = 0
+    
     let jobText = ''
     document.getElementById('pages').innerHTML = ''
 
@@ -164,16 +168,16 @@
       'Android',
     ]
 
-    for (i; i < 7; i++) {
-      if(i == currentPage){
-        document.getElementById('pages').innerHTML += `<button type="button" class="btn btn-primary" disabled>${[i]}</button>`
+    for (j; j < jobLength/10; j++) {
+      if(j == currentPage){
+        document.getElementById('pages').innerHTML += `<button type="button" class="btn btn-primary" disabled>${[j]}</button>`
       }
       else{
-        document.getElementById('pages').innerHTML += `<button type="button" class="btn btn-primary" onclick="buildJobList(${[i]})">${[i]}</button>`
+        document.getElementById('pages').innerHTML += `<button type="button" class="btn btn-primary" onclick="buildJobList(${[j]})">${[j]}</button>`
       }
     }
       
-    for (i + currentPage; i + currentPage < 20; i++) {
+    for (i; i < resultsMax; i++) {
       jobText += `
                 <div class="modal fade" id="thanksModal" tabindex="-1" aria-labelledby="thanksModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
