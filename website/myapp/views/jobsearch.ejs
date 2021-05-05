@@ -43,9 +43,16 @@
     </div>
   </main>
 </div>
+<div class="cover-container d-flex mx-auto flex-column text-center">
+  <p id="resultsFound" class="text-muted"></p>
+</div>
 <div id="results" class=""></div>
+<div class="cover-container d-flex h-100 p-5 mx-auto flex-column text-center">
+  <div id="pages"></div>
+</div>
 
 <script>
+  let jobs = ''
   document
     .getElementById('searchBar')
     .addEventListener('submit', userAction, false)
@@ -111,7 +118,10 @@
           console.log('Results fetched...')
           if (jobJSON.length !== 0) {
             console.log('Search results found: ' + jobJSON.length)
-            jobText = buildJobList(jobJSON)
+            document.getElementById('resultsFound').innerHTML =
+              jobJSON.length + ' jobs found.'
+            jobs = jobJSON
+            jobText = buildJobList(0)
           } else {
             jobText += `<center><h3>No results.</h3></center>`
             jobText += `<center><p>Please try again.</p></center>`
@@ -124,10 +134,32 @@
       })
   }
 
-  // Iterates through the passed jobs JSON file and builds individual job cards, appending them to jobText
-  function buildJobList(jobs) {
-    let i = 0
+  // Iterates through the passed jobs JSON file and builds individual job cards, appending them to jobText and organises them into pages
+  function buildJobList(currentPage) {
+    document.body.scrollTop = 0
+    document.documentElement.scrollTop = 0
+
+    let results = 10
+    let resultsMax = jobs.length
+
+    let pages = Math.floor(jobs.length / results)
+    let remainder = jobs.length % results
+
+    let i = currentPage * 10
+    if (jobs.length >= 10) {
+      resultsMax = i + results
+    }
+    if (remainder != 0 && pages != 0) {
+      pages += 1
+      if (currentPage == pages - 1) {
+        resultsMax = i + remainder
+      }
+    }
+
+    let j = 0
+
     let jobText = ''
+    document.getElementById('pages').innerHTML = ''
 
     // List of tags which will be applied to each job listing if they contain the matching keyword
     let tagDirectory = [
@@ -156,7 +188,23 @@
       'Android',
     ]
 
-    for (i; i < jobs.length; i++) {
+    for (j; j < pages; j++) {
+      if (j == currentPage) {
+        document.getElementById(
+          'pages'
+        ).innerHTML += `<button type="button" class="btn btn-primary me-md-1" disabled>${[
+          j + 1,
+        ]}</button>`
+      } else {
+        document.getElementById(
+          'pages'
+        ).innerHTML += `<button type="button" class="btn btn-primary me-md-1" onclick="buildJobList(${[
+          j,
+        ]})">${[j + 1]}</button>`
+      }
+    }
+
+    for (i; i < resultsMax; i++) {
       jobText += `
                 <div class="modal fade" id="thanksModal" tabindex="-1" aria-labelledby="thanksModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -245,7 +293,7 @@
         </div>
         `
     }
-
+    document.getElementById('results').innerHTML = jobText
     return jobText
   }
 
