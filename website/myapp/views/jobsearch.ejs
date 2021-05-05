@@ -18,6 +18,7 @@
           id="location-selection"
         >
           <option selected>All Locations</option>
+          <option value="0">Detect My Location</option>
           <option value="1">Auckland</option>
           <option value="2">Wellington</option>
           <option value="3">Christchurch</option>
@@ -53,6 +54,7 @@
 
 <script>
   let jobs = ''
+
   document
     .getElementById('searchBar')
     .addEventListener('submit', userAction, false)
@@ -72,6 +74,59 @@
 
     let locationSelectionText =
       locationSelection.options[locationSelection.selectedIndex].text
+
+    let city = ''
+    //let cityName = ''
+
+    /*
+      fetch('https://geolocation-db.com/json/')
+        .then(function (res) {
+          if (!res.ok) {
+            throw Error(res.statusText)
+          }
+          return res.json()
+        })
+        .then(function (locationData) {
+          let cityName = locationData.city
+          return cityName
+        })
+        .then((data) => (city = data))
+      */
+
+    let obj
+    /*
+      let fetchedCity = fetch('https://geolocation-db.com/json/')
+        .then((res) => res.json())
+        .then(function (dataG) {
+          return dataG.city
+        })
+  */
+    let fetchedCity = fetch('https://geolocation-db.com/json/')
+      .then(function (res) {
+        if (!res.ok) {
+          throw Error(res.statusText)
+        }
+        return res.json()
+      })
+      .then(function (locationData) {
+        let cityName = locationData.city
+        return cityName
+      })
+
+    /*
+      fetch('https://geolocation-db.com/json/')
+        .then((res) => res.json())
+        .then((data) => (obj = data))
+        .then(() => console.log(obj.city))
+      */
+
+    if (locationSelectionText == 'Detect My Location') {
+      console.log('pre .then: ' + locationSelectionText)
+      fetchedCity.then(function (result) {
+        locationSelectionText = result
+        console.log('locationSelectionText: ' + locationSelectionText)
+      })
+    }
 
     if (locationSelectionText == 'All Locations') {
       locationSelectionText = ''
@@ -99,39 +154,47 @@
       categorySelectionText
 
     // Call the buildJobList method on JSON results if they are valid and displays jobs via 'results'
-    fetch(url)
-      .then(function (response) {
-        if (!response.ok) {
-          console.log(response)
-          jobText += `<center><h3>Status: ${response.status}</h3></center>`
-          if (response.json.length === 0)
-            jobText += `<center><p>Please enter a search term.</p></center>`
-          document.getElementById('results').innerHTML = jobText
-          throw Error(response.statusText)
-        }
-        return response.json()
-      })
-      .then(function (jobJSON) {
-        if (jobJSON['$undefined'] === true) {
-          console.log('No results fetched.')
-        } else {
-          console.log('Results fetched...')
-          if (jobJSON.length !== 0) {
-            console.log('Search results found: ' + jobJSON.length)
-            document.getElementById('resultsFound').innerHTML =
-              jobJSON.length + ' jobs found.'
-            jobs = jobJSON
-            jobText = buildJobList(0)
-          } else {
-            jobText += `<center><h3>No results.</h3></center>`
-            jobText += `<center><p>Please try again.</p></center>`
+    doTheMainStuff()
+
+    async function doTheMainStuff() {
+      const waitFirst = await fetch(fetchedCity)
+
+      fetch(url)
+        .then(function (response) {
+          if (!response.ok) {
+            console.log(response)
+            jobText += `<center><h3>Status: ${response.status}</h3></center>`
+            if (response.json.length === 0)
+              jobText += `<center><p>Please enter a search term.</p></center>`
+            document.getElementById('results').innerHTML = jobText
+            throw Error(response.statusText)
           }
-        }
-        document.getElementById('results').innerHTML = jobText
-      })
-      .catch(function (error) {
-        console.log('Error: ', error)
-      })
+          // FOR TESTING PURPOSES
+          console.log(url)
+          return response.json()
+        })
+        .then(function (jobJSON) {
+          if (jobJSON['$undefined'] === true) {
+            console.log('No results fetched.')
+          } else {
+            console.log('Results fetched...')
+            if (jobJSON.length !== 0) {
+              console.log('Search results found: ' + jobJSON.length)
+              document.getElementById('resultsFound').innerHTML =
+                jobJSON.length + ' jobs found.'
+              jobs = jobJSON
+              jobText = buildJobList(0)
+            } else {
+              jobText += `<center><h3>No results.</h3></center>`
+              jobText += `<center><p>Please try again.</p></center>`
+            }
+          }
+          document.getElementById('results').innerHTML = jobText
+        })
+        .catch(function (error) {
+          console.log('Error: ', error)
+        })
+    }
   }
 
   // Iterates through the passed jobs JSON file and builds individual job cards, appending them to jobText and organises them into pages
@@ -206,67 +269,69 @@
 
     for (i; i < resultsMax; i++) {
       jobText += `
-                <div class="modal fade" id="thanksModal" tabindex="-1" aria-labelledby="thanksModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="thanksModalLabel">Thank you for reporting.</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        If we find this content is inappropriate, we will remove it.
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                    </div>
-                </div>
-                </div>
+                  <div class="modal fade" id="thanksModal" tabindex="-1" aria-labelledby="thanksModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="thanksModalLabel">Thank you for reporting.</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          If we find this content is inappropriate, we will remove it.
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      </div>
+                      </div>
+                  </div>
+                  </div>
 
-            <div class="modal fade" id="modal${[
-              i,
-            ]}" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content ">
-                    <div class="modal-header">
-                        <div class="fw-lighter" id="job-title"><p></p></div>
-                        <h5 class="modal-title" id="applyModalLabel"><div class="fw-lighter fs-6">${
-                          jobs[i].company
-                        }</div> ${jobs[i].jobTitle}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            ${jobs[i].summary}
-                        </p>
-                        <div class="fw-light">Is this content inappropriate? <a onclick="report('A user', '${
-                          jobs[i]._id.$oid
-                        }, ${jobs[i].jobTitle}, ${jobs[i].company}, ${
+              <div class="modal fade" id="modal${[
+                i,
+              ]}" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                  <div class="modal-content ">
+                      <div class="modal-header">
+                          <div class="fw-lighter" id="job-title"><p></p></div>
+                          <h5 class="modal-title" id="applyModalLabel"><div class="fw-lighter fs-6">${
+                            jobs[i].company
+                          }</div> ${jobs[i].jobTitle}</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          <p>
+                              ${jobs[i].summary}
+                          </p>
+                          <div class="fw-light">Is this content inappropriate? <a onclick="report('A user', '${
+                            jobs[i]._id.$oid
+                          }, ${jobs[i].jobTitle}, ${jobs[i].company}, ${
         jobs[i].summary
       }: ${
         jobs[i].link
       }')" href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#thanksModal">Report</a></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-primary">♡</button>
-                        <a href="${
-                          jobs[i].link
-                        }"><button type="button" class="btn btn-primary">Apply</button></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div style="padding-top: 20px">
-          <ol class="list-group list-group mx-auto" style="max-width: 55%">
-            <li class="list-group-item d-flex justify-content-between align-items-start">
-              <div class="ms-2 me-auto" style="max-width: 70%;">
-                <div class="fs-6">${jobs[i].location}</div>
-                <div class="fw-lighter" id="job-title">${jobs[i].company}</div>
-                  <div class="fs-5">${jobs[i].jobTitle}</div>
-                  <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${
-                    jobs[i].summary
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-outline-primary">♡</button>
+                          <a href="${
+                            jobs[i].link
+                          }"><button type="button" class="btn btn-primary">Apply</button></a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div style="padding-top: 20px">
+            <ol class="list-group list-group mx-auto" style="max-width: 55%">
+              <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto" style="max-width: 70%;">
+                  <div class="fs-6">${jobs[i].location}</div>
+                  <div class="fw-lighter" id="job-title">${
+                    jobs[i].company
                   }</div>
-                  `
+                    <div class="fs-5">${jobs[i].jobTitle}</div>
+                    <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${
+                      jobs[i].summary
+                    }</div>
+                    `
 
       // Assigns each job tags if keywords found in tagDirectory can be matched job's against title & summary
       for (let tagIndex = 0; tagIndex < tagDirectory.length; tagIndex++) {
@@ -276,22 +341,22 @@
           ).includes(tagDirectory[tagIndex].toLowerCase())
         ) {
           jobText += `
-        <span class="badge rounded-pill bg-primary">${tagDirectory[tagIndex]}</span> `
+          <span class="badge rounded-pill bg-primary">${tagDirectory[tagIndex]}</span> `
         }
       }
 
       jobText += `
-              </div>
-                <div class="mx-2 my-auto">
-                  <button type="button" class="btn btn-outline-primary">♡</button>
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                  data-bs-target="#modal${[i]}">Apply</button>
                 </div>
-              </div>
-            </li>
-          </ol>
-        </div>
-        `
+                  <div class="mx-2 my-auto">
+                    <button type="button" class="btn btn-outline-primary">♡</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#modal${[i]}">Apply</button>
+                  </div>
+                </div>
+              </li>
+            </ol>
+          </div>
+          `
     }
     document.getElementById('results').innerHTML = jobText
     return jobText
