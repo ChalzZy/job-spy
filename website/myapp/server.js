@@ -52,7 +52,7 @@ app.get('/data', function (req, res) {
   })
 
   // report/email funtionality
-  var email = process.env.EMAIL;
+  var email = 'jobspyreport@gmail.com';
 
   var transporter = nodemailer.createTransport({
     service: 'Gmail',
