@@ -42,6 +42,7 @@
         </button>
       </form>
     </div>
+    <div>City: <span id="city"></span>
   </main>
 </div>
 <div class="cover-container d-flex mx-auto flex-column text-center">
@@ -65,6 +66,18 @@
     event.preventDefault()
   }
   form.addEventListener('submit', handleForm)
+
+  var city = document.getElementById('city')
+
+  function callback(data) {
+    city.innerHTML = data.city
+  }
+
+  var script = document.createElement('script')
+  script.type = 'text/javascript'
+  script.src = 'https://geolocation-db.com/jsonp'
+  var h = document.getElementsByTagName('script')[0]
+  h.parentNode.insertBefore(script, h)
 
   // Collects users terms from the search bar and drop-down menu's and returns a job list
   function userAction() {
@@ -121,6 +134,7 @@
       */
 
     if (locationSelectionText == 'Detect My Location') {
+      console.log(daCity)
       console.log('pre .then: ' + locationSelectionText)
       fetchedCity.then(function (result) {
         locationSelectionText = result
@@ -157,7 +171,7 @@
     doTheMainStuff()
 
     async function doTheMainStuff() {
-      const waitFirst = await fetch(fetchedCity)
+      //const waitFirst = await fetch(fetchedCity)
 
       fetch(url)
         .then(function (response) {
