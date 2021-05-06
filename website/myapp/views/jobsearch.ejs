@@ -18,7 +18,7 @@
           id="location-selection"
         >
           <option selected>All Locations</option>
-          <option value="0">Detect My Location</option>
+          <option value="0">Your Location</option>
           <option value="1">Auckland</option>
           <option value="2">Wellington</option>
           <option value="3">Christchurch</option>
@@ -42,12 +42,12 @@
         </button>
       </form>
     </div>
-    <div>City: <span id="city"></span>
   </main>
 </div>
 <div class="cover-container d-flex mx-auto flex-column text-center">
   <p id="resultsFound" class="text-muted"></p>
 </div>
+<div id="locationError"></div>
 <div id="results" class=""></div>
 <div class="cover-container d-flex h-100 p-5 mx-auto flex-column text-center">
   <div id="pages"></div>
@@ -67,18 +67,6 @@
   }
   form.addEventListener('submit', handleForm)
 
-  var city = document.getElementById('city')
-
-  function callback(data) {
-    city.innerHTML = data.city
-  }
-
-  var script = document.createElement('script')
-  script.type = 'text/javascript'
-  script.src = 'https://geolocation-db.com/jsonp'
-  var h = document.getElementsByTagName('script')[0]
-  h.parentNode.insertBefore(script, h)
-
   // Collects users terms from the search bar and drop-down menu's and returns a job list
   function userAction() {
     let searchString = document.getElementById('userInput').value
@@ -88,36 +76,14 @@
     let locationSelectionText =
       locationSelection.options[locationSelection.selectedIndex].text
 
-    let city = ''
-    //let cityName = ''
-
-    /*
-      fetch('https://geolocation-db.com/json/')
-        .then(function (res) {
-          if (!res.ok) {
-            throw Error(res.statusText)
-          }
-          return res.json()
-        })
-        .then(function (locationData) {
-          let cityName = locationData.city
-          return cityName
-        })
-        .then((data) => (city = data))
-      */
-
-    let obj
-    /*
-      let fetchedCity = fetch('https://geolocation-db.com/json/')
-        .then((res) => res.json())
-        .then(function (dataG) {
-          return dataG.city
-        })
-  */
+    // Fetches users location data and returns the city name
     let fetchedCity = fetch('https://geolocation-db.com/json/')
       .then(function (res) {
         if (!res.ok) {
           throw Error(res.statusText)
+          return 'Unable to find your location'
+          document.getElementById('locationError').innerHTML =
+            'Unable to find your location'
         }
         return res.json()
       })
@@ -126,19 +92,9 @@
         return cityName
       })
 
-    /*
-      fetch('https://geolocation-db.com/json/')
-        .then((res) => res.json())
-        .then((data) => (obj = data))
-        .then(() => console.log(obj.city))
-      */
-
-    if (locationSelectionText == 'Detect My Location') {
-      console.log(daCity)
-      console.log('pre .then: ' + locationSelectionText)
+    if (locationSelectionText == 'Your Location') {
       fetchedCity.then(function (result) {
         locationSelectionText = result
-        console.log('locationSelectionText: ' + locationSelectionText)
       })
     }
 
@@ -154,24 +110,26 @@
     }
 
     let jobText = ''
-    let webhook_url =
-      'https://ap-southeast-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/jobsearchapp-wfuox/service/jobs/incoming_webhook/getJobs'
 
-    // Appends the relevant search terms to the webhook to access search data
-    let url =
-      webhook_url +
-      '?arg=' +
-      searchString +
-      '&location=' +
-      locationSelectionText +
-      '&category=' +
-      categorySelectionText
+    // Build search URL + call the buildJobList method on JSON results if they are valid and displays jobs via 'results'
+    generateSearchResults()
 
-    // Call the buildJobList method on JSON results if they are valid and displays jobs via 'results'
-    doTheMainStuff()
+    async function generateSearchResults() {
+      // Makes sure city data is fetched prior to commencing method
+      const cityDelay = await fetch('https://geolocation-db.com/json/')
 
-    async function doTheMainStuff() {
-      //const waitFirst = await fetch(fetchedCity)
+      let webhook_url =
+        'https://ap-southeast-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/jobsearchapp-wfuox/service/jobs/incoming_webhook/getJobs'
+
+      // Appends the relevant search terms to the webhook to access search data
+      let url =
+        webhook_url +
+        '?arg=' +
+        searchString +
+        '&location=' +
+        locationSelectionText +
+        '&category=' +
+        categorySelectionText
 
       fetch(url)
         .then(function (response) {
@@ -183,8 +141,6 @@
             document.getElementById('results').innerHTML = jobText
             throw Error(response.statusText)
           }
-          // FOR TESTING PURPOSES
-          console.log(url)
           return response.json()
         })
         .then(function (jobJSON) {
