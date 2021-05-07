@@ -41,7 +41,13 @@
   </div>
 
   <script>
+    //Manages job listings
     let jobs = ''
+    let searchString = ''
+    let defaultPage = 0
+
+    //Checks URL for search terms
+    checkURL()
 
     document
       .getElementById('searchBar')
@@ -58,9 +64,10 @@
     function userAction() {
       document.getElementById('pages').innerHTML = ''
       document.getElementById('resultsFound').innerHTML = ''
-      let searchString = document.getElementById('userInput').value
+      //searchString = document.getElementById('userInput').value
       let locationSelection = document.getElementById('location-selection')
       let categorySelection = document.getElementById('category-selection')
+      let searchString = document.getElementById('userInput').value
 
       let locationSelectionText =
         locationSelection.options[locationSelection.selectedIndex].text
@@ -139,14 +146,14 @@
               console.log('Results fetched...')
               if (jobJSON.length !== 0) {
                 jobText = ' jobs found.'
-                if(jobJSON.length == 1){
+                if (jobJSON.length == 1) {
                   jobText = ' job found.'
                 }
                 console.log('Search results found: ' + jobJSON.length)
                 document.getElementById('resultsFound').innerHTML =
                   jobJSON.length + jobText
                 jobs = jobJSON
-                jobText = buildJobList(0)
+                jobText = buildJobList(defaultPage)
               } else {
                 jobText += `<center><h3>No results.</h3></center>`
                 jobText += `<center><p>Please try again.</p></center>`
@@ -162,6 +169,7 @@
 
     // Iterates through the passed jobs JSON file and builds individual job cards, appending them to jobText and organises them into pages
     function buildJobList(currentPage) {
+      setURL(document.getElementById('userInput').value, currentPage)
       document.body.scrollTop = 0
       document.documentElement.scrollTop = 0
 
@@ -337,6 +345,33 @@
       }
       const response = await fetch('/report', options)
     }
+
+    //Maintains URL
+    function setURL(search, page) {
+      page += 1
+      const urlParams = new URLSearchParams('?search=' + search + '&page=' + page);
+      window.history.replaceState(null, null, window.location.pathname + '?' + urlParams);
+    }
+
+    function checkURL() {
+      const urlParams = new URLSearchParams(location.search);
+
+      for (const [key, value] of urlParams) {
+        console.log(`${key}:${value}`);
+      }
+
+      if(urlParams.has('search')){
+        if(urlParams.has('page')){
+          pageNo = urlParams.get('page') - 1
+          defaultPage = pageNo
+        }
+        document.getElementById('userInput').value = urlParams.get('search')
+        userAction()
+      }
+
+    }
+
+
   </script>
 
   <%- include('partials/footer'); -%>
