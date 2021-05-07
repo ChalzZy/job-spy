@@ -9,20 +9,20 @@
           <select class="form-select form-select-sm me-2" style="width: auto" aria-label=".form-select-sm"
             id="location-selection">
             <option selected>All Locations</option>
-            <option value="0">Your Location</option>
-            <option value="1">Auckland</option>
-            <option value="2">Wellington</option>
-            <option value="3">Christchurch</option>
-            <option value="4">Dunedin</option>
+            <option value="Your Location">Your Location</option>
+            <option value="Auckland">Auckland</option>
+            <option value="Wellington">Wellington</option>
+            <option value="Christchurch">Christchurch</option>
+            <option value="Dunedin">Dunedin</option>
           </select>
 
           <select class="form-select form-select-sm me-2" style="width: auto" aria-label=".form-select-sm"
             id="category-selection">
             <option selected>All Categories</option>
-            <option value="1">Junior</option>
-            <option value="2">Intermediate</option>
-            <option value="3">Senior</option>
-            <option value="4">Internship</option>
+            <option value="Junior">Junior</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Seior">Senior</option>
+            <option value="Internship">Internship</option>
           </select>
           <button class="btn btn-primary" type="submit" id="searchButton">
             Search
@@ -44,6 +44,8 @@
     //Manages job listings
     let jobs = ''
     let searchString = ''
+    let locationSelection = ''
+    let categorySelection = ''
     let defaultPage = 0
 
     //Checks URL for search terms
@@ -65,9 +67,9 @@
       document.getElementById('pages').innerHTML = ''
       document.getElementById('resultsFound').innerHTML = ''
       //searchString = document.getElementById('userInput').value
-      let locationSelection = document.getElementById('location-selection')
-      let categorySelection = document.getElementById('category-selection')
-      let searchString = document.getElementById('userInput').value
+      locationSelection = document.getElementById('location-selection')
+      categorySelection = document.getElementById('category-selection')
+      searchString = document.getElementById('userInput').value
 
       let locationSelectionText =
         locationSelection.options[locationSelection.selectedIndex].text
@@ -169,7 +171,7 @@
 
     // Iterates through the passed jobs JSON file and builds individual job cards, appending them to jobText and organises them into pages
     function buildJobList(currentPage) {
-      setURL(document.getElementById('userInput').value, currentPage)
+      setURL(searchString, currentPage, locationSelection.options[locationSelection.selectedIndex].text, categorySelection.options[categorySelection.selectedIndex].text)
       document.body.scrollTop = 0
       document.documentElement.scrollTop = 0
 
@@ -347,10 +349,14 @@
     }
 
     //Maintains URL
-    function setURL(search, page) {
+    function setURL(search, page, location, category) {
       page += 1
-      const urlParams = new URLSearchParams('?search=' + search + '&page=' + page);
+      const urlParams = new URLSearchParams('?search=' + search + '&page=' + page + '&location=' + location + '&category=' + category);
       window.history.replaceState(null, null, window.location.pathname + '?' + urlParams);
+
+      for (const [key, value] of urlParams) {
+        console.log(`${key}:${value}`);
+      }
     }
 
     function checkURL() {
@@ -364,6 +370,14 @@
         if(urlParams.has('page')){
           pageNo = urlParams.get('page') - 1
           defaultPage = pageNo
+        }
+        if(urlParams.has('location')){
+          document.getElementById('location-selection').value = urlParams.get('location')
+         
+          
+        }
+        if(urlParams.has('category')){
+          document.getElementById('category-selection').value = urlParams.get('category')
         }
         document.getElementById('userInput').value = urlParams.get('search')
         userAction()
