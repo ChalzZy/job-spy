@@ -1,237 +1,253 @@
 <%- include('partials/header'); -%>
 
-  <div class="cover-container d-flex h-100 p-5 mx-auto flex-column text-center">
-    <main role="main" class="inner cover">
-      <div class="input-group rounded">
-        <form class="d-flex mx-auto" id="searchBar">
-          <input class="form-control me-2" id="userInput" autocomplete="off" placeholder="Search for a job"
-            aria-label="Search" />
-          <select class="form-select form-select-sm me-2" style="width: auto" aria-label=".form-select-sm"
-            id="location-selection">
-            <option selected>All Locations</option>
-            <option value="0">Your Location</option>
-            <option value="1">Auckland</option>
-            <option value="2">Wellington</option>
-            <option value="3">Christchurch</option>
-            <option value="4">Dunedin</option>
-          </select>
+<div class="cover-container d-flex h-100 p-5 mx-auto flex-column text-center">
+  <main role="main" class="inner cover">
+    <div class="input-group rounded">
+      <form class="d-flex mx-auto" id="searchBar">
+        <input
+          class="form-control me-2"
+          id="userInput"
+          autocomplete="off"
+          placeholder="Search for a job"
+          aria-label="Search"
+        />
+        <select
+          class="form-select form-select-sm me-2"
+          style="width: auto"
+          aria-label=".form-select-sm"
+          id="location-selection"
+        >
+          <option selected>All Locations</option>
+          <option value="0">Your Location</option>
+          <option value="1">Auckland</option>
+          <option value="2">Wellington</option>
+          <option value="3">Christchurch</option>
+          <option value="4">Dunedin</option>
+        </select>
 
-          <select class="form-select form-select-sm me-2" style="width: auto" aria-label=".form-select-sm"
-            id="category-selection">
-            <option selected>All Categories</option>
-            <option value="1">Junior</option>
-            <option value="2">Intermediate</option>
-            <option value="3">Senior</option>
-            <option value="4">Internship</option>
-          </select>
-          <button class="btn btn-primary" type="submit" id="searchButton">
-            Search
-          </button>
-        </form>
-      </div>
-    </main>
-  </div>
-  <div class="cover-container d-flex mx-auto flex-column text-center">
-    <p id="resultsFound" class="text-muted"></p>
-  </div>
-  <div id="locationError"></div>
-  <div id="results" class=""></div>
-  <div class="cover-container d-flex h-100 p-5 mx-auto flex-column text-center">
-    <div id="pages"></div>
-  </div>
+        <select
+          class="form-select form-select-sm me-2"
+          style="width: auto"
+          aria-label=".form-select-sm"
+          id="category-selection"
+        >
+          <option selected>All Categories</option>
+          <option value="1">Junior</option>
+          <option value="2">Intermediate</option>
+          <option value="3">Senior</option>
+          <option value="4">Internship</option>
+        </select>
+        <button class="btn btn-primary" type="submit" id="searchButton">
+          Search
+        </button>
+      </form>
+    </div>
+  </main>
+  <div id="locationDisplay"></div>
+</div>
+<div class="cover-container d-flex mx-auto flex-column text-center">
+  <p id="resultsFound" class="text-muted"></p>
+</div>
+<div id="results" class=""></div>
+<div class="cover-container d-flex h-100 p-5 mx-auto flex-column text-center">
+  <div id="pages"></div>
+</div>
 
-  <script>
-    let jobs = ''
+<script>
+  let jobs = ''
 
-    document
-      .getElementById('searchBar')
-      .addEventListener('submit', userAction, false)
+  document
+    .getElementById('searchBar')
+    .addEventListener('submit', userAction, false)
 
-    // Prevents page from reloading upon form submission
-    let form = document.getElementById('searchBar')
-    function handleForm(event) {
-      event.preventDefault()
+  // Prevents page from reloading upon form submission
+  let form = document.getElementById('searchBar')
+  function handleForm(event) {
+    event.preventDefault()
+  }
+  form.addEventListener('submit', handleForm)
+
+  // Collects users terms from the search bar and drop-down menu's and returns a job list
+  function userAction() {
+    document.getElementById('pages').innerHTML = ''
+    document.getElementById('resultsFound').innerHTML = ''
+    let searchString = document.getElementById('userInput').value
+    let locationSelection = document.getElementById('location-selection')
+    let categorySelection = document.getElementById('category-selection')
+
+    let locationSelectionText =
+      locationSelection.options[locationSelection.selectedIndex].text
+
+    // Fetches users location data and returns the city name
+    let fetchedCity = fetch('https://geolocation-db.com/json/')
+      .then(function (res) {
+        if (!res.ok) {
+          throw Error(res.statusText)
+          console.log(res)
+          return 'Unable to find your location'
+          document.getElementById('locationDisplay').innerHTML =
+            'Unable to find your location'
+        }
+        return res.json()
+      })
+      .then(function (locationData) {
+        let cityName = locationData.city
+        return cityName
+      })
+
+    if (locationSelectionText == 'Your Location') {
+      fetchedCity.then(function (result) {
+        locationSelectionText = result
+        document.getElementById('locationDisplay').innerHTML =
+          'Detected Location: ' + result
+      })
     }
-    form.addEventListener('submit', handleForm)
 
-    // Collects users terms from the search bar and drop-down menu's and returns a job list
-    function userAction() {
-      document.getElementById('pages').innerHTML = ''
-      document.getElementById('resultsFound').innerHTML = ''
-      let searchString = document.getElementById('userInput').value
-      let locationSelection = document.getElementById('location-selection')
-      let categorySelection = document.getElementById('category-selection')
+    if (locationSelectionText == 'All Locations') {
+      locationSelectionText = ''
+    }
 
-      let locationSelectionText =
-        locationSelection.options[locationSelection.selectedIndex].text
+    let categorySelectionText =
+      categorySelection.options[categorySelection.selectedIndex].text
 
-      // Fetches users location data and returns the city name
-      let fetchedCity = fetch('https://geolocation-db.com/json/')
-        .then(function (res) {
-          if (!res.ok) {
-            throw Error(res.statusText)
-            return 'Unable to find your location'
-            document.getElementById('locationError').innerHTML =
-              'Unable to find your location'
-          }
-          return res.json()
-        })
-        .then(function (locationData) {
-          let cityName = locationData.city
-          return cityName
-        })
+    if (categorySelectionText == 'All Categories') {
+      categorySelectionText = ''
+    }
 
-      if (locationSelectionText == 'Your Location') {
-        fetchedCity.then(function (result) {
-          locationSelectionText = result
-        })
-      }
+    let jobText = ''
 
-      if (locationSelectionText == 'All Locations') {
-        locationSelectionText = ''
-      }
+    // Build search URL + call the buildJobList method on JSON results if they are valid and displays jobs via 'results'
+    generateSearchResults()
 
-      let categorySelectionText =
-        categorySelection.options[categorySelection.selectedIndex].text
+    async function generateSearchResults() {
+      // Makes sure city data is fetched prior to commencing method
+      const cityDelay = await fetch('https://geolocation-db.com/json/')
 
-      if (categorySelectionText == 'All Categories') {
-        categorySelectionText = ''
-      }
+      let webhook_url =
+        'https://ap-southeast-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/jobsearchapp-wfuox/service/jobs/incoming_webhook/getJobs'
 
-      let jobText = ''
+      // Appends the relevant search terms to the webhook to access search data
+      let url =
+        webhook_url +
+        '?arg=' +
+        searchString +
+        '&location=' +
+        locationSelectionText +
+        '&category=' +
+        categorySelectionText
 
-      // Build search URL + call the buildJobList method on JSON results if they are valid and displays jobs via 'results'
-      generateSearchResults()
-
-      async function generateSearchResults() {
-        // Makes sure city data is fetched prior to commencing method
-        const cityDelay = await fetch('https://geolocation-db.com/json/')
-
-        let webhook_url =
-          'https://ap-southeast-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/jobsearchapp-wfuox/service/jobs/incoming_webhook/getJobs'
-
-        // Appends the relevant search terms to the webhook to access search data
-        let url =
-          webhook_url +
-          '?arg=' +
-          searchString +
-          '&location=' +
-          locationSelectionText +
-          '&category=' +
-          categorySelectionText
-
-        fetch(url)
-          .then(function (response) {
-            if (!response.ok) {
-              console.log(response)
-              jobText += `<center><h3>Status: ${response.status}</h3></center>`
-              if (response.json.length === 0)
-                jobText += `<center><p>Please enter a search term.</p></center>`
-              document.getElementById('results').innerHTML = jobText
-              throw Error(response.statusText)
-            }
-            return response.json()
-          })
-          .then(function (jobJSON) {
-            if (jobJSON['$undefined'] === true) {
-              console.log('No results fetched.')
-            } else {
-              console.log('Results fetched...')
-              if (jobJSON.length !== 0) {
-                jobText = ' jobs found.'
-                if(jobJSON.length == 1){
-                  jobText = ' job found.'
-                }
-                console.log('Search results found: ' + jobJSON.length)
-                document.getElementById('resultsFound').innerHTML =
-                  jobJSON.length + jobText
-                jobs = jobJSON
-                jobText = buildJobList(0)
-              } else {
-                jobText += `<center><h3>No results.</h3></center>`
-                jobText += `<center><p>Please try again.</p></center>`
-              }
-            }
+      fetch(url)
+        .then(function (response) {
+          if (!response.ok) {
+            console.log(response)
+            jobText += `<center><h3>Status: ${response.status}</h3></center>`
+            if (response.json.length === 0)
+              jobText += `<center><p>Please enter a search term.</p></center>`
             document.getElementById('results').innerHTML = jobText
-          })
-          .catch(function (error) {
-            console.log('Error: ', error)
-          })
+            throw Error(response.statusText)
+          }
+          return response.json()
+        })
+        .then(function (jobJSON) {
+          if (jobJSON['$undefined'] === true) {
+            console.log('No results fetched.')
+          } else {
+            console.log('Results fetched...')
+            if (jobJSON.length !== 0) {
+              jobText = ' jobs found.'
+              if (jobJSON.length == 1) {
+                jobText = ' job found.'
+              }
+              console.log('Search results found: ' + jobJSON.length)
+              document.getElementById('resultsFound').innerHTML =
+                jobJSON.length + jobText
+              jobs = jobJSON
+              jobText = buildJobList(0)
+            } else {
+              jobText += `<center><h3>No results.</h3></center>`
+              jobText += `<center><p>Please try again.</p></center>`
+            }
+          }
+          document.getElementById('results').innerHTML = jobText
+        })
+        .catch(function (error) {
+          console.log('Error: ', error)
+        })
+    }
+  }
+
+  // Iterates through the passed jobs JSON file and builds individual job cards, appending them to jobText and organises them into pages
+  function buildJobList(currentPage) {
+    document.body.scrollTop = 0
+    document.documentElement.scrollTop = 0
+
+    let results = 10
+    let resultsMax = jobs.length
+
+    let pages = Math.floor(jobs.length / results)
+    let remainder = jobs.length % results
+
+    let i = currentPage * 10
+    if (jobs.length >= 10) {
+      resultsMax = i + results
+    }
+    if (remainder != 0 && pages != 0) {
+      pages += 1
+      if (currentPage == pages - 1) {
+        resultsMax = i + remainder
       }
     }
 
-    // Iterates through the passed jobs JSON file and builds individual job cards, appending them to jobText and organises them into pages
-    function buildJobList(currentPage) {
-      document.body.scrollTop = 0
-      document.documentElement.scrollTop = 0
+    let j = 0
 
-      let results = 10
-      let resultsMax = jobs.length
+    let jobText = ''
+    document.getElementById('pages').innerHTML = ''
 
-      let pages = Math.floor(jobs.length / results)
-      let remainder = jobs.length % results
+    // List of tags which will be applied to each job listing if they contain the matching keyword
+    let tagDirectory = [
+      '.NET',
+      'JavaScript',
+      'React',
+      'Frontend',
+      'Angular',
+      'Backend',
+      'C#',
+      'AWS',
+      'Azure',
+      'Front End',
+      'Full Stack',
+      'Fullstack',
+      'Junior',
+      'Intern',
+      'Internship',
+      'TypeScript',
+      'Senior',
+      'Intermediate',
+      'Python',
+      'Graduate',
+      'Mobile',
+      'iOS',
+      'Android',
+    ]
 
-      let i = currentPage * 10
-      if (jobs.length >= 10) {
-        resultsMax = i + results
+    for (j; j < pages; j++) {
+      if (j == currentPage) {
+        document.getElementById(
+          'pages'
+        ).innerHTML += `<button type="button" class="btn btn-primary me-md-1" disabled>${[
+          j + 1,
+        ]}</button>`
+      } else {
+        document.getElementById(
+          'pages'
+        ).innerHTML += `<button type="button" class="btn btn-primary me-md-1" onclick="buildJobList(${[
+          j,
+        ]})">${[j + 1]}</button>`
       }
-      if (remainder != 0 && pages != 0) {
-        pages += 1
-        if (currentPage == pages - 1) {
-          resultsMax = i + remainder
-        }
-      }
+    }
 
-      let j = 0
-
-      let jobText = ''
-      document.getElementById('pages').innerHTML = ''
-
-      // List of tags which will be applied to each job listing if they contain the matching keyword
-      let tagDirectory = [
-        '.NET',
-        'JavaScript',
-        'React',
-        'Frontend',
-        'Angular',
-        'Backend',
-        'C#',
-        'AWS',
-        'Azure',
-        'Front End',
-        'Full Stack',
-        'Fullstack',
-        'Junior',
-        'Intern',
-        'Internship',
-        'TypeScript',
-        'Senior',
-        'Intermediate',
-        'Python',
-        'Graduate',
-        'Mobile',
-        'iOS',
-        'Android',
-      ]
-
-      for (j; j < pages; j++) {
-        if (j == currentPage) {
-          document.getElementById(
-            'pages'
-          ).innerHTML += `<button type="button" class="btn btn-primary me-md-1" disabled>${[
-            j + 1,
-          ]}</button>`
-        } else {
-          document.getElementById(
-            'pages'
-          ).innerHTML += `<button type="button" class="btn btn-primary me-md-1" onclick="buildJobList(${[
-            j,
-          ]})">${[j + 1]}</button>`
-        }
-      }
-
-      for (i; i < resultsMax; i++) {
-        jobText += `
+    for (i; i < resultsMax; i++) {
+      jobText += `
                   <div class="modal fade" id="thanksModal" tabindex="-1" aria-labelledby="thanksModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
                       <div class="modal-content">
@@ -250,29 +266,34 @@
                   </div>
 
               <div class="modal fade" id="modal${[
-            i,
-          ]}" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
+                i,
+              ]}" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                   <div class="modal-content ">
                       <div class="modal-header">
                           <div class="fw-lighter" id="job-title"><p></p></div>
-                          <h5 class="modal-title" id="applyModalLabel"><div class="fw-lighter fs-6">${jobs[i].company
-          }</div> ${jobs[i].jobTitle}</h5>
+                          <h5 class="modal-title" id="applyModalLabel"><div class="fw-lighter fs-6">${
+                            jobs[i].company
+                          }</div> ${jobs[i].jobTitle}</h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
                           <p>
                               ${jobs[i].summary}
                           </p>
-                          <div class="fw-light">Is this content inappropriate? <a onclick="report('A user', '${jobs[i]._id.$oid
-          }, ${jobs[i].jobTitle}, ${jobs[i].company}, ${jobs[i].summary
-          }: ${jobs[i].link
-          }')" href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#thanksModal">Report</a></div>
+                          <div class="fw-light">Is this content inappropriate? <a onclick="report('A user', '${
+                            jobs[i]._id.$oid
+                          }, ${jobs[i].jobTitle}, ${jobs[i].company}, ${
+        jobs[i].summary
+      }: ${
+        jobs[i].link
+      }')" href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#thanksModal">Report</a></div>
                       </div>
                       <div class="modal-footer">
                           <button type="button" class="btn btn-outline-primary">♡</button>
-                          <a href="${jobs[i].link
-          }"><button type="button" class="btn btn-primary">Apply</button></a>
+                          <a href="${
+                            jobs[i].link
+                          }"><button type="button" class="btn btn-primary">Apply</button></a>
                       </div>
                   </div>
               </div>
@@ -282,26 +303,28 @@
               <li class="list-group-item d-flex justify-content-between align-items-start">
                 <div class="ms-2 me-auto" style="max-width: 70%;">
                   <div class="fs-6">${jobs[i].location}</div>
-                  <div class="fw-lighter" id="job-title">${jobs[i].company
-          }</div>
+                  <div class="fw-lighter" id="job-title">${
+                    jobs[i].company
+                  }</div>
                     <div class="fs-5">${jobs[i].jobTitle}</div>
-                    <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${jobs[i].summary
-          }</div>
+                    <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${
+                      jobs[i].summary
+                    }</div>
                     `
 
-        // Assigns each job tags if keywords found in tagDirectory can be matched job's against title & summary
-        for (let tagIndex = 0; tagIndex < tagDirectory.length; tagIndex++) {
-          if (
-            (
-              jobs[i].jobTitle.toLowerCase() || jobs[i].summary.toLowerCase()
-            ).includes(tagDirectory[tagIndex].toLowerCase())
-          ) {
-            jobText += `
+      // Assigns each job tags if keywords found in tagDirectory can be matched job's against title & summary
+      for (let tagIndex = 0; tagIndex < tagDirectory.length; tagIndex++) {
+        if (
+          (
+            jobs[i].jobTitle.toLowerCase() || jobs[i].summary.toLowerCase()
+          ).includes(tagDirectory[tagIndex].toLowerCase())
+        ) {
+          jobText += `
           <span class="badge rounded-pill bg-primary">${tagDirectory[tagIndex]}</span> `
-          }
         }
+      }
 
-        jobText += `
+      jobText += `
                 </div>
                   <div class="mx-2 my-auto">
                     <button type="button" class="btn btn-outline-primary">♡</button>
@@ -313,30 +336,30 @@
             </ol>
           </div>
           `
-      }
-      document.getElementById('results').innerHTML = jobText
-      return jobText
     }
+    document.getElementById('results').innerHTML = jobText
+    return jobText
+  }
 
-    async function promptReport() {
-      let dialogue = ''
+  async function promptReport() {
+    let dialogue = ''
+  }
+
+  /**
+   * Send POST request to server with report data
+   */
+  async function report(user, url) {
+    const data = { user, url }
+    console.log(url)
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
     }
+    const response = await fetch('/report', options)
+  }
+</script>
 
-    /**
-     * Send POST request to server with report data
-     */
-    async function report(user, url) {
-      const data = { user, url }
-      console.log(url)
-      const options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      }
-      const response = await fetch('/report', options)
-    }
-  </script>
-
-  <%- include('partials/footer'); -%>
+<%- include('partials/footer'); -%>
