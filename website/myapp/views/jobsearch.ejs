@@ -48,7 +48,7 @@
     let categorySelection = ''
     let defaultPage = 0
 
-    //Checks URL for search terms
+    //Checks URL for search terms and reloads the page with search terms if any
     checkURL()
 
     document
@@ -66,7 +66,6 @@
     function userAction() {
       document.getElementById('pages').innerHTML = ''
       document.getElementById('resultsFound').innerHTML = ''
-      //searchString = document.getElementById('userInput').value
       locationSelection = document.getElementById('location-selection')
       categorySelection = document.getElementById('category-selection')
       searchString = document.getElementById('userInput').value
