@@ -1,33 +1,110 @@
 <%- include('partials/header'); -%>
 
-<body>
-  <div
-    class="cover-container d-flex h-100 p-5 mx-auto flex-column text-center m-5"
-  >
-    <main role="main" class="inner cover">
-      <h1 class="cover-heading">Find all the junior software jobs.</h1>
-      <p class="lead">JobSpy will help you find a junior job etc.</p>
-      <div class="input-group rounded">
-        <form class="d-flex mx-auto">
-          <input
-            class="form-control me-2"
-            type="search"
-            placeholder="Search for a job"
-            aria-label="Search"
-          />
-          <button class="btn btn-primary" type="submit">Search</button>
-        </form>
-      </div>
-    </main>
-  </div>
-  <div class="recent-job-list" data-url="/data" style="padding-bottom: 30px">
-    <p class="lead text-center">Recent Job Listings:</p>
-    <ol class="list-group list-group w-50 mx-auto">
-      <div id="results" class=""></div>
-    </ol>
-  </div>
-  <script>
-    {
+  <body>
+    <div class="cover-container d-flex h-100 p-5 mx-auto flex-column text-center m-5">
+      <main role="main" class="inner cover">
+        <h1 class="cover-heading">Find all the junior software jobs.</h1>
+        <p class="lead">JobSpy will help you find a junior job etc.</p>
+        <div class="input-group rounded">
+          <form class="d-flex mx-auto" id="searchBar">
+            <input class="form-control me-2" id="userInput" autocomplete="off" placeholder="Search for a job"
+              aria-label="Search" />
+            <select class="form-select form-select-sm me-2" style="width: auto" aria-label=".form-select-sm"
+              id="location-selection">
+              <option selected>All Locations</option>
+              <option value="Your Location">Your Location</option>
+              <option value="Auckland">Auckland</option>
+              <option value="Wellington">Wellington</option>
+              <option value="Christchurch">Christchurch</option>
+              <option value="Dunedin">Dunedin</option>
+            </select>
+
+            <select class="form-select form-select-sm me-2" style="width: auto" aria-label=".form-select-sm"
+              id="category-selection">
+              <option selected>All Categories</option>
+              <option value="Junior">Junior</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Seior">Senior</option>
+              <option value="Internship">Internship</option>
+            </select>
+            <button class="btn btn-primary" type="submit" id="searchButton">
+              Search
+            </button>
+          </form>
+        </div>
+      </main>
+    </div>
+    <div class="recent-job-list" data-url="/data" style="padding-bottom: 30px">
+      <p class="lead text-center">Recent Job Listings:</p>
+      <ol class="list-group list-group w-50 mx-auto">
+        <div id="results" class=""></div>
+      </ol>
+    </div>
+    <script>
+      //Manages job listings
+      let jobs = ''
+      let searchString = ''
+      let locationSelection = ''
+      let categorySelection = ''
+      let defaultPage = 0
+
+      document
+        .getElementById('searchBar')
+        .addEventListener('submit', userAction, false)
+
+      // Prevents page from reloading upon form submission
+      let form = document.getElementById('searchBar')
+      function handleForm(event) {
+        event.preventDefault()
+      }
+      form.addEventListener('submit', handleForm)
+
+      // Collects users terms from the search bar and drop-down menu's and returns a job list
+      function userAction() {
+        locationSelection = document.getElementById('location-selection')
+        categorySelection = document.getElementById('category-selection')
+        searchString = document.getElementById('userInput').value
+
+        let locationSelectionText =
+          locationSelection.options[locationSelection.selectedIndex].text
+
+        // Fetches users location data and returns the city name
+        let fetchedCity = fetch('https://geolocation-db.com/json/')
+          .then(function (res) {
+            if (!res.ok) {
+              throw Error(res.statusText)
+              return 'Unable to find your location'
+              document.getElementById('locationError').innerHTML =
+                'Unable to find your location'
+            }
+            return res.json()
+          })
+          .then(function (locationData) {
+            let cityName = locationData.city
+            return cityName
+          })
+
+        if (locationSelectionText == 'Your Location') {
+          fetchedCity.then(function (result) {
+            locationSelectionText = result
+          })
+        }
+
+        if (locationSelectionText == 'All Locations') {
+          locationSelectionText = ''
+        }
+
+        let categorySelectionText =
+          categorySelection.options[categorySelection.selectedIndex].text
+
+        if (categorySelectionText == 'All Categories') {
+          categorySelectionText = ''
+        }
+
+        //Loads search page with given search terms
+        window.location.href = '/jobsearch?search=' + searchString + '&page=1&location=' + locationSelection.options[locationSelection.selectedIndex].text + '&category=' + categorySelection.options[categorySelection.selectedIndex].text;
+      }
+
       /**
        * Populates the job list with most recent jobs from DB
        */
@@ -91,28 +168,23 @@
                 <div class="modal-content ">
                     <div class="modal-header">
                         <div class="fw-lighter" id="job-title"><p></p></div>
-                        <h5 class="modal-title" id="applyModalLabel"><div class="fw-lighter fs-6">${
-                          data[i].company
-                        }</div> ${data[i].jobTitle}</h5>
+                        <h5 class="modal-title" id="applyModalLabel"><div class="fw-lighter fs-6">${data[i].company
+            }</div> ${data[i].jobTitle}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <p>
                             ${data[i].summary}
                         </p>
-                        <div  class="fw-light">Is this content inappropriate? <a onclick="report('A user', '${
-                          data[i]._id
-                        }, ${data[i].jobTitle}, ${data[i].company}, ${
-            data[i].summary
-          }: ${
-            data[i].link
-          }')" href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#thanksModal">Report</a>.</div>
+                        <div  class="fw-light">Is this content inappropriate? <a onclick="report('A user', '${data[i]._id
+            }, ${data[i].jobTitle}, ${data[i].company}, ${data[i].summary
+            }: ${data[i].link
+            }')" href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#thanksModal">Report</a>.</div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-primary">♡</button>
-                        <a href="${
-                          data[i].link
-                        }"><button type="button" class="btn btn-primary">Apply</button></a>
+                        <a href="${data[i].link
+            }"><button type="button" class="btn btn-primary">Apply</button></a>
                     </div>
                 </div>
             </div>
@@ -121,13 +193,11 @@
             <div style="padding-top: 10px">
                 <li class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto" style="max-width: 70%;">
-                        <div class="fw-lighter" id="job-title">${
-                          data[i].company
-                        }</div>
+                        <div class="fw-lighter" id="job-title">${data[i].company
+            }</div>
                         <div class="fs-5">${data[i].jobTitle}</div>
-                        <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${
-                          data[i].summary
-                        }</div> `
+                        <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${data[i].summary
+            }</div> `
 
           // Assigns each job tags if keywords found in tagDirectory can be matched job's against title & summary
           for (let tagIndex = 0; tagIndex < tagDirectory.length; tagIndex++) {
@@ -177,8 +247,8 @@
         }
         const response = await fetch('/report', options)
       }
-    }
-  </script>
 
-  <%- include('partials/footer'); -%>
-</body>
+    </script>
+
+    <%- include('partials/footer'); -%>
+  </body>

@@ -18,11 +18,11 @@
           id="location-selection"
         >
           <option selected>All Locations</option>
-          <option value="0">Your Location</option>
-          <option value="1">Auckland</option>
-          <option value="2">Wellington</option>
-          <option value="3">Christchurch</option>
-          <option value="4">Dunedin</option>
+          <option value="Your Location">Your Location</option>
+          <option value="Auckland">Auckland</option>
+          <option value="Wellington">Wellington</option>
+          <option value="Christchurch">Christchurch</option>
+          <option value="Dunedin">Dunedin</option>
         </select>
 
         <select
@@ -32,10 +32,10 @@
           id="category-selection"
         >
           <option selected>All Categories</option>
-          <option value="1">Junior</option>
-          <option value="2">Intermediate</option>
-          <option value="3">Senior</option>
-          <option value="4">Internship</option>
+          <option value="Junior">Junior</option>
+          <option value="Intermediate">Intermediate</option>
+          <option value="Senior">Senior</option>
+          <option value="Internship">Internship</option>
         </select>
         <button class="btn btn-primary" type="submit" id="searchButton">
           Search
@@ -54,7 +54,15 @@
 </div>
 
 <script>
+  //Manages job listings
   let jobs = ''
+  let searchString = ''
+  let locationSelection = ''
+  let categorySelection = ''
+  let defaultPage = 0
+
+  //Checks URL for search terms and reloads the page with search terms if any
+  checkURL()
 
   document
     .getElementById('searchBar')
@@ -71,9 +79,9 @@
   function userAction() {
     document.getElementById('pages').innerHTML = ''
     document.getElementById('resultsFound').innerHTML = ''
-    let searchString = document.getElementById('userInput').value
-    let locationSelection = document.getElementById('location-selection')
-    let categorySelection = document.getElementById('category-selection')
+    locationSelection = document.getElementById('location-selection')
+    categorySelection = document.getElementById('category-selection')
+    searchString = document.getElementById('userInput').value
 
     let locationSelectionText =
       locationSelection.options[locationSelection.selectedIndex].text
@@ -83,7 +91,6 @@
       .then(function (res) {
         if (!res.ok) {
           throw Error(res.statusText)
-          console.log(res)
           return 'Unable to find your location'
           document.getElementById('locationDisplay').innerHTML =
             'Unable to find your location'
@@ -162,7 +169,7 @@
               document.getElementById('resultsFound').innerHTML =
                 jobJSON.length + jobText
               jobs = jobJSON
-              jobText = buildJobList(0)
+              jobText = buildJobList(defaultPage)
             } else {
               jobText += `<center><h3>No results.</h3></center>`
               jobText += `<center><p>Please try again.</p></center>`
@@ -178,6 +185,12 @@
 
   // Iterates through the passed jobs JSON file and builds individual job cards, appending them to jobText and organises them into pages
   function buildJobList(currentPage) {
+    setURL(
+      searchString,
+      currentPage,
+      locationSelection.options[locationSelection.selectedIndex].text,
+      categorySelection.options[categorySelection.selectedIndex].text
+    )
     document.body.scrollTop = 0
     document.documentElement.scrollTop = 0
 
@@ -359,6 +372,57 @@
       body: JSON.stringify(data),
     }
     const response = await fetch('/report', options)
+  }
+
+  //Maintains URL
+  function setURL(search, page, location, category) {
+    page += 1
+    const urlParams = new URLSearchParams(
+      '?search=' +
+        search +
+        '&page=' +
+        page +
+        '&location=' +
+        location +
+        '&category=' +
+        category
+    )
+    window.history.replaceState(
+      null,
+      null,
+      window.location.pathname + '?' + urlParams
+    )
+
+    for (const [key, value] of urlParams) {
+      console.log(`${key}:${value}`)
+    }
+  }
+
+  function checkURL() {
+    const urlParams = new URLSearchParams(location.search)
+
+    for (const [key, value] of urlParams) {
+      console.log(`${key}:${value}`)
+    }
+
+    if (urlParams.has('search')) {
+      if (urlParams.has('page')) {
+        pageNo = urlParams.get('page') - 1
+        defaultPage = pageNo
+      }
+      if (urlParams.has('location')) {
+        document.getElementById('location-selection').value = urlParams.get(
+          'location'
+        )
+      }
+      if (urlParams.has('category')) {
+        document.getElementById('category-selection').value = urlParams.get(
+          'category'
+        )
+      }
+      document.getElementById('userInput').value = urlParams.get('search')
+      userAction()
+    }
   }
 </script>
 
