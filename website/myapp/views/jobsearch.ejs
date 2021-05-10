@@ -333,7 +333,10 @@
           ).includes(tagDirectory[tagIndex].toLowerCase())
         ) {
           jobText += `
-          <span class="badge rounded-pill bg-primary">${tagDirectory[tagIndex]}</span> `
+          <button style="border-radius: 16px; font-size: 0.9em" type="button" class="btn btn-primary btn-sm py-0" onclick="window.location='${urlBuilder(
+            tagDirectory[tagIndex],
+            0
+          )}';">${tagDirectory[tagIndex]}</button> `
         }
       }
 
@@ -423,6 +426,21 @@
       document.getElementById('userInput').value = urlParams.get('search')
       userAction()
     }
+  }
+
+  function urlBuilder(search) {
+    let urlParams =
+      'jobsearch?search=' +
+      search +
+      '&page=' +
+      1 +
+      '&location=' +
+      document.getElementById('location-selection').value +
+      '&category=' +
+      document.getElementById('category-selection').value
+
+    // TEMP: RETURNING INCLUDES PORT UNTIL HOSTED
+    return 'http://' + window.location.hostname + ':3000/' + urlParams
   }
 </script>
 
