@@ -92,6 +92,7 @@ module.exports.jobsearch_get = (req, res) => {
 
 module.exports.profile_get = (req, res) => {
   const { id, jobTitle, company, summary, salary, locations, time, link} = req.body
+  //find users favourites and send the data to the profile page
   var fav =userFavourites.find({});
   fav.exec(function(err,data){
     if(err) throw err;

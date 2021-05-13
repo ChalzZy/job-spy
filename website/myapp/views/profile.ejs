@@ -112,7 +112,59 @@
                     <article class="card-body mx-auto" style="max-width: 400px;"> 
                     <h4 class="card-title mt-3 text-center pb-3">Favourites</h4>
                         <form>      
-                            <p><%=userdata%></p>
+                            <%if (userdata.length >0 ){ %>
+                            <% userdata.forEach(function(row){ %>
+                                <% if(row.id != null){ %> 
+                                    <div class="modal fade" type="model-number" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                                            <div class="moda l-content ">
+                                                <div class="modal-header">
+                                                    <div class="fw-lighter" id="job-title"><p></p></div>
+                                                    <h5 class="modal-title" id="exampleModalLabel"><div class="fw-lighter fs-6"><%=row.company%></div> <%=row.jobTitle%>/h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>
+                                                        <%=row.summary%>
+                                                    </p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="button-footer">
+                                                    <button type="button" class="btn btn-outline-primary">♡</button>
+                                                    </div>
+                                                    <a href=row.link%></a>><button type="button" class="btn btn-primary">Apply</button></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                <%}%>
+                                <% if(row.id != null){ %> 
+                       
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto" style="max-width: 70%;">
+                                        <div class="fw-lighter" id="job-title"><%= row.company%></div>
+                                        <div class="fs-5"><%=row.jobTitle%></div>
+                                        <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px"><%=row.summary%></div>
+                                        <span class="badge rounded-pill bg-primary">Tag 1</span>
+                                        <span class="badge rounded-pill bg-primary">Tag 2</span>
+                                    </div>
+                                    
+                       
+                               
+                                            <div class="userButton">
+                                            <button type="button1" id="button1"class="btn btn-outline-primary">♡</button>
+                
+                                          </div>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#modal">Apply</button>
+                                
+                                        
+                                </li>
+                                <%}%>
+                                <% })%>
+                                <%}%>
+                            </div>
                         </form>
                     </article>
                 </div> 
