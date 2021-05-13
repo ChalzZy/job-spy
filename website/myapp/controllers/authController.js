@@ -91,24 +91,30 @@ module.exports.jobsearch_get = (req, res) => {
 }
 
 module.exports.profile_get = (req, res) => {
-  res.render('profile', {data:req.body});
+  const { id, jobTitle, company, summary, salary, locations, time, link} = req.body
+  var fav =userFavourites.find({});
+  fav.exec(function(err,data){
+    if(err) throw err;
+    res.render('profile', { title: 'Favourites Records', userdata:data });
+  });
+
 }
 
 module.exports.password_get = (req, res) => {
   res.render('password');
 }
 
-module.exports.profile_post = (req, res) => {
-  // var prof = userFavourites(req.body).save(function(err,data){
-  //   if(err) throw err
+module.exports.profile_post = async(req, res) => {
 
-  //   res.json(data)
+  const { id, jobTitle, company, summary, salary, locations, time, link} = req.body
 
-  // // })
-
-  res.json(req.body)
-
-
+  try {
+    const favData = await userFavourites.create({id,jobTitle, company, summary, salary, locations, time, link})
+    res.json(id,jobTitle, company, summary, salary, locations, time, link)
+  } catch (error) {
+    const errors = handleErrors(error)
+    res.status(400).json({ errors })
+  }
 }
 
 module.exports.password_post = async (req, res) => {

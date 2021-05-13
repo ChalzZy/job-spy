@@ -107,18 +107,38 @@
           {
               j[i].addEventListener("click", favourite)
 
-              function favourite(){
+            async function favourite(){
+            
+                const id = data[i]._id
+                const jobTitle = data[i].jobTitle
+                const company = data[i].company
+                const summary = data[i].summary
+                const salary = data[i].salary
+                const locations = data[i].location
+                const time = data[i].time
+                const link = data[i].link
+                
+                  
+                  try {
+                    const res = await fetch('/profile', {
+                    method: 'POST',
+                    body: JSON.stringify({id,jobTitle, company, summary, salary, locations, time, link}),
+                    headers: {'Content-Type': 'application/json'}
+                })
+                
+                const data = await res.json()
+                console.log(data)
+                
+                if (data.errors) {
+                    
+                }
 
-                  $.ajax({
-                      type:'POST',
-                      url:'/profile',
-                      contentType: 'application/json',
-                      data:JSON.stringify(data[i]),
-
-                      success: function(data){
-                          console.log('success')
-                      }
-                  })
+        // if (data.user) {
+        //     location.assign('/')
+        // }
+    } catch (err) {
+        console.log(err)
+    }
               }
           }
 
@@ -126,20 +146,42 @@
           {
               button_footer[i].addEventListener("click", favourite)
 
-              function favourite(){
-                  
-                $.ajax({
-                      type:'POST',
-                      url:'/profile',
-                      contentType: 'application/json',
-                      data:data[i],
 
-                      success: function(data){
-                          console.log('success')
-                      }
-                  })
-              }
-          }
+
+            function favourite(){
+               
+        
+                // $.ajax({
+                    
+                //       type:'POST',
+                //       url:'/profile',
+                //       body:JSON.stringify ,
+                //       contentType: 'application/json',
+                //       data:data[i],
+
+                //       success: function(data){
+                //           console.log('success')
+                //       }
+                //   })
+
+                  const userData = data[i]
+
+
+                    // try {
+                    //     const res = await fetch('/profile', {
+                    //     method: 'POST',
+                    //     body: JSON.stringify({ 
+                    //         email: email, 
+                    //         userData,
+                    //     } ),
+                    //     headers: {'Content-Type': 'application/json'}
+                    //     })
+                    //     console.log(userData)
+                    // } catch (err) {
+                    //     console.log(err)
+                    // }
+                }
+            }
         }
          listRecentJobs();
         }
