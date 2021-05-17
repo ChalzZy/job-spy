@@ -26,6 +26,9 @@ const userSchemaFav = new mongoose.Schema({
     },
     link: {
         type:String
+    },
+    user: {
+        type: String
     }
 
 })
