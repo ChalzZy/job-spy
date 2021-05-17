@@ -11,7 +11,7 @@ class SearchJobs(unittest.TestCase):
         options.add_argument('--ignore-ssl-errors')
         time.sleep(1)
 
-    def test_job_search(self):
+    def test_clickable_tags(self):
         driver = self.driver
 
         # Find & input 'developer' into the search bar
