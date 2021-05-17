@@ -118,7 +118,9 @@
                 const locations = data[i].location
                 const time = data[i].time
                 const link = data[i].link
+                '<% if(user){%>'
                 const email =  '<%=user.email%>'
+                '<% } %>'
 
                 //TODO: add users to the JSON and change the schema for the user favourites
                   
