@@ -109,6 +109,7 @@ module.exports.profile_post = async(req, res) => {
 
   const { id, jobTitle, company, summary, salary, locations, time, link} = req.body
 
+
   try {
     const favData = await userFavourites.create({id,jobTitle, company, summary, salary, locations, time, link})
     res.json(id,jobTitle, company, summary, salary, locations, time, link)

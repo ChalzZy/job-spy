@@ -28,6 +28,7 @@
         <script>
             {
                 
+                
                 var jobList = '';
                 var count = 0
                 /**
@@ -117,7 +118,9 @@
                 const locations = data[i].location
                 const time = data[i].time
                 const link = data[i].link
-                
+                const email =  '<%=user.email%>'
+
+                //TODO: add users to the JSON and change the schema for the user favourites
                   
                   try {
                     const res = await fetch('/profile', {
