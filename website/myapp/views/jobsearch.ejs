@@ -337,17 +337,20 @@
           }</div>
                     `
 
-        // Assigns each job tags if keywords found in tagDirectory can be matched job's against title & summary
-        for (let tagIndex = 0; tagIndex < tagDirectory.length; tagIndex++) {
-          if (
-            (
-              jobs[i].jobTitle.toLowerCase() || jobs[i].summary.toLowerCase()
-            ).includes(tagDirectory[tagIndex].toLowerCase())
-          ) {
-            jobText += `
-          <span class="badge rounded-pill bg-primary">${tagDirectory[tagIndex]}</span> `
-          }
+      // Assigns each job tags if keywords found in tagDirectory can be matched job's against title & summary
+      for (let tagIndex = 0; tagIndex < tagDirectory.length; tagIndex++) {
+        if (
+          (
+            jobs[i].jobTitle.toLowerCase() || jobs[i].summary.toLowerCase()
+          ).includes(tagDirectory[tagIndex].toLowerCase())
+        ) {
+          jobText += `
+          <button style="border-radius: 16px; font-size: 0.9em" type="button" class="btn btn-primary btn-sm py-0" onclick="window.location='${urlBuilder(
+            tagDirectory[tagIndex],
+            0
+          )}';">${tagDirectory[tagIndex]}</button> `
         }
+      }
 
         jobText += `
                 </div>
@@ -487,7 +490,6 @@
       }
     }
 
-
     //Enables popovers (for the copy to clipboard button)
     function initPopover() {
       var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
@@ -496,9 +498,19 @@
       })
     }
 
-
-
-
+    function urlBuilder(search) {
+    let urlParams =
+      'jobsearch?search=' +
+      search +
+      '&page=' +
+      1 +
+      '&location=' +
+      document.getElementById('location-selection').value +
+      '&category=' +
+      document.getElementById('category-selection').value
+    // TEMP: RETURNING INCLUDES PORT UNTIL HOSTED
+    return 'http://' + window.location.hostname + ':3000/' + urlParams
+  }
   </script>
 
   <%- include('partials/footer'); -%>
