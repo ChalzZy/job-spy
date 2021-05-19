@@ -255,7 +255,22 @@
       }
 
       document.getElementById('results').innerHTML = jobList
+      
+      
+    var test = document.getElementById('results').getElementsByClassName('mx-2 my-auto')
+
+    
+    for (let index = 0; index < numOfJobsToDisplay; index++) {
+      
+      test[index].addEventListener("click", favourite)
+      
+      async function favourite(){
+        
+      }
     }
+
+    }
+
 
     async function promptReport() {
       let dialogue = ''

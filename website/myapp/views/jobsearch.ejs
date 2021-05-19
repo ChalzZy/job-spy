@@ -263,7 +263,6 @@
         ]})">${[j + 1]}</button>`
       }
     }
-
     for (i; i < resultsMax; i++) {
       jobText += `
                   <div class="modal fade" id="thanksModal" tabindex="-1" aria-labelledby="thanksModalLabel" aria-hidden="true">
@@ -349,7 +348,7 @@
       jobText += `
                 </div>
                   <div class="mx-2 my-auto">
-                    <button type="button" class="btn btn-outline-primary">♡</button>
+                    <button onclick="favourite(${i})" type="button" class="btn btn-outline-primary">♡</button>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                     data-bs-target="#modal${[i]}" onclick="setModal('modal'+${[
         i,
@@ -362,8 +361,19 @@
           `
     }
     document.getElementById('results').innerHTML = jobText
+
+
+
     initPopover()
     return jobText
+  }
+
+
+  var test = document.getElementById('results').getElementsByClassName('mx-2 my-auto')
+ 
+      
+  async function favourite(x){
+    console.log(jobs[x])
   }
 
   async function promptReport() {
