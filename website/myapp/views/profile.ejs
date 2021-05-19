@@ -15,6 +15,7 @@
             <a class="list-group-item list-group-item-action block" id="home" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Change password</a>
             <a class="list-group-item list-group-item-action block" id="email" data-toggle="list" href="#list-email" role="tab" aria-controls="email">Change email</a>
             <a class="list-group-item list-group-item-action block" id="settings" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Settings</a>
+            <a class="list-group-item list-group-item-action block" id="fav" data-toggle="list" href="#list-favs" role="tab" aria-controls="fav">Favourites</a>
           </div>
         </div>
         
@@ -106,6 +107,69 @@
                     </article>
                 </div> 
             </div> 
+            <!--Favourites page-->
+            <div class="tab-pane fade show block" id="list-fav" role="tabpanel" aria-labelledby="list-fav-list">
+                <div class="card bg-light">
+                    <article class="card-body mx-auto" style="max-width: 400px;"> 
+                    <h4 class="card-title mt-3 text-center pb-3"><%=title%></h4>
+                        <form>      
+                            <%if ((userdata.length >0)){ %>
+                            <% userdata.forEach(function(row){ %>
+                                <% if((row.id != null)){ %> 
+                                    <div class="modal fade" type="model-number" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                                            <div class="moda l-content ">
+                                                <div class="modal-header">
+                                                    <div class="fw-lighter" id="job-title"><p></p></div>
+                                                    <h5 class="modal-title" id="exampleModalLabel"><div class="fw-lighter fs-6"><%=row.company%></div> <%=row.jobTitle%>/h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>
+                                                        <%=row.summary%>
+                                                    </p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="button-footer">
+                                                    <button type="button" class="btn btn-outline-primary">♡</button>
+                                                    </div>
+                                                    <a href='<%=row.link%>'</a>><button type="button" class="btn btn-primary">Apply</button></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                <%}%>
+                                <% if((row.id != null) && (row.email == users_email)){ %> 
+                       
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto" style="max-width: 70%;">
+                                        <div class="fw-lighter" id="job-title"><%= row.company%></div>
+                                        <div class="fs-5"><%=row.jobTitle%></div>
+                                        <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px"><%=row.summary%></div>
+                                        <span class="badge rounded-pill bg-primary">Tag 1</span>
+                                        <span class="badge rounded-pill bg-primary">Tag 2</span>
+                                    </div>
+                                    
+                       
+                               
+                                            <div class="userButton">
+                                            <button onclick="button('<%=row._id%>')" type="button1" id="button1"class="btn btn-outline-primary" >♡</button>
+                
+                                          </div>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#modal">Apply</button>
+                                
+                                        
+                                </li>
+                                <%}%>
+                                <% })%>
+                                <%}%>
+                            </div>
+                        </form>
+                    </article>
+                </div> 
+            </div> 
         </div>
         <!--<div class="tab-pane fade " id="list-settings" role="tabpanel" aria-labelledby="list-settings-list"></div>-->
     </div>   
@@ -119,10 +183,12 @@
     let profile = document.getElementById("home") // 'Change password'
     let email = document.getElementById("email") // 'Change email'
     let settings = document.getElementById("settings") // 'Settings'
+    let favourites = document.getElementById("fav") //favoutites
 
     profile.addEventListener("click", userPassword)
     email.addEventListener('click', userEmail)
     settings.addEventListener("click", userSettings)
+    favourites.addEventListener("click", fav_user_page)
 
     /*
         Change Password
@@ -161,53 +227,102 @@
         }
     })
 
+    async function button(a){
+        var _id = ''
+        var id = ''
+        var jobTitle = ''
+        var company = ''
+        var summary = ''
+        var salary = ''
+        var locations = ''
+        var time = ''
+        var link = ''
+        var email = ''
+                
+        var data_length = parseInt('<%=userdata.length%>')
+        '<% userdata.forEach(function(row){ %>'
+            if('<%=row._id%>' == a){
+                _id = '<%=row._id%>'
+                id = '<%=row.id%>'
+                jobTitle = '<%=row.jobTitle%>'
+                company = '<%=row.company%>'
+                summary = '<%=row.summary%>'
+                salary = '<%=row.salary%>'
+                locations = '<%=row.locations%>'
+                time = '<%=row.time%>'
+                link = '<%=row.link%>'
+                email = '<%=row.email%>'
+            } 
+        '<%})%>'
+        try {
+            const res = await fetch('/delete', {
+            method: 'DELETE',
+            body: JSON.stringify({_id, id,jobTitle, company, summary, salary, locations, time, link, email}), 
+            headers: {'Content-Type': 'application/json'}
+        })
+        const data = await res.json()
+        // console.log(data)   
+        
+        location.assign('/profile')
+                     
+        if (data.errors) {          
+        }
+    } catch (err) {
+        console.log(err) 
+    }
+}
+
     /**
     * Navigation JavaScript
     **/
     // Password
     function userPassword() {
-
         // Email tab not active
         let emailTab = document.getElementById('email') 
         emailTab.className = emailTab.className.replace('active', 'block')
         // Email content not active
         let emailContent = document.getElementById('list-email') 
         emailContent.className = emailContent.className.replace('active', 'block')
-
         // not active Settings tab
         let userSettingsChange = document.getElementById('settings')
         userSettingsChange.className = userSettingsChange.className.replace('active', 'block')
         // not active Settings content
         let userTab = document.getElementById('list-settings')
         userTab.className = userTab.className.replace('active', 'block')
-
+        // not active Favourites tab
+        let fav_page = document.getElementById('fav')
+        fav_page.className = fav_page.className.replace('active', 'block')
+        // not active Favourites content
+        let fav_content = document.getElementById('list-fav')
+        fav_content.className = fav_content.className.replace('active', 'block')
         // Profile tab
         let maptab = document.getElementById('home') 
         maptab.className = maptab.className.replace('block', 'active')
         // Profile content
         let showProfile = document.getElementById('list-home') 
         showProfile.className = showProfile.className.replace('block', 'active')
-
-        console.log(emailContent.className)
-
     }
 
     //Email
     function userEmail() {
+        // not active Favourites tab
+        let fav_page = document.getElementById('fav')
+        fav_page.className = fav_page.className.replace('active', 'block')
+        // not active Favourites content
+        let fav_content = document.getElementById('list-fav')
+        fav_content.className = fav_content.className.replace('active', 'block')
         //not active password
         let changePass = document.getElementById('home') 
         changePass.className = changePass.className.replace('active', 'block')
         //Not active pasword content
         let userProfile = document.getElementById('list-home') 
         userProfile.className = userProfile.className.replace('active', 'block')
-
         // not active Settings tab
         let userSettingsChange = document.getElementById('settings')
         userSettingsChange.className = userSettingsChange.className.replace('active', 'block')
         // not active Settings content
         let userTab = document.getElementById('list-settings')
         userTab.className = userTab.className.replace('active', 'block')
-
         // Email tab
         let maptab = document.getElementById('email') 
         maptab.className = maptab.className.replace('block', 'active')
@@ -218,21 +333,24 @@
 
     //Settings
     function userSettings(){
-
+        // not active Favourites tab
+        let fav_page = document.getElementById('fav')
+        fav_page.className = fav_page.className.replace('active', 'block')
+        // not active Favourites content
+        let fav_content = document.getElementById('list-fav')
+        fav_content.className = fav_content.className.replace('active', 'block')
         //not active password
         let changePass = document.getElementById('home') 
         changePass.className = changePass.className.replace('active', 'block')
         //Not active pasword content
         let userProfile = document.getElementById('list-home') 
         userProfile.className = userProfile.className.replace('active', 'block')
-
         // Email tab not active
         let emailTab = document.getElementById('email') 
         emailTab.className = emailTab.className.replace('active', 'block')
         // Email content not active
         let emailContent = document.getElementById('list-email') 
         emailContent.className = emailContent.className.replace('active', 'block')
-
         // Settings tab
         let userSettingsChange = document.getElementById('settings')
         userSettingsChange.className = userSettingsChange.className.replace('block', 'active')
@@ -240,5 +358,32 @@
         let userTab = document.getElementById('list-settings')
         userTab.className = userTab.className.replace('block', 'active')
         
+    }
+
+    function fav_user_page(){
+        //not active password
+        let changePass = document.getElementById('home') 
+        changePass.className = changePass.className.replace('active', 'block')
+        //Not active pasword content
+        let userProfile = document.getElementById('list-home') 
+        userProfile.className = userProfile.className.replace('active', 'block')
+        // Email tab not active
+        let emailTab = document.getElementById('email') 
+        emailTab.className = emailTab.className.replace('active', 'block')
+        // Email content not active
+        let emailContent = document.getElementById('list-email') 
+        emailContent.className = emailContent.className.replace('active', 'block')
+        // not active Settings tab
+        let userSettingsChange = document.getElementById('settings')
+        userSettingsChange.className = userSettingsChange.className.replace('active', 'block')
+        // not active Settings content
+        let userTab = document.getElementById('list-settings')
+        userTab.className = userTab.className.replace('active', 'block')
+        // not active Favourites tab
+        let fav_page = document.getElementById('fav')
+        fav_page.className = fav_page.className.replace('block', 'active')
+        // not active Favourites content
+        let fav_content = document.getElementById('list-fav')
+        fav_content.className = fav_content.className.replace('block', 'active')
     }
 </script>

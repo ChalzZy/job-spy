@@ -374,7 +374,7 @@
       
   async function favourite(i){
 
-    const id = jobs[i]._id
+    const id = jobs[i]._id.$oid
     const jobTitle = jobs[i].jobTitle
     const company = jobs[i].company
     const summary = jobs[i].summary
@@ -382,12 +382,28 @@
     const locations = jobs[i].location
     const time = jobs[i].time
     const link = jobs[i].link
-
     var email = ''
     '<% if(user){%>'
       email =  '<%=user.email%>'
      '<% } %>'
+
+     console.log(id)
      
+     try {
+           const res = await fetch('/profile',{          
+             method: 'POST',
+             body: JSON.stringify({id,jobTitle, company, summary, salary, locations, time, link, email}),
+             headers: {'Content-Type': 'application/json'}
+            })
+            
+            const data = await res.json()
+            console.log(data)
+            if (data.errors) {
+                    
+                }
+              } catch (err) {
+                console.log(err)
+              }
   }
 
   async function promptReport() {
