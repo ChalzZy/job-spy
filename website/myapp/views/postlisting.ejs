@@ -27,13 +27,13 @@
 
         <div class="mb-3">
           <label for="companyName" class="form-label">Company Name</label>
-          <input type="text" class="form-control" id="companyName" placeholder="">
+          <input type="text" class="form-control" id="companyName" placeholder="eg. Niwon Ltd.">
           <p id="companyNameWarning" class="fw-light" style="color: red; font-size:90%"></p>
         </div>
 
         <div class="mb-3">
           <label for="jobTitle" class="form-label">Job Title</label>
-          <input type="text" class="form-control" id="jobTitle" placeholder="">
+          <input type="text" class="form-control" id="jobTitle" placeholder="eg. Software Developer">
           <p id="jobTitleWarning" class="fw-light" style="color: red; font-size:90%"></p>
         </div>
 
@@ -162,6 +162,10 @@
         <p class="fs-6 fw-light">Check that all your details are correct.</p>
         <p id="confirmation">
         <div class="border rounded p-3">
+          <p class="fw-bold">Preview</p>
+          <div id="preview" class="mx-3"></div>
+        </div>
+        <div class="border rounded p-3">
           <p class="fw-bold">Job Post</p>
           Type<p class="text-muted">Featured Job Listing</p>
           Duration<p class="text-muted">1 Month</p>
@@ -269,6 +273,14 @@
 
         jobDescription = jobDescriptionValue
 
+        if (workTypeValue != 'Choose a Work Type') {
+          
+          workType = workTypeValue
+        }
+        else {
+          workType = ''
+        }
+
         if (tagsValue != '') {
           tagsList = tagsValue.split(',')
 
@@ -297,13 +309,6 @@
           document.getElementById('tagsWarning').innerHTML = ""
           tags = tagsList
         }
-
-        if (workTypeValue != 'Choose a Work Type') {
-          workType = workTypeValue
-        }
-        else {
-          workType = ''
-        }
       }
 
       if (page == 'applicationDetailsPage' || page == 'confirmationPage') {
@@ -313,7 +318,7 @@
           salaryType = salaryTypeValue
         }
         else {
-          workType = ''
+          salaryType = ''
         }
         salaryDetails = salaryDetailsValue
       }
@@ -460,7 +465,88 @@
             phoneNumber +
             '</div>'
         }
+
+        let jobText = `
+                  <div class="modal fade" id="thanksModal" tabindex="-1" aria-labelledby="thanksModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="thanksModalLabel">Thank you for reporting.</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          If we find this content is inappropriate, we will remove it.
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      </div>
+                      </div>
+                  </div>
+                  </div>
+
+              <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                  <div class="modal-content ">
+                      <div class="modal-header">
+                          <div class="fw-lighter" id="job-title"><p></p></div>
+                          <h5 class="modal-title" id="applyModalLabel"><div class="fw-lighter fs-6">${companyName}</div>${jobTitle}</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close""></button>
+                      </div>
+                      <div class="modal-body">
+                          <p>
+                            ${jobDescription}
+                          </p>
+                          <div class="fw-light">Is this content inappropriate? Report</div>
+                      </div>
+                          <div class="modal-footer">
+                          <a tabindex="0" class="btn btn-outline-primary d-none d-lg-block" role="button" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-content="Copied to clipboard"><i class="far fa-copy"></i></a>
+                          <a tabindex="0" class="btn btn-outline-primary d-lg-none" role="button"><i class="fas fa-share"></i></i></a>
+                          <button type="button" class="btn btn-outline-primary">♡</button>
+                          <a href="#"><button type="button" class="btn btn-primary">Apply</button></a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div style="padding-top: 20px">
+            <ol class="list-group list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-start border border-primary border-2">
+                <div class="ms-2 me-auto" style="max-width: 70%;">
+                  <div class="fw-lighter">${companyName} - ${jobLocation}</div>
+                    <div class="fs-5">${jobTitle}</div>
+                    <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${jobDescription}</div>
+                    `
+
+        // Assigns each job tags if keywords found in tagDirectory can be matched job's against title & summary
+        for (let tagIndex = 0; tagIndex < tags.length; tagIndex++) {
+          jobText += `<button style="border-radius: 16px; font-size: 0.9em" type="button" class="btn btn-primary btn-sm py-0">${tags[tagIndex]}</button> `
+        }
+        jobText += `<button style="border-radius: 16px; font-size: 0.9em" type="button" class="btn btn-light btn-sm py-0">${jobCategory}</button> `
+        console.log('notwor ' + workType)
+        if(workType != ''){
+          console.log('works ' + workType)
+          jobText += `<button style="border-radius: 16px; font-size: 0.9em" type="button" class="btn btn-light btn-sm py-0">${workType}</button> `
+        }
+        
+
+
+        jobText += `
+                </div>
+                  <div class="my-auto d-flex">
+                    <button type="button" class="btn btn-outline-primary mx-1">♡</button>
+                    <button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal"
+                    data-bs-target="#previewModal" >Apply</button>
+                  </div>
+                </div>
+              </li>
+            </ol>
+          </div>
+          `
+
+        document.getElementById('preview').innerHTML = jobText
       }
+
+
+
 
       document.getElementById(currentPage).hidden = true
       document.getElementById(page).hidden = false
