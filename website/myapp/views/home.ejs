@@ -118,16 +118,20 @@
                 const locations = data[i].location
                 const time = data[i].time
                 const link = data[i].link
+                var email = ''
                 '<% if(user){%>'
-                const email =  '<%=user.email%>'
+                    email =  '<%=user.email%>'
                 '<% } %>'
 
+
+
                 //TODO: add users to the JSON and change the schema for the user favourites
+
                   
-                  try {
+                try {
                     const res = await fetch('/profile', {
                     method: 'POST',
-                    body: JSON.stringify({id,jobTitle, company, summary, salary, locations, time, link}),
+                    body: JSON.stringify({id,jobTitle, company, summary, salary, locations, time, link, email}),
                     headers: {'Content-Type': 'application/json'}
                 })
                 
@@ -137,15 +141,11 @@
                 if (data.errors) {
                     
                 }
-
-        // if (data.user) {
-        //     location.assign('/')
-        // }
-    } catch (err) {
-        console.log(err)
-    }
-              }
-          }
+            } catch (err) {
+                 console.log(err)
+                }
+            }
+        }
 
           for(let i =0; i<numOfJobsToDisplay; i++)
           {

@@ -110,11 +110,11 @@
             <div class="tab-pane fade show block" id="list-fav" role="tabpanel" aria-labelledby="list-fav-list">
                 <div class="card bg-light">
                     <article class="card-body mx-auto" style="max-width: 400px;"> 
-                    <h4 class="card-title mt-3 text-center pb-3">Favourites</h4>
+                    <h4 class="card-title mt-3 text-center pb-3"><%=title%></h4>
                         <form>      
-                            <%if (userdata.length >0 ){ %>
+                            <%if ((userdata.length >0)){ %>
                             <% userdata.forEach(function(row){ %>
-                                <% if(row.id != null){ %> 
+                                <% if((row.id != null)){ %> 
                                     <div class="modal fade" type="model-number" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                                             <div class="moda l-content ">
@@ -132,14 +132,14 @@
                                                     <div class="button-footer">
                                                     <button type="button" class="btn btn-outline-primary">♡</button>
                                                     </div>
-                                                    <a href=row.link%></a>><button type="button" class="btn btn-primary">Apply</button></a>
+                                                    <a href='<%=row.link%>'</a>><button type="button" class="btn btn-primary">Apply</button></a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     
                                 <%}%>
-                                <% if(row.id != null){ %> 
+                                <% if((row.id != null) && (row.email == users_email)){ %> 
                        
                                 <li class="list-group-item d-flex justify-content-between align-items-start">
                                     <div class="ms-2 me-auto" style="max-width: 70%;">
@@ -153,7 +153,7 @@
                        
                                
                                             <div class="userButton">
-                                            <button type="button1" id="button1"class="btn btn-outline-primary">♡</button>
+                                            <button onclick="button('<%=row._id%>')" type="button1" id="button1"class="btn btn-outline-primary" >♡</button>
                 
                                           </div>
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -189,6 +189,52 @@
     settings.addEventListener("click", userSettings)
     favourites.addEventListener("click", fav_user_page)
 
+
+    async function button(a){
+        var _id = ''
+        var id = ''
+        var jobTitle = ''
+        var company = ''
+        var summary = ''
+        var salary = ''
+        var locations = ''
+        var time = ''
+        var link = ''
+        var email = ''
+                
+        var data_length = parseInt('<%=userdata.length%>')
+
+        '<% userdata.forEach(function(row){ %>'
+            if('<%=row._id%>' == a){
+                _id = '<%=row._id%>'
+                id = '<%=row.id%>'
+                jobTitle = '<%=row.jobTitle%>'
+                company = '<%=row.company%>'
+                summary = '<%=row.summary%>'
+                salary = '<%=row.salary%>'
+                locations = '<%=row.locations%>'
+                time = '<%=row.time%>'
+                link = '<%=row.link%>'
+                email = '<%=row.email%>'
+            } 
+
+        '<%})%>'
+
+        try {
+            const res = await fetch('/delete', {
+            method: 'DELETE',
+            body: JSON.stringify({_id, id,jobTitle, company, summary, salary, locations, time, link, email}), 
+            headers: {'Content-Type': 'application/json'}
+        })
+        const data = await res.json()
+        // console.log(data)                
+        if (data.errors) {          
+
+        }
+    } catch (err) {
+        console.log(err) 
+    }
+}
     /*
         Change Password
     */

@@ -91,14 +91,40 @@ module.exports.jobsearch_get = (req, res) => {
 }
 
 module.exports.profile_get = (req, res) => {
-  const { id, jobTitle, company, summary, salary, locations, time, link} = req.body
-  //find users favourites and send the data to the profile page
-  var fav =userFavourites.find({});
-  fav.exec(function(err,data){
-    if(err) throw err;
-    res.render('profile', { title: 'Favourites Records', userdata:data });
-  });
 
+  var user_email = false
+
+  if(res.cookie()){
+    user_email = true
+  }
+
+  if(user_email){
+
+    var fav =userFavourites.find({});
+    fav.exec(function(err,data){
+      if(err) throw err;
+      res.render('profile', { title: 'Favourites Records', userdata:data, users_email: res.cookie().locals.user.email});
+    });
+  }
+  else{
+    res.send("Page not Found")
+  }
+
+}
+
+module.exports.profile_delete = async(req, res) =>{
+  const { _id, id, jobTitle, company, summary, salary, locations, time, link, email} = req.body
+  
+  console.log(_id)
+  try {
+    const favData = await userFavourites.findByIdAndDelete({_id})
+    res.json({redirect: '/profile'})
+ 
+    console.log("deleted data")
+  } catch (error) {
+    const errors = handleErrors(error)
+    res.status(400).json({ errors })
+  }
 }
 
 module.exports.password_get = (req, res) => {
@@ -107,12 +133,11 @@ module.exports.password_get = (req, res) => {
 
 module.exports.profile_post = async(req, res) => {
 
-  const { id, jobTitle, company, summary, salary, locations, time, link} = req.body
-
+  const { id, jobTitle, company, summary, salary, locations, time, link, email} = req.body
 
   try {
-    const favData = await userFavourites.create({id,jobTitle, company, summary, salary, locations, time, link})
-    res.json(id,jobTitle, company, summary, salary, locations, time, link)
+    const favData = await userFavourites.create({id,jobTitle, company, summary, salary, locations, time, link, email})
+    res.json(id,jobTitle, company, summary, salary, locations, time, link, email)
   } catch (error) {
     const errors = handleErrors(error)
     res.status(400).json({ errors })

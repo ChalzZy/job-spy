@@ -20,6 +20,7 @@ router.get('/jobsearch', authController.jobsearch_get)
 // profile page
 router.get('/profile', authController.profile_get)
 router.post('/profile', authController.profile_post)
+router.delete('/delete', authController.profile_delete)
 
 // change password
 router.get('/password', authController.password_get)

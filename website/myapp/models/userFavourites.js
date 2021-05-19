@@ -27,7 +27,7 @@ const userSchemaFav = new mongoose.Schema({
     link: {
         type:String
     },
-    user: {
+    email: {
         type: String
     }
 
@@ -36,6 +36,10 @@ const userSchemaFav = new mongoose.Schema({
 // fire a function after doc save to db
 userSchemaFav.post('save', function (doc, next) {
     console.log('new fav was created & saved', doc)
+})
+
+userSchemaFav.remove('remove', function(doc, next){
+    console.log('removed fav')
 })
 
 const userFavourites = mongoose.model('userfav', userSchemaFav)
