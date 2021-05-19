@@ -98,6 +98,14 @@ module.exports.aboutus_get = (req, res) => {
   res.render('aboutus');
 }
 
+module.exports.postlisting_get = (req, res) => {
+  res.render('postlisting');
+}
+
+module.exports.createpost_get = (req, res) => {
+  res.render('createpost');
+}
+
 module.exports.password_post = async (req, res) => {
   const { email, password } = req.body
   

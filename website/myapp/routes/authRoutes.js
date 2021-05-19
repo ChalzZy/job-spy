@@ -27,4 +27,10 @@ router.post('/password', authController.password_post)
 // about us
 router.get('/aboutus', authController.aboutus_get)
 
+// post listing
+router.get('/postlisting', authController.postlisting_get)
+
+// create post
+router.get('/createpost', authController.createpost_get)
+
 module.exports = router;

@@ -47,27 +47,27 @@
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            My Account
+                            <%= user.email -%>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
                             <li><a class="dropdown-item" href="/profile">Profile</a></li>
-                            <li><a class="dropdown-item" href="/settings">Settings</a></li>
+                            <li><a class="dropdown-item d-lg-none" href="/createpost">Create Job Post</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item" href="/logout">Sign out</a></li>
                         </ul>
                     </div>
-                    <!--Welcome text-->
-                    <span class="navbar-text mx-3 d-none d-lg-block">
-                        Welcome, <%= user.email -%>
-                    </span>
+                    <!--Create Job Post Button-->
+                    <a class="btn btn-primary mx-2 d-none d-lg-block" href="/createpost" role="button">Create Job Post</a>
 
 
                     <!--Sign in and Sign up buttons for when the user is not signed in-->
                     <% } else { %>
-                        <a class="btn btn-outline-primary mx-2" href="/login" role="button">Sign in</a>
-                        <a class="btn btn-primary mx-2 d-none d-lg-block" href="/signup" role="button">Sign up</a>
+                        <a class="btn btn-outline-primary mx-2 d-none d-lg-block" href="/login" role="button">Sign in</a>
+                        <a class="btn btn-outline-primary mx-2" href="/signup" role="button">Sign up</a>
+                        <a class="btn btn-primary mx-2 d-lg-none" href="/createpost" role="button">Post Job</a>
+                        <a class="btn btn-primary mx-2 d-none d-lg-block" href="/createpost" role="button">Create Job Post</a>
                         <% } %>
             </div>
         
