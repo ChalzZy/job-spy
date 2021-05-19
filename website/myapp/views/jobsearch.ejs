@@ -372,8 +372,22 @@
   var test = document.getElementById('results').getElementsByClassName('mx-2 my-auto')
  
       
-  async function favourite(x){
-    console.log(jobs[x])
+  async function favourite(i){
+
+    const id = jobs[i]._id
+    const jobTitle = jobs[i].jobTitle
+    const company = jobs[i].company
+    const summary = jobs[i].summary
+    const salary = jobs[i].salary
+    const locations = jobs[i].location
+    const time = jobs[i].time
+    const link = jobs[i].link
+
+    var email = ''
+    '<% if(user){%>'
+      email =  '<%=user.email%>'
+     '<% } %>'
+     
   }
 
   async function promptReport() {

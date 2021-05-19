@@ -263,9 +263,23 @@
     for (let index = 0; index < numOfJobsToDisplay; index++) {
       
       test[index].addEventListener("click", favourite)
+
       
       async function favourite(){
-        
+          
+        const id = data[i]._id
+        const jobTitle = data[i].jobTitle
+        const company = data[i].company
+        const summary = data[i].summary
+        const salary = data[i].salary
+        const locations = data[i].location
+        const time = data[i].time
+        const link = data[i].link
+        var email = ''
+        '<% if(user){%>'
+          email =  '<%=user.email%>'
+        '<% } %>'
+
       }
     }
 
