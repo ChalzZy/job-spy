@@ -129,17 +129,18 @@
                                                         </div>
                                                         <div class="fs-6"
                                                             style="max-width: 90%; overflow: hidden; max-height: 50px">
-                                                            <%=row.summary%> 
+                                                            <%=row.summary%>
                                                         </div>
                                                     </div>
                                                     <div class="userButton">
                                                         <button onclick="button('<%=row._id%>')" type="button1"
                                                             id="button1" class="btn btn-outline-primary">♡</button>
-                                                       
+
                                                     </div>
-                                                    <a href= <%=row.link%>>
-                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal">Apply</button>
-                                                </a>
+                                                    <a href=<%=row.link%>>
+                                                        <button type="button" class="btn btn-primary"
+                                                            data-bs-toggle="modal">Apply</button>
+                                                    </a>
                                                 </li>
                                                 <%}%>
                                                     <% })%>
