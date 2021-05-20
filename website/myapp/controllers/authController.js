@@ -122,6 +122,9 @@ module.exports.profile_delete = async(req, res) =>{
   }
 }
 
+//TODO:Fix the post with duplication
+//TODO: Get the modal page working 
+//TODO:alert the user if the post is successful or not 
 module.exports.profile_post = async(req, res) => {
 
   const { id, jobTitle, company, summary, salary, locations, time, link, email} = req.body
