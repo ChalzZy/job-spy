@@ -22,18 +22,33 @@ var getCookie = function (n) {
 document.onclick = function (e) {
     if (e.target.className == 'btn') {
         var favColor = e.target.style.backgroundColor
+        if(favColor == 'rgb(12, 12, 12)'){
+            var test = document.getElementsByClassName("text-center")[0].style.color = 'white'
+            setCookie('textColor', test)
+        }
+        if(favColor == 'rgb(254, 253, 255)'){
+            var test = document.getElementsByClassName("text-center")[0].style.color = 'black'
+            setCookie('textColor', test)
+    }
         setCookie('color', favColor)
         document.body.style.backgroundColor = favColor
-        // console.log(favColor);
     }
 }
 
 window.onload = function () {
+    //Setting variables
     var favColor = document.body.style.backgroundColor
+    var textColor = document.getElementsByClassName("text-center")[0].style.color 
+    
+    //getCookie
     var color = getCookie('color')
+    var textColor = getCookie('textColor')
+    
     if (color === '') {
         document.body.style.backgroundColor = favColor
+        document.getElementsByClassName("text-center")[0].style.color = textColor
     } else {
         document.body.style.backgroundColor = color
+        document.getElementsByClassName("text-center")[0].style.color = textColor
     }
 }
