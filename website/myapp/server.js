@@ -10,12 +10,15 @@ const nodemailer = require('nodemailer')
 const app = express()
 
 // middleware
+app.use('/testjs',express.static('testjs'))
 app.use(express.static('public'))
 app.use(express.json()) // Takes any json data, parses it into js
 app.use(cookieParser())
 
 // view engine
 app.set('view engine', 'ejs')
+
+
 
 // database connection
 const dbURI = 'mongodb://localhost:27017/node-auth'
