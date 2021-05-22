@@ -241,7 +241,7 @@
             //TODO: Fix the job-cards color
             if(document.getElementById("body").style.backgroundColor === 'rgb(12, 12, 12)'){
               
-              console.log(document.getElementById('results').getElementsByClassName('list-group-item d-flex justify-content-between align-items-start'))
+              console.log(document.getElementById('results').getElementsByClassName('list-group-item d-flex justify-content-between align-items-start')[0])
           
             }
 
@@ -359,7 +359,9 @@
               setLocation.style.color = '#808080'
               setCatergory.style.backgroundColor = '#404040'
               setCatergory.style.color =  '#808080'
-
+              
+              var doc = document.getElementsByClassName('navbar navbar-expand-lg navbar-light bg-light')[0]
+              doc.className = doc.className.replace('navbar navbar-expand-lg navbar-light bg-light', 'navbar navbar-expand-lg navbar-dark bg-dark')
               // for(var i = 0; i < 4; i++){
               //   jobs[i].style.backgroundColor = '#808080'
               // }

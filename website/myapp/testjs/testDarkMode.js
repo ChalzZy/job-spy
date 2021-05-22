@@ -44,11 +44,26 @@ window.onload = function () {
     var color = getCookie('color')
     var textColor = getCookie('textColor')
     
-    if (color === '') {
+    if (color === 'rgb(254, 253, 255)') {
+        
+        var doc = document.getElementsByClassName('navbar navbar-expand-lg navbar-light bg-light')[0]
+        doc.className = doc.className.replace('navbar navbar-expand-lg navbar-dark bg-dark', 'navbar navbar-expand-lg navbar-light bg-light')
+
         document.body.style.backgroundColor = favColor
         document.getElementsByClassName("text-center")[0].style.color = textColor
-    } else {
+
+        
+    } 
+    
+    if(color === 'rgb(12, 12, 12)')
+     {
+         
+        var doc = document.getElementsByClassName('navbar navbar-expand-lg navbar-light bg-light')[0]
+        doc.className = doc.className.replace('navbar navbar-expand-lg navbar-light bg-light', 'navbar navbar-expand-lg navbar-dark bg-dark')
+        
         document.body.style.backgroundColor = color
         document.getElementsByClassName("text-center")[0].style.color = textColor
+        
+        console.log(doc)
     }
 }
