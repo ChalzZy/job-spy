@@ -11,6 +11,10 @@ router.post('/signup', authController.signup_post)
 router.get('/login', authController.login_get)
 router.post('/login', authController.login_post)
 
+//settings
+router.get('/settings', authController.settings_get_page)
+
+
 // logout
 router.get('/logout', authController.logout_get)
 

@@ -3,7 +3,6 @@ const userFavourites = require('../models/userFavourites')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const SECRET = 'nw8d395d243nj8h90!@#*&!)@(#*0wnp9m8edruq2o98i5'
-
 // handle errors
 const handleErrors = (err) => {
     console.log(err.message, err.code)
@@ -83,6 +82,14 @@ module.exports.logout_get = (req, res) => {
   res.redirect('/') // return to homepage
 }
 
+//settings
+module.exports.settings_get_page = (req, res) => {
+
+    res.render('settings', {user_email:res.cookie().locals.user.email})
+  
+}
+
+
 module.exports.jobsearch_get = (req, res) => {
   res.render('jobsearch');
 }
@@ -95,7 +102,7 @@ module.exports.profile_get = (req, res) => {
   }
   if(user_email){
 
-    var fav =userFavourites.find({});
+    var fav = userFavourites.find({});
     fav.exec(function(err,data){
       if(err) throw err;
       res.render('profile', { title: 'Favourites Records', userdata:data, users_email: res.cookie().locals.user.email});

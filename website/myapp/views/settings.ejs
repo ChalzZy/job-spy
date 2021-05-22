@@ -1,0 +1,37 @@
+<%- include('partials/header'); -%>
+
+    <body>
+        <div class="d-flex form-group pt-4 justify-content-center">
+            <button onclick="darkMode()" class="btn btn-primary btn-block">Dark Mode</button>
+        </div>
+        <div class="d-flex form-group pt-4 justify-content-center">
+            <button onclick="lightMode()" class="btn btn-primary btn-block">Light Mode</button>
+        </div>
+    </body>
+    <%- include('partials/footer'); -%>
+
+        <script>
+
+            async function darkMode() {
+
+
+                if ('<%=user_email%>' === '<%=user.email%>') {
+                    let color = document.body.style.backgroundColor = "#000000"
+                    let text = document.getElementById("footer").getElementsByClassName("container-fluid justify-content-center")[0]
+                    let userColor = text.getElementsByClassName("text-center")[0].style.color = "white"
+                    let email = '<%=user.email%>'
+
+
+                }
+
+            }
+
+            function lightMode() {
+
+                let color = document.body.style.backgroundColor = "white"
+
+                let text = document.getElementById("footer").getElementsByClassName("container-fluid justify-content-center")[0]
+                console.log(text.getElementsByClassName("text-center")[0].style.color = "black")
+
+            }
+        </script>

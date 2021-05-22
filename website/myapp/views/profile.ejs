@@ -102,6 +102,7 @@
                                     <div class="d-flex form-group pt-3 justify-content-center">
                                         <button type="submit" class="btn btn-primary btn-block">Edit</button>
                                     </div>
+
                                 </form>
                             </article>
                         </div>
@@ -164,11 +165,13 @@
                 let email = document.getElementById("email") // 'Change email'
                 let settings = document.getElementById("settings") // 'Settings'
                 let favourites = document.getElementById("fav") //favoutites
+                
 
                 profile.addEventListener("click", userPassword)
                 email.addEventListener('click', userEmail)
                 settings.addEventListener("click", userSettings)
                 favourites.addEventListener("click", fav_user_page)
+
 
                 /*
                     Change Password
@@ -206,6 +209,8 @@
                         console.log(err)
                     }
                 })
+
+
 
                 async function button(a) {
                     var _id = ''
