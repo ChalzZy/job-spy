@@ -220,3 +220,13 @@ input[type=password] {
     border-top:2em solid #00b6f1;
   }
 
+  .btn {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    border: 1px solid white;
+  }
+
