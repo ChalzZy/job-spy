@@ -22,7 +22,7 @@ var getCookie = function (n) {
 document.onclick = function (e) {
     if (e.target.className == 'btn') {
         var favColor = e.target.style.backgroundColor
-        if(favColor == 'rgb(12, 12, 12)'){
+        if(favColor == 'rgb(26, 26, 26)'){
             var test = document.getElementsByClassName("text-center")[0].style.color = 'white'
             setCookie('textColor', test)
         }
@@ -32,7 +32,12 @@ document.onclick = function (e) {
     }
         setCookie('color', favColor)
         document.body.style.backgroundColor = favColor
+
+        
+    location.reload();
+    return false;
     }
+
 }
 
 window.onload = function () {
@@ -51,11 +56,10 @@ window.onload = function () {
 
         document.body.style.backgroundColor = favColor
         document.getElementsByClassName("text-center")[0].style.color = textColor
-
         
     } 
     
-    if(color === 'rgb(12, 12, 12)')
+    if(color === 'rgb(26, 26, 26)')
      {
          
         var doc = document.getElementsByClassName('navbar navbar-expand-lg navbar-light bg-light')[0]
@@ -63,7 +67,9 @@ window.onload = function () {
         
         document.body.style.backgroundColor = color
         document.getElementsByClassName("text-center")[0].style.color = textColor
+
         
-        console.log(doc)
     }
+
+
 }

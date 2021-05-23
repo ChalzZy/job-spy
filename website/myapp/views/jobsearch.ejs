@@ -342,6 +342,15 @@
       }
       document.getElementById('results').innerHTML = jobText
 
+      if(document.getElementById("body").style.backgroundColor === 'rgb(26, 26, 26)'){
+              
+              let job_cards = document.getElementById('results').getElementsByClassName('list-group-item d-flex justify-content-between align-items-start')
+
+              for(var iter= 0; iter<jobs.length; iter++){
+                job_cards[iter].style.backgroundColor = '#404040'
+                job_cards[iter].style.color = 'white'
+              }
+          }
 
 
       initPopover()
@@ -407,13 +416,16 @@
               //   jobs[i].style.backgroundColor = '#808080'
               
               }
-            if(color === 'rgb(12, 12, 12)') {
+            if(color === 'rgb(26, 26, 26)') {
               document.body.style.backgroundColor = color
               document.getElementById("userInput").style.backgroundColor = '#404040'
               setLocation.style.backgroundColor = '#404040'
               setLocation.style.color = '#808080'
               setCatergory.style.backgroundColor = '#404040'
               setCatergory.style.color =  '#808080'
+              
+              var doc = document.getElementsByClassName('navbar navbar-expand-lg navbar-light bg-light')[0]
+              doc.className = doc.className.replace('navbar navbar-expand-lg navbar-light bg-light', 'navbar navbar-expand-lg navbar-dark bg-dark')
 
               // for(var i = 0; i < 4; i++){
               //   jobs[i].style.backgroundColor = '#808080'

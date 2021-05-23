@@ -239,9 +239,14 @@
             document.getElementById('results').innerHTML = jobList
             numberOfJobs = document.getElementById('results').innerHTML 
             //TODO: Fix the job-cards color
-            if(document.getElementById("body").style.backgroundColor === 'rgb(12, 12, 12)'){
+            if(document.getElementById("body").style.backgroundColor === 'rgb(26, 26, 26)'){
               
-              console.log(document.getElementById('results').getElementsByClassName('list-group-item d-flex justify-content-between align-items-start')[0])
+              let job_cards = document.getElementById('results').getElementsByClassName('list-group-item d-flex justify-content-between align-items-start')
+
+              for(var i= 0; i<numOfJobsToDisplay; i++){
+                job_cards[i].style.backgroundColor = '#404040'
+                job_cards[i].style.color = 'white'
+              }
           
             }
 
@@ -350,7 +355,7 @@
               //   jobs[i].style.backgroundColor = '#808080'
               
               }
-            if(color === 'rgb(12, 12, 12)') {
+            if(color === 'rgb(26, 26, 26)') {
               document.body.style.backgroundColor = color
               document.getElementsByClassName("text-center")[0].style.color = textNewColor
               h2Tag.style.color = textNewColor
