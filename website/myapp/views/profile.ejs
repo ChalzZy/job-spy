@@ -1,51 +1,57 @@
 <%- include('partials/header'); -%>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand"></a>
-            <form class="d-flex">
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand"></a>
+                <form class="d-flex">
             </div>
-        </form>
-    </nav>
+            </form>
+        </nav>
 
-    <div class="row">
-        <div class="col-4">
-          <div class="list-group" id="list-tab" role="tablist">
-            <a class="list-group-item list-group-item-action block" id="home" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Change password</a>
-            <a class="list-group-item list-group-item-action block" id="email" data-toggle="list" href="#list-email" role="tab" aria-controls="email">Change email</a>
-            <a class="list-group-item list-group-item-action block" id="settings" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Settings</a>
-          </div>
-        </div>
-        
-        
-        <div class="col-8">
-          <div class="tab-content" id="nav-tabContent">
-            <!-- Change password -->
-            <div class="tab-pane fade show block" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
-                <div class="card bg-light">
-                    <article class="card-body mx-auto" style="max-width: 400px;"> 
-                    <h4 class="card-title mt-3 text-center pb-3">Change password</h4>
-                        <form class="password-form">
-                            
-                            <!-- Enter current email -->
-                            <div class="form-group input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-                                </div>
-                                <input class="form-control" placeholder="Current Email" type="text" name="email">
-                            </div> 
-                            
-                            <!-- Enter new password -->
-                            <div class="form-group input-group pt-3 pb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-                                </div>
-                                <input class="form-control" placeholder="New password" type="password" name="password">
-                            </div> 
-                            
-                            <!-- Confirm new password -->
-                            <!--
+        <div class="row">
+            <div class="col-4">
+                <div class="list-group" id="list-tab" role="tablist">
+                    <a class="list-group-item list-group-item-action block" id="home" data-toggle="list"
+                        href="#list-home" role="tab" aria-controls="home">Change password</a>
+                    <a class="list-group-item list-group-item-action block" id="email" data-toggle="list"
+                        href="#list-email" role="tab" aria-controls="email">Change email</a>
+                    <a class="list-group-item list-group-item-action block" id="settings" data-toggle="list"
+                        href="#list-settings" role="tab" aria-controls="settings">Settings</a>
+                </div>
+            </div>
+
+
+            <div class="col-8">
+                <div class="tab-content" id="nav-tabContent">
+                    <!-- Change password -->
+                    <div class="tab-pane fade show block" id="list-home" role="tabpanel"
+                        aria-labelledby="list-home-list">
+                        <div class="card bg-light">
+                            <article class="card-body mx-auto" style="max-width: 400px;">
+                                <h4 class="card-title mt-3 text-center pb-3">Change password</h4>
+                                <form class="password-form">
+
+                                    <!-- Enter current email -->
+                                    <div class="form-group input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                                        </div>
+                                        <input class="form-control" placeholder="Current Email" type="text"
+                                            name="email">
+                                    </div>
+
+                                    <!-- Enter new password -->
+                                    <div class="form-group input-group pt-3 pb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                                        </div>
+                                        <input class="form-control" placeholder="New password" type="password"
+                                            name="password">
+                                    </div>
+
+                                    <!-- Confirm new password -->
+                                    <!--
                             <div class="form-group input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
@@ -53,192 +59,203 @@
                                 <input class="form-control" placeholder="Repeat password" type="password">
                             </div> 
                         -->
-                            
-                            <!-- Submit button -->                                      
-                            <div class="d-flex form-group pt-3 justify-content-center">
-                                <button type="submit" class="btn btn-primary btn-block">Update</button>
-                            </div>                                                                  
-                        </form>
-                    </article>
-                </div> 
-            </div> 
-            <!-- Change email -->
-            <div class="tab-pane fade show block" id="list-email" role="tabpanel" aria-labelledby="list-email-list">
-                <div class="card bg-light">
-                    <article class="card-body mx-auto" style="max-width: 400px;"> 
-                    <h4 class="card-title mt-3 text-center pb-3">Change Email</h4>
-                        <form class="email-form">
-                            <!-- Enter current password -->
-                            <div class="form-group input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
-                                </div>
-                                <input class="form-control" placeholder="New Email" type="text" name="email">
-                            </div> 
-                            
-                            <!-- Submit button -->                                      
-                            <div class="d-flex form-group pt-3 justify-content-center">
-                                <button type="submit" class="btn btn-primary btn-block">Edit</button>
-                            </div>                                                                  
-                        </form>
-                    </article>
-                </div> 
-            </div> 
-            <!-- Settings -->
-            <div class="tab-pane fade show block" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
-                <div class="card bg-light">
-                    <article class="card-body mx-auto" style="max-width: 400px;"> 
-                    <h4 class="card-title mt-3 text-center pb-3">Settings</h4>
-                        <form>
-                            <!-- Settings -->
-                            <div class="form-group input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
-                                </div>
-                                <input class="form-control" placeholder="<!-PLACEHOLDER->" type="text">
-                            </div> 
-                            
-                            <!-- Submit button -->                                      
-                            <div class="d-flex form-group pt-3 justify-content-center">
-                                <button type="submit" class="btn btn-primary btn-block">Edit</button>
-                            </div>                                                                  
-                        </form>
-                    </article>
-                </div> 
-            </div> 
+
+                                    <!-- Submit button -->
+                                    <div class="d-flex form-group pt-3 justify-content-center">
+                                        <button type="submit" class="btn btn-primary btn-block">Update</button>
+                                    </div>
+                                </form>
+                            </article>
+                        </div>
+                    </div>
+                    <!-- Change email -->
+                    <div class="tab-pane fade show block" id="list-email" role="tabpanel"
+                        aria-labelledby="list-email-list">
+                        <div class="card bg-light">
+                            <article class="card-body mx-auto" style="max-width: 400px;">
+                                <h4 class="card-title mt-3 text-center pb-3">Change Email</h4>
+                                <form class="email-form">
+                                    <!-- Enter current password -->
+                                    <div class="form-group input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+                                        </div>
+                                        <input class="form-control" placeholder="New Email" type="text" name="email">
+                                    </div>
+
+                                    <!-- Submit button -->
+                                    <div class="d-flex form-group pt-3 justify-content-center">
+                                        <button type="submit" class="btn btn-primary btn-block">Edit</button>
+                                    </div>
+                                </form>
+                            </article>
+                        </div>
+                    </div>
+                    <!-- Settings -->
+                    <div class="tab-pane fade show block" id="list-settings" role="tabpanel"
+                        aria-labelledby="list-settings-list">
+                        <div class="card bg-light">
+                            <article class="card-body mx-auto" style="max-width: 400px;">
+                                <h4 class="card-title mt-3 text-center pb-3">Settings</h4>
+                                <form>
+                                    <!-- Settings -->
+                                    <div class="form-group input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+                                        </div>
+                                        <input class="form-control" placeholder="<!-PLACEHOLDER->" type="text">
+                                    </div>
+
+                                    <!-- Submit button -->
+                                    <div class="d-flex form-group pt-3 justify-content-center">
+                                        <button type="submit" class="btn btn-primary btn-block">Edit</button>
+                                    </div>
+                                </form>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="tab-pane fade " id="list-settings" role="tabpanel" aria-labelledby="list-settings-list"></div>-->
+            </div>
         </div>
-        <!--<div class="tab-pane fade " id="list-settings" role="tabpanel" aria-labelledby="list-settings-list"></div>-->
-    </div>   
-</div>
 
-<%- include('partials/footer'); -%>
+        <%- include('partials/footer'); -%>
 
-<!-- Navbar JavaScript -->
+            <!-- Navbar JavaScript -->
 
-<script>
-    let profile = document.getElementById("home") // 'Change password'
-    let email = document.getElementById("email") // 'Change email'
-    let settings = document.getElementById("settings") // 'Settings'
+            <script>
+                let profile = document.getElementById("home") // 'Change password'
+                let email = document.getElementById("email") // 'Change email'
+                let settings = document.getElementById("settings") // 'Settings'
 
-    profile.addEventListener("click", userPassword)
-    email.addEventListener('click', userEmail)
-    settings.addEventListener("click", userSettings)
+                profile.addEventListener("click", userPassword)
+                email.addEventListener('click', userEmail)
+                settings.addEventListener("click", userSettings)
 
-    /*
-        Change Password
-    */
-    const form = document.querySelector('.password-form')
-    //const emailError = document.querySelector('.email.error')
-    //const passwordError = document.querySelector('.password.error')
+                /*
+                    Change Password
+                */
+                const form = document.querySelector('.password-form')
+                //const emailError = document.querySelector('.email.error')
+                //const passwordError = document.querySelector('.password.error')
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-    
-    // reset errors
-    //emailError.textContent = ''
-    //passwordError.textContent = ''
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
 
-    // get the values
-    //const email = form.email.value
-    const password = form.password.value
-    const email = form.email.value
+                    // reset errors
+                    //emailError.textContent = ''
+                    //passwordError.textContent = ''
 
-        try {
-            const res = await fetch('/password', {
-                method: 'POST',
-                body: JSON.stringify({ 
-                    email, 
-                    password,
-                }),
-                headers: {'Content-Type': 'application/json'}
-            })
-            const data = await res.json()
-            if (data.isPasswordChanged) {
-                location.assign('/login')
-            }
-        } catch (err) {
-            console.log(err)
-        }
-    })
+                    // get the values
+                    //const email = form.email.value
+                    const password = form.password.value
+                    const email = form.email.value
 
-    /**
-    * Navigation JavaScript
-    **/
-    // Password
-    function userPassword() {
+                    try {
+                        const res = await fetch('/password', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                email,
+                                password,
+                            }),
+                            headers: { 'Content-Type': 'application/json' }
+                        })
+                        const data = await res.json()
+                        if (data.isPasswordChanged) {
+                            location.assign('/login')
+                        }
+                    } catch (err) {
+                        console.log(err)
+                    }
+                })
 
-        // Email tab not active
-        let emailTab = document.getElementById('email') 
-        emailTab.className = emailTab.className.replace('active', 'block')
-        // Email content not active
-        let emailContent = document.getElementById('list-email') 
-        emailContent.className = emailContent.className.replace('active', 'block')
+                /**
+                * Navigation JavaScript
+                **/
+                // Password
+                function userPassword() {
 
-        // not active Settings tab
-        let userSettingsChange = document.getElementById('settings')
-        userSettingsChange.className = userSettingsChange.className.replace('active', 'block')
-        // not active Settings content
-        let userTab = document.getElementById('list-settings')
-        userTab.className = userTab.className.replace('active', 'block')
+                    // Email tab not active
+                    let emailTab = document.getElementById('email')
+                    emailTab.className = emailTab.className.replace('active', 'block')
+                    // Email content not active
+                    let emailContent = document.getElementById('list-email')
+                    emailContent.className = emailContent.className.replace('active', 'block')
 
-        // Profile tab
-        let maptab = document.getElementById('home') 
-        maptab.className = maptab.className.replace('block', 'active')
-        // Profile content
-        let showProfile = document.getElementById('list-home') 
-        showProfile.className = showProfile.className.replace('block', 'active')
+                    // not active Settings tab
+                    let userSettingsChange = document.getElementById('settings')
+                    userSettingsChange.className = userSettingsChange.className.replace('active', 'block')
+                    // not active Settings content
+                    let userTab = document.getElementById('list-settings')
+                    userTab.className = userTab.className.replace('active', 'block')
 
-        console.log(emailContent.className)
+                    // Profile tab
+                    let maptab = document.getElementById('home')
+                    maptab.className = maptab.className.replace('block', 'active')
+                    // Profile content
+                    let showProfile = document.getElementById('list-home')
+                    showProfile.className = showProfile.className.replace('block', 'active')
 
-    }
+                    console.log(emailContent.className)
 
-    //Email
-    function userEmail() {
-        //not active password
-        let changePass = document.getElementById('home') 
-        changePass.className = changePass.className.replace('active', 'block')
-        //Not active pasword content
-        let userProfile = document.getElementById('list-home') 
-        userProfile.className = userProfile.className.replace('active', 'block')
+                }
 
-        // not active Settings tab
-        let userSettingsChange = document.getElementById('settings')
-        userSettingsChange.className = userSettingsChange.className.replace('active', 'block')
-        // not active Settings content
-        let userTab = document.getElementById('list-settings')
-        userTab.className = userTab.className.replace('active', 'block')
+                //Email
+                function userEmail() {
+                    //not active password
+                    let changePass = document.getElementById('home')
+                    changePass.className = changePass.className.replace('active', 'block')
+                    //Not active pasword content
+                    let userProfile = document.getElementById('list-home')
+                    userProfile.className = userProfile.className.replace('active', 'block')
 
-        // Email tab
-        let maptab = document.getElementById('email') 
-        maptab.className = maptab.className.replace('block', 'active')
-        // Email content
-        let showProfile = document.getElementById('list-email') 
-        showProfile.className = showProfile.className.replace('block', 'active')
-    }
+                    // not active Settings tab
+                    let userSettingsChange = document.getElementById('settings')
+                    userSettingsChange.className = userSettingsChange.className.replace('active', 'block')
+                    // not active Settings content
+                    let userTab = document.getElementById('list-settings')
+                    userTab.className = userTab.className.replace('active', 'block')
 
-    //Settings
-    function userSettings(){
+                    // Email tab
+                    let maptab = document.getElementById('email')
+                    maptab.className = maptab.className.replace('block', 'active')
+                    // Email content
+                    let showProfile = document.getElementById('list-email')
+                    showProfile.className = showProfile.className.replace('block', 'active')
+                }
 
-        //not active password
-        let changePass = document.getElementById('home') 
-        changePass.className = changePass.className.replace('active', 'block')
-        //Not active pasword content
-        let userProfile = document.getElementById('list-home') 
-        userProfile.className = userProfile.className.replace('active', 'block')
+                //Settings
+                function userSettings() {
 
-        // Email tab not active
-        let emailTab = document.getElementById('email') 
-        emailTab.className = emailTab.className.replace('active', 'block')
-        // Email content not active
-        let emailContent = document.getElementById('list-email') 
-        emailContent.className = emailContent.className.replace('active', 'block')
+                    //not active password
+                    let changePass = document.getElementById('home')
+                    changePass.className = changePass.className.replace('active', 'block')
+                    //Not active pasword content
+                    let userProfile = document.getElementById('list-home')
+                    userProfile.className = userProfile.className.replace('active', 'block')
 
-        // Settings tab
-        let userSettingsChange = document.getElementById('settings')
-        userSettingsChange.className = userSettingsChange.className.replace('block', 'active')
-        // Settings content
-        let userTab = document.getElementById('list-settings')
-        userTab.className = userTab.className.replace('block', 'active')
-        
-    }
-</script>
+                    // Email tab not active
+                    let emailTab = document.getElementById('email')
+                    emailTab.className = emailTab.className.replace('active', 'block')
+                    // Email content not active
+                    let emailContent = document.getElementById('list-email')
+                    emailContent.className = emailContent.className.replace('active', 'block')
+
+                    // Settings tab
+                    let userSettingsChange = document.getElementById('settings')
+                    userSettingsChange.className = userSettingsChange.className.replace('block', 'active')
+                    // Settings content
+                    let userTab = document.getElementById('list-settings')
+                    userTab.className = userTab.className.replace('block', 'active')
+
+                }
+                var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+                (function () {
+                    var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+                    s1.async = true;
+                    s1.src = 'https://embed.tawk.to/60ab0ec7a4114e480ad07c92/1f6e33eqn';
+                    s1.charset = 'UTF-8';
+                    s1.setAttribute('crossorigin', '*');
+                    s0.parentNode.insertBefore(s1, s0);
+                })();
+            </script>
