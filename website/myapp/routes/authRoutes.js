@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const authController = require('../controllers/authController')
-
 const router = Router()
+const cors = require('cors')
 
 // registration
 router.get('/signup', authController.signup_get)
@@ -10,6 +10,10 @@ router.post('/signup', authController.signup_post)
 // login
 router.get('/login', authController.login_get)
 router.post('/login', authController.login_post)
+
+// LinkedIn OAuth
+router.get('/auth/linkedin/callback', cors(), authController.linkedin_get)
+router.post('/oauth/v2/accessToken', authController.linkedin_post)
 
 // logout
 router.get('/logout', authController.logout_get)

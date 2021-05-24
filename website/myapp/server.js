@@ -6,8 +6,12 @@ const { requireAuth, checkUser } = require('./middleware/authMidderware')
 const MongoClient = require('mongodb').MongoClient
 require('dotenv').config()
 const nodemailer = require('nodemailer')
+const cors = require('cors')
 
 const app = express()
+
+app.use(cors());
+app.options('*', cors())
 
 // middleware
 app.use(express.static('public'))

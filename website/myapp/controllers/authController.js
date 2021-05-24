@@ -1,6 +1,8 @@
+const url = require('url')
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+const OAuth = require('oauth')
 const SECRET = 'nw8d395d243nj8h90!@#*&!)@(#*0wnp9m8edruq2o98i5'
 
 // handle errors
@@ -47,6 +49,24 @@ module.exports.signup_get = (req, res) => {
 
 module.exports.login_get = (req, res) => {
   res.render('login');
+}
+
+module.exports.linkedin_get = (req, res, next) => {
+  //const current_url = req.query.code
+  //console.log('LinkedIn Code: ' + current_url)
+
+  res.render('linkedinredirect')
+}
+
+module.exports.linkedin_post = async (req, res) => {
+  //const current_url = req.query.code
+  //console.log('LinkedIn Code: ' + current_url)
+  const { grant } = req.body
+
+
+
+  console.log('working'+grant)
+
 }
 
 module.exports.signup_post = async (req, res) => {
