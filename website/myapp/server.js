@@ -10,8 +10,12 @@ const cors = require('cors')
 
 const app = express()
 
+/*
 app.use(cors());
-app.options('*', cors())
+app.options('linkedin.com', cors())
+*/
+
+
 
 // middleware
 app.use(express.static('public'))

@@ -23,12 +23,11 @@
             const res = fetch('https://www.linkedin.com/oauth/v2/accessToken?client_id=869xpruolc8wci&client_secret=MaKPW17zsAAO4chc&grant_type=authorization_code&redirect_uri=http://localhost:3000/auth/linkedin/callback&code='+page_type, {
                 method: 'POST',
                 state: state,
-                host: 'api.linkedin.com',
+                host: 'linkedin.com',
                 headers: {'Content-Type': 'x-www-form-urlencoded'}
-            })
-            console.log('success!')
-            const data = JSON.parse(res)
-            console.log(JSON.stringify(data, 0, 2))
+            }) 
+            .then(response => response.json())
+            .then(data => console.log(data));
         } catch (err) {
             console.log(err)
         }

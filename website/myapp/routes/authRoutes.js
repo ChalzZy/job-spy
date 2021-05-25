@@ -12,7 +12,13 @@ router.get('/login', authController.login_get)
 router.post('/login', authController.login_post)
 
 // LinkedIn OAuth
-router.get('/auth/linkedin/callback', cors(), authController.linkedin_get)
+var corsOptions = {
+    origin: '*',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  }
+
+
+router.get('/auth/linkedin/callback', cors(corsOptions), authController.linkedin_get)
 router.post('/oauth/v2/accessToken', authController.linkedin_post)
 
 // logout
