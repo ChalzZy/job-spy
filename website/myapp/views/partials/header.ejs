@@ -8,12 +8,13 @@
 
     <!-- Bootstrap CSS/JS -->
     <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
-    
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
         crossorigin="anonymous"></script>
+    <script src="https://js.stripe.com/v3/"></script>
 
     <!--<link rel="stylesheet" href="css/index.css" />-->
     <link rel="icon" type="image/x-icon" href="JSIcon.png" />
@@ -35,40 +36,41 @@
                 <img src="JSLogo.png" alt="Home" height="40" class="d-inline-block align-text-top">
             </a>
             </button>
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <form class="d-flex my-2">
-                        </form>
-                    </li>
-                </ul>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <form class="d-flex my-2">
+                    </form>
+                </li>
+            </ul>
 
-                <!--My account drop down for when the user is signed in-->
-                <% if (user) { %>
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            My Account
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                            <li><a class="dropdown-item" href="/profile">Profile</a></li>
-                            <li><a class="dropdown-item" href="/settings">Settings</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="/logout">Sign out</a></li>
-                        </ul>
-                    </div>
-                    <!--Welcome text-->
-                    <span class="navbar-text mx-3 d-none d-lg-block">
-                        Welcome, <%= user.email -%>
-                    </span>
+            <!--My account drop down for when the user is signed in-->
+            <% if (user) { %>
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <%= user.email -%>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                        <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                        <li><a class="dropdown-item d-lg-none" href="/createpost">Create Job Post</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/logout">Sign out</a></li>
+                    </ul>
+                </div>
+                <!--Create Job Post Button-->
+                <a class="btn btn-primary mx-2 d-none d-lg-block" href="/createpost" role="button">Create Job Post</a>
 
 
-                    <!--Sign in and Sign up buttons for when the user is not signed in-->
-                    <% } else { %>
-                        <a class="btn btn-outline-primary mx-2" href="/login" role="button">Sign in</a>
-                        <a class="btn btn-primary mx-2 d-none d-lg-block" href="/signup" role="button">Sign up</a>
-                        <% } %>
-            </div>
-        
+                <!--Sign in and Sign up buttons for when the user is not signed in-->
+                <% } else { %>
+                    <a class="btn btn-outline-primary mx-2 d-none d-lg-block" href="/login" role="button">Sign in</a>
+                    <a class="btn btn-outline-primary mx-2" href="/signup" role="button">Sign up</a>
+                    <a class="btn btn-primary mx-2 d-lg-none" href="/createpost" role="button">Post Job</a>
+                    <a class="btn btn-primary mx-2 d-none d-lg-block" href="/createpost" role="button">Create Job
+                        Post</a>
+                    <% } %>
+        </div>
+
     </nav>

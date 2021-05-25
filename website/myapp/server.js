@@ -6,6 +6,7 @@ const { requireAuth, checkUser } = require('./middleware/authMidderware')
 const MongoClient = require('mongodb').MongoClient
 require('dotenv').config()
 const nodemailer = require('nodemailer')
+const stripe = require('stripe')('sk_test_51IuaGBBnkafDP7Dpz1MrzuRGBZLqg9ylrzC6pHhePG8LEbqApebaAQMLPqiBY8pCE4SP3UNZypM6icUkT9D81AHE00zmXqpEED');
 
 const app = express()
 
@@ -50,38 +51,65 @@ app.get('/data', function (req, res) {
         db.close()
       })
   })
+})
 
-  // report/email funtionality
-  var email = 'jobspyreport@gmail.com';
+// report/email funtionality
+var email = 'jobspyreport@gmail.com';
 
-  var transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-      user: email,
-      pass: process.env.PASSWORD,
-    },
-  })
+var transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    user: email,
+    pass: process.env.PASSWORD,
+  },
+})
 
-  app.post('/report', (request, response) => {
-    const data = request.body.url
-    const userData = request.body.user
-    console.log(userData + ' ' + data + ' has been reported.')
-    var reportData = JSON.stringify(data)
-    const date = new Date();
+app.post('/report', (request, response) => {
+  const data = request.body.url
+  const userData = request.body.user
+  console.log(userData + ' ' + data + ' has been reported.')
+  var reportData = JSON.stringify(data)
+  const date = new Date();
 
-    var mailOptions = {
-      from: 'jobspyreport@gmail.com',
-      to: 'jobspyreport@gmail.com',
-      subject: 'Report',
-      text: userData + ' has reported ' + reportData + ' on ' + date + '.',
+  var mailOptions = {
+    from: 'jobspyreport@gmail.com',
+    to: 'jobspyreport@gmail.com',
+    subject: 'Report',
+    text: userData + ' has reported ' + reportData + ' on ' + date + '.',
+  }
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error)
+    } else {
+      console.log('Email sent: ' + info.response)
     }
-
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error)
-      } else {
-        console.log('Email sent: ' + info.response)
-      }
-    })
   })
 })
+
+// Stripe payment gateway
+const YOUR_DOMAIN = 'http://localhost:3000';
+
+app.post('/create-checkout-session', async (req, res) => {
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    line_items: [
+      {
+        price_data: {
+          currency: 'nzd',
+          product_data: {
+            name: 'Featured Job Listing',
+            images: ['https://i.imgur.com/A8c7UBN.png'],
+          },
+          unit_amount: 100,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: `${YOUR_DOMAIN}/createpost`,
+    cancel_url: `${YOUR_DOMAIN}/createpost`,
+  });
+
+  res.json({ id: session.id });
+});
