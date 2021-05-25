@@ -17,8 +17,13 @@ router.get('/logout', authController.logout_get)
 // job search
 router.get('/jobsearch', authController.jobsearch_get)
 
+//settings
+router.get('/settings', authController.settings_get_page)
+
 // profile page
 router.get('/profile', authController.profile_get)
+router.post('/profile', authController.profile_post)
+router.delete('/delete', authController.profile_delete)
 
 // change password
 router.get('/password', authController.password_get)
@@ -33,4 +38,4 @@ router.get('/postlisting', authController.postlisting_get)
 // create post
 router.get('/createpost', authController.createpost_get)
 
-module.exports = router;
+module.exports = router

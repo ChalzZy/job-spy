@@ -26,6 +26,9 @@
         }
     </style>
     <!--<script defer src="js/script.js"></script>-->
+    <%if (user) {%>
+        <script type="text/javascript" src="../testjs/testDarkMode.js"></script>
+        <% } %>
 </head>
 
 <body id="body">
@@ -52,6 +55,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
                         <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                        <li><a class="dropdown-item" href="/settings">Settings</a></li>
                         <li><a class="dropdown-item d-lg-none" href="/createpost">Create Job Post</a></li>
                         <li>
                             <hr class="dropdown-divider">
