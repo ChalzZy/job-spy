@@ -1,6 +1,6 @@
 <%- include('partials/header'); -%>
 
-  <body>
+<body>
     <div id="listingPage" class="container-sm mt-4" style="max-width: 75%">
       <nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
         <ol class="breadcrumb w-75">
@@ -135,7 +135,7 @@
 
         <div id="externalLink" class="mb-3" hidden>
           <label for="link" class="form-label">External Link</label>
-          <input type="text" class="form-control" id="link" placeholder="eg. www.seek.com/listings/12345">
+          <input type="text" class="form-control" id="link" placeholder="eg. http://www.seek.com/listings/12345">
           <p id="externalLinkWarning" class="fw-light" style="color: red; font-size:90%"></p>
         </div>
 
@@ -173,8 +173,8 @@
         </div>
 
         </p>
-        <div id="purchase" class="d-flex justify-content-end mb-5"><button type="button" class="btn btn-primary"
-            onclick="">Purchase Job Post</button></div>
+        <div class="d-flex justify-content-end mb-5"><button type="button" class="btn btn-primary"
+            id="checkout-button">Purchase Job Post</button></div>
       </div>
 
     </div>
@@ -198,6 +198,7 @@
     let externalLink = ''
     let email = ''
     let phoneNumber = ''
+    let applyPreviewElements = ''
 
     function start() {
       document.getElementById('listingPage').hidden = false
@@ -274,7 +275,7 @@
         jobDescription = jobDescriptionValue
 
         if (workTypeValue != 'Choose a Work Type') {
-          
+
           workType = workTypeValue
         }
         else {
@@ -338,6 +339,11 @@
             document.getElementById('applicationMethodWarning').innerHTML = ''
           }
 
+          if (currentSetting == 'External Link' && !(externalLinkValue.includes('https://') || externalLinkValue.includes('http://'))) {
+            document.getElementById('externalLinkWarning').innerHTML = 'Please select a valid link.'
+            return
+          }
+
           if (externalLinkValue == '' && currentSetting == 'External Link') {
             document.getElementById('externalLinkWarning').innerHTML = 'Please enter an external link.'
             return
@@ -348,15 +354,16 @@
             changePage('confirmationPage')
           }
 
-          if (currentSetting == 'Email/Phone Number' && emailValue == '' && numberValue == '') {
-            document.getElementById('emailNumberWarning').innerHTML = 'Please enter your application email or phone number.'
+          if (currentSetting == 'Email/Phone Number' && emailValue == '' || numberValue == '') {
+            document.getElementById('emailNumberWarning').innerHTML = 'Please enter your application email and phone number.'
             return
           }
 
-          else {
+          else if (emailValue != '' && numberValue != '' && currentSetting == 'Email/Phone Number') {
             email = emailValue
             phoneNumber = numberValue
             document.getElementById('emailNumberWarning').innerHTML = ''
+            applyPreviewElements = '<p class="fs-4">Email: ' + email + '</p> <p class="fs-4">Contact Number: ' + phoneNumber + '</p>'
             changePage('confirmationPage')
           }
         })
@@ -375,6 +382,11 @@
             document.getElementById('applicationMethodWarning').innerHTML = ''
           }
 
+          if (currentSetting == 'External Link' && !(externalLinkValue.includes('https://') || externalLinkValue.includes('http://'))) {
+            document.getElementById('externalLinkWarning').innerHTML = 'Please select a valid link.'
+            return
+          }
+
           if (externalLinkValue == '' && currentSetting == 'External Link') {
             document.getElementById('externalLinkWarning').innerHTML = 'Please enter an external link.'
             return
@@ -385,15 +397,16 @@
             changePage('confirmationPage')
           }
 
-          if (currentSetting == 'Email/Phone Number' && emailValue == '' && numberValue == '') {
-            document.getElementById('emailNumberWarning').innerHTML = 'Please enter your application email or phone number.'
+          if (currentSetting == 'Email/Phone Number' && emailValue == '' || numberValue == '') {
+            document.getElementById('emailNumberWarning').innerHTML = 'Please enter your application email and phone number.'
             return
           }
 
-          else {
+          else if (emailValue != '' && numberValue != '' && currentSetting == 'Email/Phone Number') {
             email = emailValue
             phoneNumber = numberValue
             document.getElementById('emailNumberWarning').innerHTML = ''
+            applyPreviewElements = email + ' ' + phoneNumber
             changePage('confirmationPage')
           }
         })
@@ -405,7 +418,6 @@
             document.getElementById('externalLink').hidden = false
             document.getElementById('emailNumber').hidden = true
             currentSetting = 'External Link'
-
           }
           else if (ApplicationMethodValue == 'Email/Phone Number') {
             document.getElementById('externalLink').hidden = true
@@ -467,7 +479,24 @@
         }
 
         let jobText = `
-                  <div class="modal fade" id="thanksModal" tabindex="-1" aria-labelledby="thanksModalLabel" aria-hidden="true">
+        <div class="modal fade" id="applyPreview" tabindex="-1" aria-labelledby="applyPreviewLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title">Apply</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          ${applyPreviewElements}
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      </div>
+                      </div>
+                  </div>
+                  </div>
+
+                  <div class="modal fade" id="thanksModal" tabindex="-1" aria-labelledby="thanksModalLabel" aria-hidden="true" data-bs-dismiss="modal" data-bs-toggle="modal">
                   <div class="modal-dialog">
                       <div class="modal-content">
                       <div class="modal-header">
@@ -484,7 +513,7 @@
                   </div>
                   </div>
 
-              <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
+              <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true" data-bs-dismiss="modal" data-bs-toggle="modal">
               <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                   <div class="modal-content ">
                       <div class="modal-header">
@@ -502,7 +531,8 @@
                           <a tabindex="0" class="btn btn-outline-primary d-none d-lg-block" role="button" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-content="Copied to clipboard"><i class="far fa-copy"></i></a>
                           <a tabindex="0" class="btn btn-outline-primary d-lg-none" role="button"><i class="fas fa-share"></i></i></a>
                           <button type="button" class="btn btn-outline-primary">♡</button>
-                          <a href="#"><button type="button" class="btn btn-primary">Apply</button></a>
+                          <a href="#"><button data-bs-toggle="modal"
+                    data-bs-target="#applyPreview"  type="button" class="btn btn-primary" data-bs-dismiss="modal">Apply</button></a>
                       </div>
                   </div>
               </div>
@@ -521,13 +551,10 @@
           jobText += `<button style="border-radius: 16px; font-size: 0.9em" type="button" class="btn btn-primary btn-sm py-0">${tags[tagIndex]}</button> `
         }
         jobText += `<button style="border-radius: 16px; font-size: 0.9em" type="button" class="btn btn-light btn-sm py-0">${jobCategory}</button> `
-        console.log('notwor ' + workType)
-        if(workType != ''){
-          console.log('works ' + workType)
+
+        if (workType != '') {
           jobText += `<button style="border-radius: 16px; font-size: 0.9em" type="button" class="btn btn-light btn-sm py-0">${workType}</button> `
         }
-        
-
 
         jobText += `
                 </div>
@@ -545,16 +572,38 @@
         document.getElementById('preview').innerHTML = jobText
       }
 
-
-
-
       document.getElementById(currentPage).hidden = true
       document.getElementById(page).hidden = false
       document.getElementById(page + 'BC').disabled = false
       currentPage = page
     }
 
-    start()
+    // Create an instance of the Stripe object with your publishable API key
+    var stripe = Stripe("pk_test_51IuaGBBnkafDP7DpOmAwgQF9B5Kl4suwCQn3BnAbS87Ue0SXwVRq4k1vca22PQpa0dqd7A7dLNu2bYPRXwmVdpTS00hkeGPdBe");
+    var checkoutButton = document.getElementById("checkout-button");
+
+    checkoutButton.addEventListener("click", function () {
+      fetch("/create-checkout-session", {
+        method: "POST",
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (session) {
+          return stripe.redirectToCheckout({ sessionId: session.id });
+        })
+        .then(function (result) {
+          // If redirectToCheckout fails due to a browser or network
+          // error, you should display the localized error message to your
+          // customer using error.message.
+          if (result.error) {
+            alert(result.error.message);
+          }
+        })
+        .catch(function (error) {
+          console.error("Error:", error);
+        });
+    });
 
 
   </script>
