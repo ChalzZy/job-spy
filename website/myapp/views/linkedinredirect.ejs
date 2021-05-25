@@ -14,18 +14,21 @@
         const queryString = window.location.search
         const urlParams = new URLSearchParams(queryString)
         const page_type = urlParams.get("code")
+        const state = urlParams.get("state")
         console.log('queryString: ' + queryString)
         console.log('urlParams: ' + urlParams)
         console.log('page_type: ' + page_type)
+        
         try {
             const res = fetch('https://www.linkedin.com/oauth/v2/accessToken?client_id=869xpruolc8wci&client_secret=MaKPW17zsAAO4chc&grant_type=authorization_code&redirect_uri=http://localhost:3000/auth/linkedin/callback&code='+page_type, {
                 method: 'POST',
-                host: 'www.linkedin.com',
+                state: state,
+                host: 'api.linkedin.com',
                 headers: {'Content-Type': 'x-www-form-urlencoded'}
             })
             console.log('success!')
             const data = JSON.parse(res)
-            console.log(res)
+            console.log(JSON.stringify(data, 0, 2))
         } catch (err) {
             console.log(err)
         }

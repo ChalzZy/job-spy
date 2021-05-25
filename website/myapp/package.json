@@ -17,6 +17,7 @@
     "mongoose": "^5.9.23",
     "nodemailer": "^6.6.0",
     "oauth": "^0.9.15",
+    "request": "^2.88.2",
     "validator": "^13.5.2"
   },
   "devDependencies": {},
