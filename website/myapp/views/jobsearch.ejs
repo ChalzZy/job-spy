@@ -291,6 +291,44 @@
       'Lead',
     ]
 
+    let jobSalaryDirectory = [
+      {
+        jobName: 'JavaScript',
+        avgSalary: 'Average JavaScript Salary: NZD 45-95k',
+        rating: 'p2.png',
+      },
+      {
+        jobName: 'React',
+        avgSalary: 'Average React Salary: NZD 45-95k',
+        rating: 'p2.png',
+      },
+      {
+        jobName: 'Front End',
+        avgSalary: 'Average Front End Salary: NZD 45-95k',
+        rating: 'p2.png',
+      },
+      {
+        jobName: 'Back End',
+        avgSalary: 'Average Back End Salary: NZD 60-100k',
+        rating: 'p3.png',
+      },
+      {
+        jobName: '.NET',
+        avgSalary: 'Average .NET Salary: NZD 47-98k',
+        rating: 'p2.png',
+      },
+      {
+        jobName: 'Ruby',
+        avgSalary: 'Average Ruby Salary: NZD 68-110k',
+        rating: 'p4.png',
+      },
+      {
+        jobName: 'Mobile',
+        avgSalary: 'Average Mobile Salary: NZD 52-97k',
+        rating: 'p2.png',
+      },
+    ]
+
     for (j; j < pages; j++) {
       if (j == currentPage) {
         document.getElementById(
@@ -375,11 +413,21 @@
                     <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${
                       jobs[i].summary
                     }</div>
-                    
-                    <hr class="dropdown-divider" style="width:30%">
-                    <div class="fw-lighter">Avg. Salary: $50-90k <img src="p1.png" height="15" style="padding-bottom: 2px"></div>
-                    <hr class="dropdown-divider" style="width:30%">
                     `
+
+      for (let jobIndex = 0; jobIndex < jobSalaryDirectory.length; jobIndex++) {
+        if (
+          (
+            jobs[i].jobTitle.toLowerCase() || jobs[i].summary.toLowerCase()
+          ).includes(jobSalaryDirectory[jobIndex].jobName.toLowerCase())
+        ) {
+          jobText += `                    
+                    <hr class="dropdown-divider" style="width:30%">
+                    <div class="fw-lighter">${jobSalaryDirectory[jobIndex].avgSalary} <img src="${jobSalaryDirectory[jobIndex].rating}" height="15" style="padding-bottom: 2px"></div>
+                    <hr class="dropdown-divider" style="width:30%">`
+          break
+        }
+      }
 
       // Assigns each job tags if keywords found in tagDirectory can be matched job's against title & summary
       for (let tagIndex = 0; tagIndex < tagDirectory.length; tagIndex++) {
