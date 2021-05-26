@@ -85,6 +85,10 @@
     </div>
   </div>
   <div id="results" class=""></div>
+  <p class="text-muted text-center" style="padding-top: 10px">
+    Average salary data provided by
+    <a href="http://indeed.com/">Indeed</a>.
+  </p>
   <div class="cover-container d-flex h-100 p-5 mx-auto flex-column text-center">
     <div class="container" id="pages"></div>
   </div>
@@ -292,40 +296,81 @@
     ]
 
     let jobSalaryDirectory = [
+      //KEY: p1 = <40k, p2 = <60k p3 = <100k, p4 = >100k
       {
         jobName: 'JavaScript',
-        avgSalary: 'Average JavaScript Salary: NZD 45-95k',
+        avgSalary: 'Average JavaScript Salary: NZD 79-99k',
+        rating: 'p3.png',
+      },
+      {
+        jobName: 'Senior',
+        avgSalary: 'Average Senior Dev Salary: NZD 84-104k',
+        rating: 'p4.png',
+      },
+      {
+        jobName: 'Web',
+        avgSalary: 'Average Web Salary: NZD 39-59k',
         rating: 'p2.png',
       },
       {
         jobName: 'React',
-        avgSalary: 'Average React Salary: NZD 45-95k',
-        rating: 'p2.png',
+        avgSalary: 'Average React Salary: NZD 59-79k',
+        rating: 'p3.png',
       },
       {
         jobName: 'Front End',
-        avgSalary: 'Average Front End Salary: NZD 45-95k',
+        avgSalary: 'Average Front End Salary: NZD 70-90k',
+        rating: 'p2.png',
+      },
+      {
+        jobName: 'Frontend',
+        avgSalary: 'Average Frontend Salary: NZD 70-90k',
         rating: 'p2.png',
       },
       {
         jobName: 'Back End',
-        avgSalary: 'Average Back End Salary: NZD 60-100k',
+        avgSalary: 'Average Back End Salary: NZD 82-102k',
+        rating: 'p4.png',
+      },
+      {
+        jobName: 'Backend',
+        avgSalary: 'Average Backend Salary: NZD 82-102k',
+        rating: 'p4.png',
+      },
+      {
+        jobName: 'Full Stack',
+        avgSalary: 'Average Full Stack Salary: NZD 61-81k',
+        rating: 'p3.png',
+      },
+      {
+        jobName: 'Fullstack',
+        avgSalary: 'Average Fullstack Salary: NZD 61-81k',
         rating: 'p3.png',
       },
       {
         jobName: '.NET',
-        avgSalary: 'Average .NET Salary: NZD 47-98k',
-        rating: 'p2.png',
+        avgSalary: 'Average .NET Salary: NZD 68-88k',
+        rating: 'p3.png',
       },
       {
         jobName: 'Ruby',
-        avgSalary: 'Average Ruby Salary: NZD 68-110k',
+        avgSalary: 'Average Ruby Salary: NZD 75-110k',
         rating: 'p4.png',
       },
       {
         jobName: 'Mobile',
-        avgSalary: 'Average Mobile Salary: NZD 52-97k',
-        rating: 'p2.png',
+        avgSalary: 'Average Mobile Salary: NZD 60-80k',
+        rating: 'p3.png',
+      },
+      {
+        jobName: 'iOS',
+        avgSalary: 'Average iOS Salary: NZD 60-80k',
+        rating: 'p3.png',
+      },
+      {
+        jobName: 'Android',
+        avgSalary: 'Average Android Salary: NZD 60-80k',
+        rating: 'p3.png',
       },
     ]
 
@@ -415,6 +460,7 @@
                     }</div>
                     `
 
+      // Assigns each card an avg. salary if keywords found in tagDirectory can be matched job's against title & summary
       for (let jobIndex = 0; jobIndex < jobSalaryDirectory.length; jobIndex++) {
         if (
           (
@@ -422,14 +468,14 @@
           ).includes(jobSalaryDirectory[jobIndex].jobName.toLowerCase())
         ) {
           jobText += `                    
-                    <hr class="dropdown-divider" style="width:30%">
+                    <hr class="dropdown-divider" style="width:360px">
                     <div class="fw-lighter">${jobSalaryDirectory[jobIndex].avgSalary} <img src="${jobSalaryDirectory[jobIndex].rating}" height="15" style="padding-bottom: 2px"></div>
-                    <hr class="dropdown-divider" style="width:30%">`
+                    <hr class="dropdown-divider" style="width:360px">`
           break
         }
       }
 
-      // Assigns each job tags if keywords found in tagDirectory can be matched job's against title & summary
+      // Assigns each card job tags if keywords found in tagDirectory can be matched job's against title & summary
       for (let tagIndex = 0; tagIndex < tagDirectory.length; tagIndex++) {
         if (
           (
