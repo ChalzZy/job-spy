@@ -168,9 +168,70 @@
     let jobText = ''
 
     // Build search URL + call the buildJobList method on JSON results if they are valid and displays jobs via 'results'
-    generateSearchResults()
+    if (locationSelectionText == 'Your Location') {
+      generateLocationSearchResults()
+    } else {
+      generateSearchResults()
+    }
 
-    async function generateSearchResults() {
+    function generateSearchResults() {
+      let webhook_url =
+        'https://ap-southeast-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/jobsearchapp-wfuox/service/jobs/incoming_webhook/getJobs'
+
+      // Appends the relevant search terms to the webhook to access search data
+      let url =
+        webhook_url +
+        '?arg=' +
+        searchString +
+        '&location=' +
+        locationSelectionText +
+        '&category=' +
+        categorySelectionText
+
+      fetch(url)
+        .then(function (response) {
+          if (!response.ok) {
+            console.log(response)
+            jobText += `<center><h3>Status: ${response.status}</h3></center>`
+            if (response.json.length === 0)
+              jobText += `<center><p>Please enter a search term.</p></center>`
+            document.getElementById('results').innerHTML = jobText
+            throw Error(response.statusText)
+          }
+          return response.json()
+        })
+        .then(function (jobJSON) {
+          if (jobJSON['$undefined'] === true) {
+            console.log('No results fetched.')
+          } else {
+            console.log('Results fetched...')
+            if (jobJSON.length !== 0) {
+              jobText = ' jobs found.'
+              if (jobJSON.length == 1) {
+                jobText = ' job found.'
+              }
+              console.log('Search results found: ' + jobJSON.length)
+              document.getElementById('resultsFound').innerHTML =
+                jobJSON.length + jobText
+              jobs = jobJSON
+              jobText = buildJobList(defaultPage)
+            } else {
+              jobText += `<center><h3>No results.</h3></center>`
+              jobText += `<center><p>Please try again.</p></center>`
+            }
+          }
+          document.getElementById('results').style.display = 'block'
+          document.getElementById('results').innerHTML = jobText
+          document.getElementById('loading').style.display = 'none'
+          getModal(loadModal)
+          initPopover()
+        })
+        .catch(function (error) {
+          console.log('Error: ', error)
+        })
+    }
+
+    async function generateLocationSearchResults() {
       // Makes sure city data is fetched prior to commencing method
       const cityDelay = await fetch('https://geolocation-db.com/json/')
 
