@@ -5,6 +5,8 @@ const bcrypt = require('bcrypt')
 const fetch = require('node-fetch')
 const { stringify } = require('querystring')
 const SECRET = 'nw8d395d243nj8h90!@#*&!)@(#*0wnp9m8edruq2o98i5'
+require('dotenv').config()
+const captchaSecretKey = process.env.CAPTCHA
 
 // handle errors
 const handleErrors = (err) => {
@@ -68,8 +70,6 @@ module.exports.signup_post = async (req, res) => {
 
 module.exports.login_post = async (req, res) => {
     const { email, password, captcha } = req.body
-
-    const captchaSecretKey = '6LcxdPMaAAAAAO5HthlevvRYGqQ-_vr78XnWAcaf'
 
     if (!req.body.captcha) {
         return res.json({ success: false, msg: 'Please select captcha' })
