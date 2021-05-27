@@ -55,7 +55,20 @@ module.exports.login_get = (req, res) => {
 }
 
 module.exports.signup_post = async (req, res) => {
-    const { email, password } = req.body
+    const { email, password, captcha } = req.body
+
+    if (!req.body.captcha) {
+        return res.json({ success: false, msg: 'Please select captcha' })
+    }
+
+    const query = stringify({
+        secret: captchaSecretKey,
+        response: req.body.captcha,
+        remoteip: req.connection.remoteAddres
+    })
+    const verifyURL = `https://google.com/recaptcha/api/siteverify?${query}`
+
+    const body = await fetch(verifyURL).then(res => res.json())
 
     try {
         const user = await User.create({ email, password })
@@ -87,7 +100,6 @@ module.exports.login_post = async (req, res) => {
     if (body.success !== undefined && !body.success) {
         return res.json({ success: false, msg: 'Failed captcha verification' })
     }
-
 
     try {
         const user = await User.login(email, password)
