@@ -2,7 +2,11 @@ const User = require('../models/User')
 const jwt = require('jsonwebtoken')
 const userFavourites = require('../models/userFavourites')
 const bcrypt = require('bcrypt')
+const fetch = require('node-fetch')
+const { stringify } = require('querystring')
 const SECRET = 'nw8d395d243nj8h90!@#*&!)@(#*0wnp9m8edruq2o98i5'
+require('dotenv').config()
+const captchaSecretKey = process.env.CAPTCHA
 
 // handle errors
 const handleErrors = (err) => {
@@ -51,7 +55,20 @@ module.exports.login_get = (req, res) => {
 }
 
 module.exports.signup_post = async (req, res) => {
-    const { email, password } = req.body
+    const { email, password, captcha } = req.body
+
+    if (!req.body.captcha) {
+        return res.json({ success: false, msg: 'Please select captcha' })
+    }
+
+    const query = stringify({
+        secret: captchaSecretKey,
+        response: req.body.captcha,
+        remoteip: req.connection.remoteAddres
+    })
+    const verifyURL = `https://google.com/recaptcha/api/siteverify?${query}`
+
+    const body = await fetch(verifyURL).then(res => res.json())
 
     try {
         const user = await User.create({ email, password })
@@ -65,13 +82,31 @@ module.exports.signup_post = async (req, res) => {
 }
 
 module.exports.login_post = async (req, res) => {
-    const { email, password } = req.body
+    const { email, password, captcha } = req.body
+
+    if (!req.body.captcha) {
+        return res.json({ success: false, msg: 'Please select captcha' })
+    }
+
+    const query = stringify({
+        secret: captchaSecretKey,
+        response: req.body.captcha,
+        remoteip: req.connection.remoteAddres
+    })
+    const verifyURL = `https://google.com/recaptcha/api/siteverify?${query}`
+
+    const body = await fetch(verifyURL).then(res => res.json())
+
+    if (body.success !== undefined && !body.success) {
+        return res.json({ success: false, msg: 'Failed captcha verification' })
+    }
 
     try {
         const user = await User.login(email, password)
         const token = createToken(user._id)
         res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
         res.status(200).json({ user: user._id })
+        res.json({ success: true, msg: 'Captcha passed' })
     } catch (err) {
         const errors = handleErrors(err)
         res.status(400).json({ errors })
