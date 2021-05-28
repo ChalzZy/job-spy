@@ -50,13 +50,14 @@
 
     </div>
     <div class="container-sm recent-job-list mx-auto" data-url="/data" style="padding-bottom: 30px">
-      <p class="lead text-center">Recent Job Listings:</p>
+      <p class="lead text-center">Featured Job Listings:</p>
       <ol class="list-group list-group">
         <div class="d-flex justify-content-center">
           <div id="loading" class="spinner-border text-primary my-5" style="width: 3rem; height: 3rem;" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>
         </div>
+        <div id="featured" class=""></div>
         <div id="results" class=""></div>
       </ol>
     </div>
@@ -135,9 +136,12 @@
        * Populates the job list with most recent jobs from DB
        */
       async function listRecentJobs() {
+        const responseFeatured = await fetch('/featured')
         const response = await fetch('/data')
+        let featuredJobList = ''
         let jobList = ''
 
+        const dataFeatured = await responseFeatured.json()
         const data = await response.json()
 
         // List of tags which will be applied to each job listing if they contain the matching keyword
@@ -166,6 +170,129 @@
           'iOS',
           'Android',
         ]
+
+        for (i = dataFeatured.length - 1; i >= 0; i--) {
+          //Adds job information if included
+          let info = ''
+          if (`${dataFeatured[i].jobData.salary}` != '') {
+            info += `<hr class="dropdown-divider" style="width:360px">
+                    <div class="fw-lighter" id="salary">${dataFeatured[i].jobData.salaryType} Salary: ${dataFeatured[i].jobData.salary}</div>
+                    <hr class="dropdown-divider" style="width:360px">`
+          }
+
+          let applyInfo = ''
+           //Sets the relavant apply button depending on if it is an external link or email/phone number
+          if (`${dataFeatured[i].jobData.currentSetting}` == 'External Link') {
+            applyInfo = `<a href="${dataFeatured[i].jobData.link}"><button type="button" class="btn btn-primary">Apply</button></a>`
+          }
+          else if (`${dataFeatured[i].jobData.currentSetting}` == 'Email/Phone Number'){
+            featuredJobList += `<div class="modal fade" id="applyPreview${[i]}" tabindex="-1" aria-labelledby="applyPreviewLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title">Apply</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <p>Contact details to apply for ${dataFeatured[i].jobData.jobTitle} position at ${dataFeatured[i].jobData.company}.</p>
+                        <p class="fs-5">Email: <a href = "mailto: ${dataFeatured[i].jobData.email}">${dataFeatured[i].jobData.email}</a></p>
+                        <p class="fs-5">Contact Number: <a href="tel:+${dataFeatured[i].jobData.phoneNumber}">${dataFeatured[i].jobData.phoneNumber}</a></p>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      </div>
+                      </div>
+                  </div>
+                  </div>`
+            applyInfo = `<a href="#"><button data-bs-toggle="modal"
+                    data-bs-target="#applyPreview${[i]}" type="button" class="btn btn-primary" data-bs-dismiss="modal">Apply</button></a>`
+          }
+
+          featuredJobList += `
+                <div class="modal fade" id="thanksModal" tabindex="-1" aria-labelledby="thanksModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="thanksModalLabel">Thank you for reporting.</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        If we find this content is inappropriate, we will remove it.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+            <div class="modal fade" id="modal${[
+              i,
+            ]}" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <div class="fw-lighter" id="job-title"><p></p></div>
+                        <h5 class="modal-title" id="applyModalLabel"><div class="fw-lighter fs-6">${dataFeatured[i].jobData.company
+            } - ${dataFeatured[i].jobData.location}</div> ${dataFeatured[i].jobData.jobTitle}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            ${dataFeatured[i].jobData.summary}
+
+                            ${info}
+                        </p>
+                        <div  class="fw-light">Is this content inappropriate? <a onclick="report('A user', '${dataFeatured[i].jobData._id
+            }, ${dataFeatured[i].jobData.jobTitle}, ${dataFeatured[i].jobData.company}, ${dataFeatured[i].jobData.summary
+            }: ${dataFeatured[i].jobData.link
+            }')" href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#thanksModal">Report</a>.</div>
+                    </div>
+                    <div class="modal-footer">
+                        <a onclick="copyClipboard()" tabindex="0" class="btn btn-outline-primary d-none d-lg-block" role="button" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-content="Copied to clipboard"><i class="far fa-copy"></i></a>
+                        <a onclick="share('${dataFeatured[i].jobData.jobTitle}')" tabindex="0" class="btn btn-outline-primary d-lg-none" role="button"><i class="fas fa-share"></i></i></a>
+                        <button type="button" class="btn btn-outline-primary">♡</button>
+                        ${applyInfo}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <div style="padding-top: 10px">
+              <li class="list-group-item d-flex justify-content-between align-items-start border border-primary border-2">
+                    <div class="ms-2 me-auto" style="max-width: 70%;">
+                        <div class="fw-lighter" id="job-title">${dataFeatured[i].jobData.company} - ${dataFeatured[i].jobData.location}</div>
+                        <div class="fs-5">${dataFeatured[i].jobData.jobTitle}</div>
+                        <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${dataFeatured[i].jobData.summary
+            }</div> `
+
+          // Assigns each job tags if keywords found in tagDirectory can be matched job's against title & summary
+          for (let tagIndex = 0; tagIndex < `${dataFeatured[i].jobData.tags}`.length; tagIndex++) {
+            if (dataFeatured[i].jobData.tags[tagIndex] != null) {
+              featuredJobList += `
+          <button style="border-radius: 16px; font-size: 0.9em" type="button" class="btn btn-primary btn-sm py-0" onclick="window.location='${urlBuilder(
+                dataFeatured[i].jobData.tags[tagIndex], 0)}';">${dataFeatured[i].jobData.tags[tagIndex]}</button> `
+            }
+          }
+          featuredJobList += `<button style="border-radius: 16px; font-size: 0.9em" type="button" class="btn btn-light btn-sm py-0" onclick="window.location='${urlBuilder(
+            dataFeatured[i].jobData.jobCategory, 0)}';">${dataFeatured[i].jobData.jobCategory}</button> `
+          featuredJobList += `<button style="border-radius: 16px; font-size: 0.9em" type="button" class="btn btn-light btn-sm py-0" onclick="window.location='${urlBuilder(
+            dataFeatured[i].jobData.workType, 0)}';">${dataFeatured[i].jobData.workType}</button> `
+
+          featuredJobList += ` </div>
+                    <div class="my-auto d-flex">
+                        <button type="button" class="btn btn-outline-primary mx-1">♡</button>
+                        <button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal"
+                        data-bs-target="#modal${[i]}">Apply</button>
+                    </div>
+                  </div>
+              </li>
+          </div>
+            `
+
+          
+        }
+
 
         const numOfJobsToDisplay = 4
         for (i = 0; i < numOfJobsToDisplay; i++) {
@@ -220,8 +347,7 @@
             <div style="padding-top: 10px">
                 <li class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto" style="max-width: 70%;">
-                        <div class="fw-lighter" id="job-title">${data[i].company
-            }</div>
+                        <div class="fw-lighter" id="job-title">${data[i].company}</div>
                         <div class="fs-5">${data[i].jobTitle}</div>
                         <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${data[i].summary
             }</div> `
@@ -253,148 +379,149 @@
             `
         }
 
+        document.getElementById('featured').innerHTML = featuredJobList
         document.getElementById('results').innerHTML = jobList
         document.getElementById("loading").style.display = "none"
 
         numberOfJobs = document.getElementById('results').innerHTML
 
 
-            if(document.getElementById("body").style.backgroundColor === 'rgb(26, 26, 26)'){
-              
-              let job_cards = document.getElementById('results').getElementsByClassName('list-group-item d-flex justify-content-between align-items-start')
+        if (document.getElementById("body").style.backgroundColor === 'rgb(26, 26, 26)') {
 
-              for(var i= 0; i<numOfJobsToDisplay; i++){
-                job_cards[i].style.backgroundColor = '#404040'
-                job_cards[i].style.color = 'white'
-              }
-          
-            }
+          let job_cards = document.getElementById('results').getElementsByClassName('list-group-item d-flex justify-content-between align-items-start')
 
-            var test = document.getElementById('results').getElementsByClassName('btn btn-outline-primary mx-1')
-
-
-            for (let index = 0; index < numOfJobsToDisplay; index++) {
-
-              test[index].addEventListener("click", favourite)
-
-
-              async function favourite() {
-
-                const id = data[index]._id
-                const jobTitle = data[index].jobTitle
-                const company = data[index].company
-                const summary = data[index].summary
-                const salary = data[index].salary
-                const locations = data[index].location
-                const time = data[index].time
-                const link = data[index].link
-                var email = ''
-                '<% if(user){%>'
-                email = '<%=user.email%>'
-                '<% } %>'
-
-                try {
-                  const res = await fetch('/profile', {
-                    method: 'POST',
-                    body: JSON.stringify({ id, jobTitle, company, summary, salary, locations, time, link, email }),
-                    headers: { 'Content-Type': 'application/json' }
-                  })
-
-                  const data = await res.json()
-                  console.log(data)
-                  if (data.errors) {
-
-                  }
-                } catch (err) {
-                  console.log(err)
-                }
-              }
-            }
-            
+          for (var i = 0; i < numOfJobsToDisplay; i++) {
+            job_cards[i].style.backgroundColor = '#404040'
+            job_cards[i].style.color = 'white'
           }
 
+        }
+
+        var test = document.getElementById('results').getElementsByClassName('btn btn-outline-primary mx-1')
 
 
-          '<%if(user){ %>'
-          var setCookie = function (n, val) {
-            var exdays = 30
-            var d = new Date()
-            d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000)
-            var expires = 'expires=' + d.toGMTString()
-            document.cookie = n + '=' + val + '; ' + expires
-          }
+        for (let index = 0; index < numOfJobsToDisplay; index++) {
 
-          var getCookie = function (n) {
-            var name = n + '='
-            var ca = document.cookie.split(';')
-            for (var i = 0; i < ca.length; i++) {
-              var c = ca[i]
-              while (c.charAt(0) == ' ') c = c.substring(1)
-              if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length)
+          test[index].addEventListener("click", favourite)
+
+
+          async function favourite() {
+
+            const id = data[index]._id
+            const jobTitle = data[index].jobTitle
+            const company = data[index].company
+            const summary = data[index].summary
+            const salary = data[index].salary
+            const locations = data[index].location
+            const time = data[index].time
+            const link = data[index].link
+            var email = ''
+            '<% if(user){%>'
+            email = '<%=user.email%>'
+            '<% } %>'
+
+            try {
+              const res = await fetch('/profile', {
+                method: 'POST',
+                body: JSON.stringify({ id, jobTitle, company, summary, salary, locations, time, link, email }),
+                headers: { 'Content-Type': 'application/json' }
+              })
+
+              const data = await res.json()
+              console.log(data)
+              if (data.errors) {
+
               }
-            }
-            return ''
-          }
-
-     
-
-          window.onload = function () {
-            //Setting variables
-            var favColor = document.body.style.backgroundColor
-            var textColor = document.getElementsByClassName("text-center")[0].style.color
-            var h2Tag = document.getElementsByClassName("lead text-center")[0]
-            var setLocation = document.getElementById("location-selection")
-            var setCatergory = document.getElementById("category-selection")
-           
-            
-            //setCookies
-            var searchBar = document.getElementById("userInput").style.backgroundColor = "white"
-            setCookie('search', searchBar)
-
-
-            //setting the ids
-            var searchString = document.getElementById("userInput").style.backgroundColor 
-            
-            //getCookie
-            var color = getCookie('color')
-            var textNewColor = getCookie('textColor')
-            var searchBarEngine = getCookie('search') 
-
-            if (color === 'rgb(254, 253, 255)') {
-              document.body.style.backgroundColor = favColor
-              document.getElementsByClassName("text-center")[0].style.color = textColor
-              h2Tag.style.color = textColor
-              document.getElementById("userInput").style.backgroundColor = searchString
-              setLocation.style.backgroundColor = searchString
-              setLocation.style.color = '#808080'
-              setCatergory.style.backgroundColor = searchString
-              setCatergory.style.color =  '#808080'
-
-              // for(var i = 0; i < 4; i++){
-              //   jobs[i].style.backgroundColor = '#808080'
-              
-              }
-            if(color === 'rgb(26, 26, 26)') {
-              document.body.style.backgroundColor = color
-              document.getElementsByClassName("text-center")[0].style.color = textNewColor
-              h2Tag.style.color = textNewColor
-              document.getElementById("userInput").style.backgroundColor = '#404040'
-              setLocation.style.backgroundColor = '#404040'
-              setLocation.style.color = '#808080'
-              setCatergory.style.backgroundColor = '#404040'
-              setCatergory.style.color =  '#808080'
-              
-              var doc = document.getElementsByClassName('navbar navbar-light bg-light')[0]
-              doc.className = doc.className.replace('navbar navbar-light bg-light', 'navbar navbar-dark bg-dark')
-              // for(var i = 0; i < 4; i++){
-              //   jobs[i].style.backgroundColor = '#808080'
-              // }
+            } catch (err) {
+              console.log(err)
             }
           }
-'<%}%>'
+        }
 
-      
+      }
+
+
+
+      '<%if(user){ %>'
+      var setCookie = function (n, val) {
+        var exdays = 30
+        var d = new Date()
+        d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000)
+        var expires = 'expires=' + d.toGMTString()
+        document.cookie = n + '=' + val + '; ' + expires
+      }
+
+      var getCookie = function (n) {
+        var name = n + '='
+        var ca = document.cookie.split(';')
+        for (var i = 0; i < ca.length; i++) {
+          var c = ca[i]
+          while (c.charAt(0) == ' ') c = c.substring(1)
+          if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length)
+          }
+        }
+        return ''
+      }
+
+
+
+      window.onload = function () {
+        //Setting variables
+        var favColor = document.body.style.backgroundColor
+        var textColor = document.getElementsByClassName("text-center")[0].style.color
+        var h2Tag = document.getElementsByClassName("lead text-center")[0]
+        var setLocation = document.getElementById("location-selection")
+        var setCatergory = document.getElementById("category-selection")
+
+
+        //setCookies
+        var searchBar = document.getElementById("userInput").style.backgroundColor = "white"
+        setCookie('search', searchBar)
+
+
+        //setting the ids
+        var searchString = document.getElementById("userInput").style.backgroundColor
+
+        //getCookie
+        var color = getCookie('color')
+        var textNewColor = getCookie('textColor')
+        var searchBarEngine = getCookie('search')
+
+        if (color === 'rgb(254, 253, 255)') {
+          document.body.style.backgroundColor = favColor
+          document.getElementsByClassName("text-center")[0].style.color = textColor
+          h2Tag.style.color = textColor
+          document.getElementById("userInput").style.backgroundColor = searchString
+          setLocation.style.backgroundColor = searchString
+          setLocation.style.color = '#808080'
+          setCatergory.style.backgroundColor = searchString
+          setCatergory.style.color = '#808080'
+
+          // for(var i = 0; i < 4; i++){
+          //   jobs[i].style.backgroundColor = '#808080'
+
+        }
+        if (color === 'rgb(26, 26, 26)') {
+          document.body.style.backgroundColor = color
+          document.getElementsByClassName("text-center")[0].style.color = textNewColor
+          h2Tag.style.color = textNewColor
+          document.getElementById("userInput").style.backgroundColor = '#404040'
+          setLocation.style.backgroundColor = '#404040'
+          setLocation.style.color = '#808080'
+          setCatergory.style.backgroundColor = '#404040'
+          setCatergory.style.color = '#808080'
+
+          var doc = document.getElementsByClassName('navbar navbar-light bg-light')[0]
+          doc.className = doc.className.replace('navbar navbar-light bg-light', 'navbar navbar-dark bg-dark')
+          // for(var i = 0; i < 4; i++){
+          //   jobs[i].style.backgroundColor = '#808080'
+          // }
+        }
+      }
+      '<%}%>'
+
+
 
       async function promptReport() {
         let dialogue = ''
