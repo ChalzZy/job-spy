@@ -1,6 +1,6 @@
 <%- include('partials/header'); -%>
 
-  <body>
+<body>
     <div id="listingPage" class="container-sm mt-4" style="max-width: 75%">
       <nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
         <ol class="breadcrumb w-75">
@@ -577,41 +577,12 @@
       document.getElementById(page + 'BC').disabled = false
       currentPage = page
     }
-    
-
-    async function sendJobData() {
-      let data = {
-        "company": companyName,
-        "jobTitle": jobTitle,
-        "location": jobLocation,
-        "jobCategory": jobCategory,
-        "summary": jobDescription,
-        "tags": tags,
-        "workType": workType,
-        "salary": salaryDetails,
-        "salaryType": salaryType,
-        "link": externalLink,
-        "email": email,
-        "phoneNumber": phoneNumber,
-        "currentSetting": currentSetting
-      }
-      const options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      }
-      const response = await fetch('/sendJobData', options)
-    }
-
 
     // Create an instance of the Stripe object with your publishable API key
     var stripe = Stripe("pk_test_51IuaGBBnkafDP7DpOmAwgQF9B5Kl4suwCQn3BnAbS87Ue0SXwVRq4k1vca22PQpa0dqd7A7dLNu2bYPRXwmVdpTS00hkeGPdBe");
     var checkoutButton = document.getElementById("checkout-button");
 
     checkoutButton.addEventListener("click", function () {
-      sendJobData()
       fetch("/create-checkout-session", {
         method: "POST",
       })
