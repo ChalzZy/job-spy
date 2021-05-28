@@ -33,6 +33,7 @@
     text-align: center;
   }
 
+  .g-recaptcha div { margin-left: auto; margin-right: auto;}
  
   h1 {
     margin-bottom: 30px;
