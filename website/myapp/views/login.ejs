@@ -13,11 +13,10 @@
             <input type="password" name="password" class="form-control" required>
             <label for="password">Password</label>
             <div class="password error"></div>
-        </div> 
-        <div class="g-recaptcha" data-sitekey="6LcxdPMaAAAAAFVvqUUf4TuI6CNYh8UEqEzh2DXB"></div>
-
+        </div>
         <button class="btn btn-primary btn-lg">Submit</button>
     </form>
+
     <script>
         const form = document.querySelector('.login-form')
         const emailError = document.querySelector('.email.error')
@@ -33,16 +32,12 @@
             // get the values
             const email = form.email.value
             const password = form.password.value
-            const captcha = form.querySelector('#g-recaptcha-response').value
 
             try {
                 const res = await fetch('/login', {
                     method: 'POST',
-                    body: JSON.stringify({ email, password, captcha }),
-                    headers: { 
-                        'Content-Type': 'application/json', 
-                        'Accept': 'application/json, text/plain, */*'
-                    }
+                    body: JSON.stringify({ email, password }),
+                    headers: { 'Content-Type': 'application/json' }
                 })
                 const data = await res.json()
                 console.log(data)
