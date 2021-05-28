@@ -1,192 +1,226 @@
 <%- include('partials/header'); -%>
 
-  <body>
-    <div class="cover-container d-flex h-100 p-5 mx-auto flex-column text-center m-5">
-      <main role="main" class="inner cover">
-        <h1 class="cover-heading">Find all the junior software jobs.</h1>
-        <p class="lead">JobSpy will help you find a junior job etc.</p>
-      </main>
+<body>
+  <div
+    class="cover-container d-flex h-100 p-5 mx-auto flex-column text-center m-5"
+  >
+    <main role="main" class="inner cover">
+      <h1 class="cover-heading">Find all the junior software jobs.</h1>
+      <p class="lead">JobSpy will help you find a junior job etc.</p>
+    </main>
 
-      <div class="input-group rounded mb-3">
-        <form class="d-flex mx-auto" id="searchBar">
-          <div class="d-lg-flex mx-auto">
-            <div class="input-group">
-              <input class="form-control me-2" id="userInput" autocomplete="off" placeholder="Search for a job"
-                aria-label="Search" />
+    <div class="input-group rounded mb-3">
+      <form class="d-flex mx-auto" id="searchBar">
+        <div class="d-lg-flex mx-auto">
+          <div class="input-group">
+            <input
+              class="form-control me-2"
+              id="userInput"
+              autocomplete="off"
+              placeholder="Search for a job"
+              aria-label="Search"
+            />
 
-              <button class="d-lg-none btn btn-primary" type="submit" id="searchButton">
-                Search
-              </button>
-            </div>
-
-            <span class="container d-flex my-3 my-lg-0">
-              <select class="form-select form-select-sm me-2" style="width: auto" aria-label=".form-select-sm"
-                id="location-selection">
-                <option selected>All Locations</option>
-                <option value="Your Location">Your Location</option>
-                <option value="Auckland">Auckland</option>
-                <option value="Wellington">Wellington</option>
-                <option value="Christchurch">Christchurch</option>
-                <option value="Dunedin">Dunedin</option>
-              </select>
-
-
-              <select class="form-select form-select-sm me-2" style="width: auto" aria-label=".form-select-sm"
-                id="category-selection">
-                <option selected>All Categories</option>
-                <option value="Junior">Junior</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Seior">Senior</option>
-                <option value="Internship">Internship</option>
-              </select>
-            </span>
-
-            <button class="d-none d-lg-block btn btn-primary" type="submit" id="searchButton">
+            <button
+              class="d-lg-none btn btn-primary"
+              type="submit"
+              id="searchButton"
+            >
               Search
             </button>
           </div>
-        </form>
-      </div>
 
-    </div>
-    <div class="container-sm recent-job-list mx-auto" data-url="/data" style="padding-bottom: 30px">
-      <p class="lead text-center">Featured Job Listings:</p>
-      <ol class="list-group list-group">
-        <div class="d-flex justify-content-center">
-          <div id="loading" class="spinner-border text-primary my-5" style="width: 3rem; height: 3rem;" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
+          <span class="container d-flex my-3 my-lg-0">
+            <select
+              class="form-select form-select-sm me-2"
+              style="width: auto"
+              aria-label=".form-select-sm"
+              id="location-selection"
+            >
+              <option selected>All Locations</option>
+              <option value="Your Location">Your Location</option>
+              <option value="Auckland">Auckland</option>
+              <option value="Wellington">Wellington</option>
+              <option value="Christchurch">Christchurch</option>
+              <option value="Dunedin">Dunedin</option>
+              <option value="Remote">Remote</option>
+            </select>
+
+            <select
+              class="form-select form-select-sm me-2"
+              style="width: auto"
+              aria-label=".form-select-sm"
+              id="category-selection"
+            >
+              <option selected>All Categories</option>
+              <option value="Junior">Junior</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Seior">Senior</option>
+              <option value="Internship">Internship</option>
+            </select>
+          </span>
+
+          <button
+            class="d-none d-lg-block btn btn-primary"
+            type="submit"
+            id="searchButton"
+          >
+            Search
+          </button>
         </div>
-        <div id="featured" class=""></div>
-        <div id="results" class=""></div>
-      </ol>
+      </form>
     </div>
-    <script>
-      //Manages job listings
-      let jobs = ''
-      let searchString = ''
-      let locationSelection = ''
-      let categorySelection = ''
-      let defaultPage = 0
+  </div>
+  <div
+    class="container-sm recent-job-list mx-auto"
+    data-url="/data"
+    style="padding-bottom: 30px"
+  >
+    <p class="lead text-center">Featured Job Listings:</p>
+    <ol class="list-group list-group">
+      <div class="d-flex justify-content-center">
+        <div
+          id="loading"
+          class="spinner-border text-primary my-5"
+          style="width: 3rem; height: 3rem"
+          role="status"
+        >
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <div id="featured" class=""></div>
+      <div id="results" class=""></div>
+    </ol>
+  </div>
+  <script>
+    //Manages job listings
+    let jobs = ''
+    let searchString = ''
+    let locationSelection = ''
+    let categorySelection = ''
+    let defaultPage = 0
 
-      document
-        .getElementById('searchBar')
-        .addEventListener('submit', userAction, false)
+    document
+      .getElementById('searchBar')
+      .addEventListener('submit', userAction, false)
 
-      // Prevents page from reloading upon form submission
-      let form = document.getElementById('searchBar')
-      function handleForm(event) {
-        event.preventDefault()
+    // Prevents page from reloading upon form submission
+    let form = document.getElementById('searchBar')
+    function handleForm(event) {
+      event.preventDefault()
+    }
+    form.addEventListener('submit', handleForm)
+
+    // Collects users terms from the search bar and drop-down menu's and returns a job list
+    function userAction() {
+      locationSelection = document.getElementById('location-selection')
+      categorySelection = document.getElementById('category-selection')
+      searchString = document.getElementById('userInput').value
+
+      let locationSelectionText =
+        locationSelection.options[locationSelection.selectedIndex].text
+
+      // Fetches users location data and returns the city name
+      let fetchedCity = fetch('https://geolocation-db.com/json/')
+        .then(function (res) {
+          if (!res.ok) {
+            throw Error(res.statusText)
+            return 'Unable to find your location'
+            document.getElementById('locationError').innerHTML =
+              'Unable to find your location'
+          }
+          return res.json()
+        })
+        .then(function (locationData) {
+          let cityName = locationData.city
+          return cityName
+        })
+
+      if (locationSelectionText == 'Your Location') {
+        fetchedCity.then(function (result) {
+          locationSelectionText = result
+        })
       }
-      form.addEventListener('submit', handleForm)
 
-      // Collects users terms from the search bar and drop-down menu's and returns a job list
-      function userAction() {
-        locationSelection = document.getElementById('location-selection')
-        categorySelection = document.getElementById('category-selection')
-        searchString = document.getElementById('userInput').value
-
-        let locationSelectionText =
-          locationSelection.options[locationSelection.selectedIndex].text
-
-        // Fetches users location data and returns the city name
-        let fetchedCity = fetch('https://geolocation-db.com/json/')
-          .then(function (res) {
-            if (!res.ok) {
-              throw Error(res.statusText)
-              return 'Unable to find your location'
-              document.getElementById('locationError').innerHTML =
-                'Unable to find your location'
-            }
-            return res.json()
-          })
-          .then(function (locationData) {
-            let cityName = locationData.city
-            return cityName
-          })
-
-        if (locationSelectionText == 'Your Location') {
-          fetchedCity.then(function (result) {
-            locationSelectionText = result
-          })
-        }
-
-        if (locationSelectionText == 'All Locations') {
-          locationSelectionText = ''
-        }
-
-        let categorySelectionText =
-          categorySelection.options[categorySelection.selectedIndex].text
-
-        if (categorySelectionText == 'All Categories') {
-          categorySelectionText = ''
-        }
-
-        //Loads search page with given search terms
-        window.location.href =
-          '/jobsearch?search=' +
-          searchString +
-          '&page=1&location=' +
-          locationSelection.options[locationSelection.selectedIndex].text +
-          '&category=' +
-          categorySelection.options[categorySelection.selectedIndex].text
+      if (locationSelectionText == 'All Locations') {
+        locationSelectionText = ''
       }
 
-      /**
-       * Populates the job list with most recent jobs from DB
-       */
-      async function listRecentJobs() {
-        const responseFeatured = await fetch('/featured')
-        const response = await fetch('/data')
-        let featuredJobList = ''
-        let jobList = ''
+      let categorySelectionText =
+        categorySelection.options[categorySelection.selectedIndex].text
 
-        const dataFeatured = await responseFeatured.json()
-        const data = await response.json()
+      if (categorySelectionText == 'All Categories') {
+        categorySelectionText = ''
+      }
 
-        // List of tags which will be applied to each job listing if they contain the matching keyword
-        let tagDirectory = [
-          '.NET',
-          'JavaScript',
-          'React',
-          'Frontend',
-          'Angular',
-          'Backend',
-          'C#',
-          'AWS',
-          'Azure',
-          'Front End',
-          'Full Stack',
-          'Fullstack',
-          'Junior',
-          'Intern',
-          'Internship',
-          'TypeScript',
-          'Senior',
-          'Intermediate',
-          'Python',
-          'Graduate',
-          'Mobile',
-          'iOS',
-          'Android',
-        ]
+      //Loads search page with given search terms
+      window.location.href =
+        '/jobsearch?search=' +
+        searchString +
+        '&page=1&location=' +
+        locationSelection.options[locationSelection.selectedIndex].text +
+        '&category=' +
+        categorySelection.options[categorySelection.selectedIndex].text
+    }
 
-        for (i = dataFeatured.length - 1; i >= 0; i--) {
-          //Adds job information if included
-          let info = ''
-          if (`${dataFeatured[i].jobData.salary}` != '') {
-            info += `<hr class="dropdown-divider" style="width:360px">
+    /**
+     * Populates the job list with most recent jobs from DB
+     */
+    async function listRecentJobs() {
+      const responseFeatured = await fetch('/featured')
+      const response = await fetch('/data')
+      let featuredJobList = ''
+      let jobList = ''
+
+      const dataFeatured = await responseFeatured.json()
+      const data = await response.json()
+
+      // List of tags which will be applied to each job listing if they contain the matching keyword
+      let tagDirectory = [
+        '.NET',
+        'JavaScript',
+        'React',
+        'Frontend',
+        'Angular',
+        'Backend',
+        'C#',
+        'AWS',
+        'Azure',
+        'Front End',
+        'Full Stack',
+        'Fullstack',
+        'Junior',
+        'Intern',
+        'Internship',
+        'TypeScript',
+        'Senior',
+        'Intermediate',
+        'Python',
+        'Graduate',
+        'Mobile',
+        'iOS',
+        'Android',
+      ]
+
+      for (i = dataFeatured.length - 1; i >= 0; i--) {
+        //Adds job information if included
+        let info = ''
+        if (`${dataFeatured[i].jobData.salary}` != '') {
+          info += `<hr class="dropdown-divider" style="width:360px">
                     <div class="fw-lighter" id="salary">${dataFeatured[i].jobData.salaryType} Salary: ${dataFeatured[i].jobData.salary}</div>
                     <hr class="dropdown-divider" style="width:360px">`
-          }
+        }
 
-          let applyInfo = ''
-           //Sets the relavant apply button depending on if it is an external link or email/phone number
-          if (`${dataFeatured[i].jobData.currentSetting}` == 'External Link') {
-            applyInfo = `<a href="${dataFeatured[i].jobData.link}"><button type="button" class="btn btn-primary">Apply</button></a>`
-          }
-          else if (`${dataFeatured[i].jobData.currentSetting}` == 'Email/Phone Number'){
-            featuredJobList += `<div class="modal fade" id="applyPreview${[i]}" tabindex="-1" aria-labelledby="applyPreviewLabel" aria-hidden="true">
+        let applyInfo = ''
+        //Sets the relavant apply button depending on if it is an external link or email/phone number
+        if (`${dataFeatured[i].jobData.currentSetting}` == 'External Link') {
+          applyInfo = `<a href="${dataFeatured[i].jobData.link}"><button type="button" class="btn btn-primary">Apply</button></a>`
+        } else if (
+          `${dataFeatured[i].jobData.currentSetting}` == 'Email/Phone Number'
+        ) {
+          featuredJobList += `<div class="modal fade" id="applyPreview${[
+            i,
+          ]}" tabindex="-1" aria-labelledby="applyPreviewLabel" aria-hidden="true">
                   <div class="modal-dialog">
                       <div class="modal-content">
                       <div class="modal-header">
@@ -194,9 +228,15 @@
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                        <p>Contact details to apply for ${dataFeatured[i].jobData.jobTitle} position at ${dataFeatured[i].jobData.company}.</p>
-                        <p class="fs-5">Email: <a href = "mailto: ${dataFeatured[i].jobData.email}">${dataFeatured[i].jobData.email}</a></p>
-                        <p class="fs-5">Contact Number: <a href="tel:+${dataFeatured[i].jobData.phoneNumber}">${dataFeatured[i].jobData.phoneNumber}</a></p>
+                        <p>Contact details to apply for ${
+                          dataFeatured[i].jobData.jobTitle
+                        } position at ${dataFeatured[i].jobData.company}.</p>
+                        <p class="fs-5">Email: <a href = "mailto: ${
+                          dataFeatured[i].jobData.email
+                        }">${dataFeatured[i].jobData.email}</a></p>
+                        <p class="fs-5">Contact Number: <a href="tel:+${
+                          dataFeatured[i].jobData.phoneNumber
+                        }">${dataFeatured[i].jobData.phoneNumber}</a></p>
                       </div>
                       <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -204,11 +244,13 @@
                       </div>
                   </div>
                   </div>`
-            applyInfo = `<a href="#"><button data-bs-toggle="modal"
-                    data-bs-target="#applyPreview${[i]}" type="button" class="btn btn-primary" data-bs-dismiss="modal">Apply</button></a>`
-          }
+          applyInfo = `<a href="#"><button data-bs-toggle="modal"
+                    data-bs-target="#applyPreview${[
+                      i,
+                    ]}" type="button" class="btn btn-primary" data-bs-dismiss="modal">Apply</button></a>`
+        }
 
-          featuredJobList += `
+        featuredJobList += `
                 <div class="modal fade" id="thanksModal" tabindex="-1" aria-labelledby="thanksModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -233,8 +275,11 @@
                 <div class="modal-content ">
                     <div class="modal-header">
                         <div class="fw-lighter" id="job-title"><p></p></div>
-                        <h5 class="modal-title" id="applyModalLabel"><div class="fw-lighter fs-6">${dataFeatured[i].jobData.company
-            } - ${dataFeatured[i].jobData.location}</div> ${dataFeatured[i].jobData.jobTitle}</h5>
+                        <h5 class="modal-title" id="applyModalLabel"><div class="fw-lighter fs-6">${
+                          dataFeatured[i].jobData.company
+                        } - ${dataFeatured[i].jobData.location}</div> ${
+          dataFeatured[i].jobData.jobTitle
+        }</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -243,14 +288,19 @@
 
                             ${info}
                         </p>
-                        <div  class="fw-light">Is this content inappropriate? <a onclick="report('A user', '${dataFeatured[i].jobData._id
-            }, ${dataFeatured[i].jobData.jobTitle}, ${dataFeatured[i].jobData.company}, ${dataFeatured[i].jobData.summary
-            }: ${dataFeatured[i].jobData.link
-            }')" href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#thanksModal">Report</a>.</div>
+                        <div  class="fw-light">Is this content inappropriate? <a onclick="report('A user', '${
+                          dataFeatured[i].jobData._id
+                        }, ${dataFeatured[i].jobData.jobTitle}, ${
+          dataFeatured[i].jobData.company
+        }, ${dataFeatured[i].jobData.summary}: ${
+          dataFeatured[i].jobData.link
+        }')" href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#thanksModal">Report</a>.</div>
                     </div>
                     <div class="modal-footer">
                         <a onclick="copyClipboard()" tabindex="0" class="btn btn-outline-primary d-none d-lg-block" role="button" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-content="Copied to clipboard"><i class="far fa-copy"></i></a>
-                        <a onclick="share('${dataFeatured[i].jobData.jobTitle}')" tabindex="0" class="btn btn-outline-primary d-lg-none" role="button"><i class="fas fa-share"></i></i></a>
+                        <a onclick="share('${
+                          dataFeatured[i].jobData.jobTitle
+                        }')" tabindex="0" class="btn btn-outline-primary d-lg-none" role="button"><i class="fas fa-share"></i></i></a>
                         <button type="button" class="btn btn-outline-primary">♡</button>
                         ${applyInfo}
                     </div>
@@ -261,25 +311,40 @@
             <div style="padding-top: 10px">
               <li class="list-group-item d-flex justify-content-between align-items-start border border-primary border-2">
                     <div class="ms-2 me-auto" style="max-width: 70%;">
-                        <div class="fw-lighter" id="job-title">${dataFeatured[i].jobData.company} - ${dataFeatured[i].jobData.location}</div>
-                        <div class="fs-5">${dataFeatured[i].jobData.jobTitle}</div>
-                        <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${dataFeatured[i].jobData.summary
-            }</div> `
+                        <div class="fw-lighter" id="job-title">${
+                          dataFeatured[i].jobData.company
+                        } - ${dataFeatured[i].jobData.location}</div>
+                        <div class="fs-5">${
+                          dataFeatured[i].jobData.jobTitle
+                        }</div>
+                        <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${
+                          dataFeatured[i].jobData.summary
+                        }</div> `
 
-          // Assigns each job tags if keywords found in tagDirectory can be matched job's against title & summary
-          for (let tagIndex = 0; tagIndex < `${dataFeatured[i].jobData.tags}`.length; tagIndex++) {
-            if (dataFeatured[i].jobData.tags[tagIndex] != null) {
-              featuredJobList += `
+        // Assigns each job tags if keywords found in tagDirectory can be matched job's against title & summary
+        for (
+          let tagIndex = 0;
+          tagIndex < `${dataFeatured[i].jobData.tags}`.length;
+          tagIndex++
+        ) {
+          if (dataFeatured[i].jobData.tags[tagIndex] != null) {
+            featuredJobList += `
           <button style="border-radius: 16px; font-size: 0.9em" type="button" class="btn btn-primary btn-sm py-0" onclick="window.location='${urlBuilder(
-                dataFeatured[i].jobData.tags[tagIndex], 0)}';">${dataFeatured[i].jobData.tags[tagIndex]}</button> `
-            }
+            dataFeatured[i].jobData.tags[tagIndex],
+            0
+          )}';">${dataFeatured[i].jobData.tags[tagIndex]}</button> `
           }
-          featuredJobList += `<button style="border-radius: 16px; font-size: 0.9em" type="button" class="btn btn-light btn-sm py-0" onclick="window.location='${urlBuilder(
-            dataFeatured[i].jobData.jobCategory, 0)}';">${dataFeatured[i].jobData.jobCategory}</button> `
-          featuredJobList += `<button style="border-radius: 16px; font-size: 0.9em" type="button" class="btn btn-light btn-sm py-0" onclick="window.location='${urlBuilder(
-            dataFeatured[i].jobData.workType, 0)}';">${dataFeatured[i].jobData.workType}</button> `
+        }
+        featuredJobList += `<button style="border-radius: 16px; font-size: 0.9em" type="button" class="btn btn-light btn-sm py-0" onclick="window.location='${urlBuilder(
+          dataFeatured[i].jobData.jobCategory,
+          0
+        )}';">${dataFeatured[i].jobData.jobCategory}</button> `
+        featuredJobList += `<button style="border-radius: 16px; font-size: 0.9em" type="button" class="btn btn-light btn-sm py-0" onclick="window.location='${urlBuilder(
+          dataFeatured[i].jobData.workType,
+          0
+        )}';">${dataFeatured[i].jobData.workType}</button> `
 
-          featuredJobList += ` </div>
+        featuredJobList += ` </div>
                     <div class="my-auto d-flex">
                         <button type="button" class="btn btn-outline-primary mx-1">♡</button>
                         <button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal"
@@ -289,14 +354,11 @@
               </li>
           </div>
             `
+      }
 
-          
-        }
-
-
-        const numOfJobsToDisplay = 4
-        for (i = 0; i < numOfJobsToDisplay; i++) {
-          jobList += `
+      const numOfJobsToDisplay = 4
+      for (i = 0; i < numOfJobsToDisplay; i++) {
+        jobList += `
                 <div class="modal fade" id="thanksModal" tabindex="-1" aria-labelledby="thanksModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -321,24 +383,32 @@
                 <div class="modal-content ">
                     <div class="modal-header">
                         <div class="fw-lighter" id="job-title"><p></p></div>
-                        <h5 class="modal-title" id="applyModalLabel"><div class="fw-lighter fs-6">${data[i].company
-            }</div> ${data[i].jobTitle}</h5>
+                        <h5 class="modal-title" id="applyModalLabel"><div class="fw-lighter fs-6">${
+                          data[i].company
+                        }</div> ${data[i].jobTitle}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <p>
                             ${data[i].summary}
                         </p>
-                        <div  class="fw-light">Is this content inappropriate? <a onclick="report('A user', '${data[i]._id
-            }, ${data[i].jobTitle}, ${data[i].company}, ${data[i].summary
-            }: ${data[i].link
-            }')" href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#thanksModal">Report</a>.</div>
+                        <div  class="fw-light">Is this content inappropriate? <a onclick="report('A user', '${
+                          data[i]._id
+                        }, ${data[i].jobTitle}, ${data[i].company}, ${
+          data[i].summary
+        }: ${
+          data[i].link
+        }')" href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#thanksModal">Report</a>.</div>
                     </div>
                     <div class="modal-footer">
                         <a onclick="copyClipboard()" tabindex="0" class="btn btn-outline-primary d-none d-lg-block" role="button" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-content="Copied to clipboard"><i class="far fa-copy"></i></a>
-                        <a onclick="share('${data[i].jobTitle}')" tabindex="0" class="btn btn-outline-primary d-lg-none" role="button"><i class="fas fa-share"></i></i></a>
+                        <a onclick="share('${
+                          data[i].jobTitle
+                        }')" tabindex="0" class="btn btn-outline-primary d-lg-none" role="button"><i class="fas fa-share"></i></i></a>
                         <button type="button" class="btn btn-outline-primary">♡</button>
-                        <a href="${data[i].link}"><button type="button" class="btn btn-primary">Apply</button></a>
+                        <a href="${
+                          data[i].link
+                        }"><button type="button" class="btn btn-primary">Apply</button></a>
                     </div>
                 </div>
             </div>
@@ -347,27 +417,30 @@
             <div style="padding-top: 10px">
                 <li class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto" style="max-width: 70%;">
-                        <div class="fw-lighter" id="job-title">${data[i].company}</div>
+                        <div class="fw-lighter" id="job-title">${
+                          data[i].company
+                        }</div>
                         <div class="fs-5">${data[i].jobTitle}</div>
-                        <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${data[i].summary
-            }</div> `
+                        <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${
+                          data[i].summary
+                        }</div> `
 
-          // Assigns each job tags if keywords found in tagDirectory can be matched job's against title & summary
-          for (let tagIndex = 0; tagIndex < tagDirectory.length; tagIndex++) {
-            if (
-              (
-                data[i].jobTitle.toLowerCase() || data[i].summary.toLowerCase()
-              ).includes(tagDirectory[tagIndex].toLowerCase())
-            ) {
-              jobList += `
+        // Assigns each job tags if keywords found in tagDirectory can be matched job's against title & summary
+        for (let tagIndex = 0; tagIndex < tagDirectory.length; tagIndex++) {
+          if (
+            (
+              data[i].jobTitle.toLowerCase() || data[i].summary.toLowerCase()
+            ).includes(tagDirectory[tagIndex].toLowerCase())
+          ) {
+            jobList += `
           <button style="border-radius: 16px; font-size: 0.9em" type="button" class="btn btn-primary btn-sm py-0" onclick="window.location='${urlBuilder(
-                tagDirectory[tagIndex],
-                0
-              )}';">${tagDirectory[tagIndex]}</button> `
-            }
+            tagDirectory[tagIndex],
+            0
+          )}';">${tagDirectory[tagIndex]}</button> `
           }
+        }
 
-          jobList += ` </div>
+        jobList += ` </div>
                     <div class="my-auto d-flex">
                         <button type="button" class="btn btn-outline-primary mx-1">♡</button>
                         <button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal"
@@ -377,227 +450,244 @@
               </li>
           </div>
             `
+      }
+
+      document.getElementById('featured').innerHTML = featuredJobList
+      document.getElementById('results').innerHTML = jobList
+      document.getElementById('loading').style.display = 'none'
+
+      numberOfJobs = document.getElementById('results').innerHTML
+
+      if (
+        document.getElementById('body').style.backgroundColor ===
+        'rgb(26, 26, 26)'
+      ) {
+        let job_cards = document
+          .getElementById('results')
+          .getElementsByClassName(
+            'list-group-item d-flex justify-content-between align-items-start'
+          )
+
+        for (var i = 0; i < numOfJobsToDisplay; i++) {
+          job_cards[i].style.backgroundColor = '#404040'
+          job_cards[i].style.color = 'white'
         }
+      }
 
-        document.getElementById('featured').innerHTML = featuredJobList
-        document.getElementById('results').innerHTML = jobList
-        document.getElementById("loading").style.display = "none"
+      var test = document
+        .getElementById('results')
+        .getElementsByClassName('btn btn-outline-primary mx-1')
 
-        numberOfJobs = document.getElementById('results').innerHTML
+      for (let index = 0; index < numOfJobsToDisplay; index++) {
+        test[index].addEventListener('click', favourite)
 
+        async function favourite() {
+          const id = data[index]._id
+          const jobTitle = data[index].jobTitle
+          const company = data[index].company
+          const summary = data[index].summary
+          const salary = data[index].salary
+          const locations = data[index].location
+          const time = data[index].time
+          const link = data[index].link
+          var email = ''
+          ;('<% if(user){%>')
+          email = '<%=user.email%>'
+          ;('<% } %>')
 
-        if (document.getElementById("body").style.backgroundColor === 'rgb(26, 26, 26)') {
+          try {
+            const res = await fetch('/profile', {
+              method: 'POST',
+              body: JSON.stringify({
+                id,
+                jobTitle,
+                company,
+                summary,
+                salary,
+                locations,
+                time,
+                link,
+                email,
+              }),
+              headers: { 'Content-Type': 'application/json' },
+            })
 
-          let job_cards = document.getElementById('results').getElementsByClassName('list-group-item d-flex justify-content-between align-items-start')
-
-          for (var i = 0; i < numOfJobsToDisplay; i++) {
-            job_cards[i].style.backgroundColor = '#404040'
-            job_cards[i].style.color = 'white'
-          }
-
-        }
-
-        var test = document.getElementById('results').getElementsByClassName('btn btn-outline-primary mx-1')
-
-
-        for (let index = 0; index < numOfJobsToDisplay; index++) {
-
-          test[index].addEventListener("click", favourite)
-
-
-          async function favourite() {
-
-            const id = data[index]._id
-            const jobTitle = data[index].jobTitle
-            const company = data[index].company
-            const summary = data[index].summary
-            const salary = data[index].salary
-            const locations = data[index].location
-            const time = data[index].time
-            const link = data[index].link
-            var email = ''
-            '<% if(user){%>'
-            email = '<%=user.email%>'
-            '<% } %>'
-
-            try {
-              const res = await fetch('/profile', {
-                method: 'POST',
-                body: JSON.stringify({ id, jobTitle, company, summary, salary, locations, time, link, email }),
-                headers: { 'Content-Type': 'application/json' }
-              })
-
-              const data = await res.json()
-              console.log(data)
-              if (data.errors) {
-
-              }
-            } catch (err) {
-              console.log(err)
+            const data = await res.json()
+            console.log(data)
+            if (data.errors) {
             }
+          } catch (err) {
+            console.log(err)
           }
         }
-
       }
+    }
 
+    ;('<%if(user){ %>')
+    var setCookie = function (n, val) {
+      var exdays = 30
+      var d = new Date()
+      d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000)
+      var expires = 'expires=' + d.toGMTString()
+      document.cookie = n + '=' + val + '; ' + expires
+    }
 
-
-      '<%if(user){ %>'
-      var setCookie = function (n, val) {
-        var exdays = 30
-        var d = new Date()
-        d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000)
-        var expires = 'expires=' + d.toGMTString()
-        document.cookie = n + '=' + val + '; ' + expires
-      }
-
-      var getCookie = function (n) {
-        var name = n + '='
-        var ca = document.cookie.split(';')
-        for (var i = 0; i < ca.length; i++) {
-          var c = ca[i]
-          while (c.charAt(0) == ' ') c = c.substring(1)
-          if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length)
-          }
-        }
-        return ''
-      }
-
-
-
-      window.onload = function () {
-        //Setting variables
-        var favColor = document.body.style.backgroundColor
-        var textColor = document.getElementsByClassName("text-center")[0].style.color
-        var h2Tag = document.getElementsByClassName("lead text-center")[0]
-        var setLocation = document.getElementById("location-selection")
-        var setCatergory = document.getElementById("category-selection")
-
-
-        //setCookies
-        var searchBar = document.getElementById("userInput").style.backgroundColor = "white"
-        setCookie('search', searchBar)
-
-
-        //setting the ids
-        var searchString = document.getElementById("userInput").style.backgroundColor
-
-        //getCookie
-        var color = getCookie('color')
-        var textNewColor = getCookie('textColor')
-        var searchBarEngine = getCookie('search')
-
-        if (color === 'rgb(254, 253, 255)') {
-          document.body.style.backgroundColor = favColor
-          document.getElementsByClassName("text-center")[0].style.color = textColor
-          h2Tag.style.color = textColor
-          document.getElementById("userInput").style.backgroundColor = searchString
-          setLocation.style.backgroundColor = searchString
-          setLocation.style.color = '#808080'
-          setCatergory.style.backgroundColor = searchString
-          setCatergory.style.color = '#808080'
-
-          // for(var i = 0; i < 4; i++){
-          //   jobs[i].style.backgroundColor = '#808080'
-
-        }
-        if (color === 'rgb(26, 26, 26)') {
-          document.body.style.backgroundColor = color
-          document.getElementsByClassName("text-center")[0].style.color = textNewColor
-          h2Tag.style.color = textNewColor
-          document.getElementById("userInput").style.backgroundColor = '#404040'
-          setLocation.style.backgroundColor = '#404040'
-          setLocation.style.color = '#808080'
-          setCatergory.style.backgroundColor = '#404040'
-          setCatergory.style.color = '#808080'
-
-          var doc = document.getElementsByClassName('navbar navbar-light bg-light')[0]
-          doc.className = doc.className.replace('navbar navbar-light bg-light', 'navbar navbar-dark bg-dark')
-          // for(var i = 0; i < 4; i++){
-          //   jobs[i].style.backgroundColor = '#808080'
-          // }
+    var getCookie = function (n) {
+      var name = n + '='
+      var ca = document.cookie.split(';')
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i]
+        while (c.charAt(0) == ' ') c = c.substring(1)
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length)
         }
       }
-      '<%}%>'
+      return ''
+    }
 
+    window.onload = function () {
+      //Setting variables
+      var favColor = document.body.style.backgroundColor
+      var textColor =
+        document.getElementsByClassName('text-center')[0].style.color
+      var h2Tag = document.getElementsByClassName('lead text-center')[0]
+      var setLocation = document.getElementById('location-selection')
+      var setCatergory = document.getElementById('category-selection')
 
+      //setCookies
+      var searchBar = (document.getElementById(
+        'userInput'
+      ).style.backgroundColor = 'white')
+      setCookie('search', searchBar)
 
-      async function promptReport() {
-        let dialogue = ''
+      //setting the ids
+      var searchString =
+        document.getElementById('userInput').style.backgroundColor
+
+      //getCookie
+      var color = getCookie('color')
+      var textNewColor = getCookie('textColor')
+      var searchBarEngine = getCookie('search')
+
+      if (color === 'rgb(254, 253, 255)') {
+        document.body.style.backgroundColor = favColor
+        document.getElementsByClassName('text-center')[0].style.color =
+          textColor
+        h2Tag.style.color = textColor
+        document.getElementById('userInput').style.backgroundColor =
+          searchString
+        setLocation.style.backgroundColor = searchString
+        setLocation.style.color = '#808080'
+        setCatergory.style.backgroundColor = searchString
+        setCatergory.style.color = '#808080'
+
+        // for(var i = 0; i < 4; i++){
+        //   jobs[i].style.backgroundColor = '#808080'
       }
+      if (color === 'rgb(26, 26, 26)') {
+        document.body.style.backgroundColor = color
+        document.getElementsByClassName('text-center')[0].style.color =
+          textNewColor
+        h2Tag.style.color = textNewColor
+        document.getElementById('userInput').style.backgroundColor = '#404040'
+        setLocation.style.backgroundColor = '#404040'
+        setLocation.style.color = '#808080'
+        setCatergory.style.backgroundColor = '#404040'
+        setCatergory.style.color = '#808080'
 
-      listRecentJobs()
-
-      /**
-       * Send POST request to server with report data
-       */
-      async function report(user, url) {
-        const data = { user, url }
-        console.log(url)
-        const options = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        }
-        const response = await fetch('/report', options)
+        var doc = document.getElementsByClassName(
+          'navbar navbar-light bg-light'
+        )[0]
+        doc.className = doc.className.replace(
+          'navbar navbar-light bg-light',
+          'navbar navbar-dark bg-dark'
+        )
+        // for(var i = 0; i < 4; i++){
+        //   jobs[i].style.backgroundColor = '#808080'
+        // }
       }
+    }
+    ;('<%}%>')
 
-      function urlBuilder(search) {
-        let urlParams =
-          'jobsearch?search=' +
-          search +
-          '&page=' +
-          1 +
-          '&location=' +
-          document.getElementById('location-selection').value +
-          '&category=' +
-          document.getElementById('category-selection').value
+    async function promptReport() {
+      let dialogue = ''
+    }
 
-        // TEMP: RETURNING INCLUDES PORT UNTIL HOSTED
-        return 'http://' + window.location.hostname + ':3000/' + urlParams
+    listRecentJobs()
+
+    /**
+     * Send POST request to server with report data
+     */
+    async function report(user, url) {
+      const data = { user, url }
+      console.log(url)
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       }
+      const response = await fetch('/report', options)
+    }
 
-      function copyClipboard() {
-        navigator.clipboard.writeText(window.location.href)
-      }
+    function urlBuilder(search) {
+      let urlParams =
+        'jobsearch?search=' +
+        search +
+        '&page=' +
+        1 +
+        '&location=' +
+        document.getElementById('location-selection').value +
+        '&category=' +
+        document.getElementById('category-selection').value
 
-      function share(title) {
-        if (navigator.share) {
-          navigator.share({
+      // TEMP: RETURNING INCLUDES PORT UNTIL HOSTED
+      return 'http://' + window.location.hostname + ':3000/' + urlParams
+    }
+
+    function copyClipboard() {
+      navigator.clipboard.writeText(window.location.href)
+    }
+
+    function share(title) {
+      if (navigator.share) {
+        navigator
+          .share({
             title: 'JobSpy',
             text: title,
             url: window.location.href,
           })
-            .then(() => console.log('Successful share'))
-            .catch((error) => console.log('Error sharing', error));
-        }
-        else {
-          console.log('Sharing not supported, copied to clipboard')
-          navigator.clipboard.writeText(error)
-        }
+          .then(() => console.log('Successful share'))
+          .catch((error) => console.log('Error sharing', error))
+      } else {
+        console.log('Sharing not supported, copied to clipboard')
+        navigator.clipboard.writeText(error)
       }
+    }
 
-      //Enables popovers (for the copy to clipboard button)
-      function initPopover() {
-        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-          return new bootstrap.Popover(popoverTriggerEl)
-        })
-      }
+    //Enables popovers (for the copy to clipboard button)
+    function initPopover() {
+      var popoverTriggerList = [].slice.call(
+        document.querySelectorAll('[data-bs-toggle="popover"]')
+      )
+      var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+      })
+    }
 
-      var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
-      (function () {
-        var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
-        s1.async = true;
-        s1.src = 'https://embed.tawk.to/60ab0ec7a4114e480ad07c92/1f6e33eqn';
-        s1.charset = 'UTF-8';
-        s1.setAttribute('crossorigin', '*');
-        s0.parentNode.insertBefore(s1, s0);
-      })();
-    </script>
+    var Tawk_API = Tawk_API || {},
+      Tawk_LoadStart = new Date()
+    ;(function () {
+      var s1 = document.createElement('script'),
+        s0 = document.getElementsByTagName('script')[0]
+      s1.async = true
+      s1.src = 'https://embed.tawk.to/60ab0ec7a4114e480ad07c92/1f6e33eqn'
+      s1.charset = 'UTF-8'
+      s1.setAttribute('crossorigin', '*')
+      s0.parentNode.insertBefore(s1, s0)
+    })()
+  </script>
 
-    <%- include('partials/footer'); -%>
-  </body>
+  <%- include('partials/footer'); -%>
+</body>
