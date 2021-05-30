@@ -10,6 +10,7 @@ require('dotenv').config()
 const crypto = require('crypto')
 const nodemailer = require('nodemailer')
 const captchaSecretKey = process.env.CAPTCHA
+const SALT = 10;
 
 // handle errors
 const handleErrors = (err) => {
@@ -80,10 +81,10 @@ module.exports.signup_post = async (req, res) => {
 
     // Create new user
     try {
-        const user = await User.create({ email, password, isVerified: false })
-        // const token = createToken(user._id)
-        // res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
-        // res.status(201).json({ user: user._id })
+        const encryptedPassword = await bcrypt.hash(password, SALT)
+        const user = await User.create({ email, password: encryptedPassword, isVerified: false })
+        console.log(encryptedPassword)
+        // Send verification email
         const token = new Token({ _userId: user._id, token: crypto.randomBytes(16).toString('hex') })
         token.save(function (err) {
             if (err) {

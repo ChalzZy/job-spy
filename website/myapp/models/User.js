@@ -26,8 +26,8 @@ userSchema.post('save', function (doc, next) {
 
 // fire a function before doc saved to db
 userSchema.pre('save', async function(next) {
-    const salt = 10;
-    this.password = await bcrypt.hash(this.password, salt)
+    // const salt = 10;
+    // this.password = await bcrypt.hash(this.password, salt)
     next();
 })
 
