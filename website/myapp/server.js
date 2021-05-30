@@ -80,6 +80,8 @@ app.get('/data', function (req, res) {
 })
 
 // report/email funtionality
+
+//email settings
 var email = 'jobspyreport@gmail.com'
 
 var transporter = nodemailer.createTransport({
@@ -90,6 +92,7 @@ var transporter = nodemailer.createTransport({
     },
 })
 
+//emails jobspyreport@gmail.com after getting the post request containing the data
 app.post('/report', (request, response) => {
     const data = request.body.url
     const userData = request.body.user
