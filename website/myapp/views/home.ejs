@@ -11,14 +11,15 @@
 
     <div class="input-group rounded mb-3">
       <form class="d-flex mx-auto" id="searchBar">
-        <div class="d-lg-flex mx-auto">
+        <div class="d-lg-flex">
           <div class="input-group">
             <input
-              class="form-control me-2"
+              class="form-control"
               id="userInput"
               autocomplete="off"
               placeholder="Search for a job"
               aria-label="Search"
+              style="margin-right: -5px;"
             />
 
             <button
@@ -47,7 +48,7 @@
             </select>
 
             <select
-              class="form-select form-select-sm me-2"
+              class="form-select form-select-sm"
               style="width: auto"
               aria-label=".form-select-sm"
               id="category-selection"
@@ -64,6 +65,7 @@
             class="d-none d-lg-block btn btn-primary"
             type="submit"
             id="searchButton"
+            style="margin-left: -5px;"
           >
             Search
           </button>
