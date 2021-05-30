@@ -202,6 +202,85 @@
         'Android',
       ]
 
+      let jobSalaryDirectory = [
+        //KEY: p1 = <40k, p2 = <60k p3 = <100k, p4 = >100k
+        {
+          jobName: 'JavaScript',
+          avgSalary: 'Average JavaScript Salary: NZD 79-99k',
+          rating: 'p3.png',
+        },
+        {
+          jobName: 'Senior',
+          avgSalary: 'Average Senior Dev Salary: NZD 84-104k',
+          rating: 'p4.png',
+        },
+        {
+          jobName: 'Web',
+          avgSalary: 'Average Web Salary: NZD 39-59k',
+          rating: 'p2.png',
+        },
+        {
+          jobName: 'React',
+          avgSalary: 'Average React Salary: NZD 59-79k',
+          rating: 'p3.png',
+        },
+        {
+          jobName: 'Front End',
+          avgSalary: 'Average Front End Salary: NZD 70-90k',
+          rating: 'p2.png',
+        },
+        {
+          jobName: 'Frontend',
+          avgSalary: 'Average Frontend Salary: NZD 70-90k',
+          rating: 'p2.png',
+        },
+        {
+          jobName: 'Back End',
+          avgSalary: 'Average Back End Salary: NZD 82-102k',
+          rating: 'p4.png',
+        },
+        {
+          jobName: 'Backend',
+          avgSalary: 'Average Backend Salary: NZD 82-102k',
+          rating: 'p4.png',
+        },
+        {
+          jobName: 'Full Stack',
+          avgSalary: 'Average Full Stack Salary: NZD 61-81k',
+          rating: 'p3.png',
+        },
+        {
+          jobName: 'Fullstack',
+          avgSalary: 'Average Fullstack Salary: NZD 61-81k',
+          rating: 'p3.png',
+        },
+        {
+          jobName: '.NET',
+          avgSalary: 'Average .NET Salary: NZD 68-88k',
+          rating: 'p3.png',
+        },
+        {
+          jobName: 'Ruby',
+          avgSalary: 'Average Ruby Salary: NZD 75-110k',
+          rating: 'p4.png',
+        },
+        {
+          jobName: 'Mobile',
+          avgSalary: 'Average Mobile Salary: NZD 60-80k',
+          rating: 'p3.png',
+        },
+        {
+          jobName: 'iOS',
+          avgSalary: 'Average iOS Salary: NZD 60-80k',
+          rating: 'p3.png',
+        },
+        {
+          jobName: 'Android',
+          avgSalary: 'Average Android Salary: NZD 60-80k',
+          rating: 'p3.png',
+        },
+      ]
+
       for (i = dataFeatured.length - 1; i >= 0; i--) {
         //Adds job information if included
         let info = ''
@@ -218,7 +297,7 @@
         } else if (
           `${dataFeatured[i].jobData.currentSetting}` == 'Email/Phone Number'
         ) {
-          featuredJobList += `<div class="modal fade" id="applyPreview${[
+          featuredJobList += `<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="applyPreview${[
             i,
           ]}" tabindex="-1" aria-labelledby="applyPreviewLabel" aria-hidden="true">
                   <div class="modal-dialog">
@@ -227,7 +306,7 @@
                           <h5 class="modal-title">Apply</h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
-                      <div class="modal-body">
+                      <div class="modal-body" data-bs-backdrop="static" data-bs-keyboard="false">
                         <p>Contact details to apply for ${
                           dataFeatured[i].jobData.jobTitle
                         } position at ${dataFeatured[i].jobData.company}.</p>
@@ -251,7 +330,7 @@
         }
 
         featuredJobList += `
-                <div class="modal fade" id="thanksModal" tabindex="-1" aria-labelledby="thanksModalLabel" aria-hidden="true">
+                <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="thanksModal" tabindex="-1" aria-labelledby="thanksModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                     <div class="modal-header">
@@ -268,7 +347,7 @@
                 </div>
                 </div>
 
-            <div class="modal fade" id="modal${[
+            <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="featmodal${[
               i,
             ]}" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
@@ -308,16 +387,18 @@
             </div>
         </div>
 
-            <div style="padding-top: 10px">
+            <div style="padding-top: 20px">
+              <ol class="list-group list-group">
               <li class="list-group-item d-flex justify-content-between align-items-start border border-primary border-2">
                     <div class="ms-2 me-auto" style="max-width: 70%;">
-                        <div class="fw-lighter" id="job-title">${
+                      <div class="fw-lighter mb-1" style="font-size:14px"></div>
+                        <div class="fw-light" id="job-title">${
                           dataFeatured[i].jobData.company
                         } - ${dataFeatured[i].jobData.location}</div>
                         <div class="fs-5">${
                           dataFeatured[i].jobData.jobTitle
                         }</div>
-                        <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${
+                        <div class="fs-6 mb-1" style="max-width: 90%; overflow: hidden; max-height: 50px">${
                           dataFeatured[i].jobData.summary
                         }</div> `
 
@@ -348,18 +429,45 @@
                     <div class="my-auto d-flex">
                         <button type="button" class="btn btn-outline-primary mx-1">♡</button>
                         <button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal"
-                        data-bs-target="#modal${[i]}">Apply</button>
+                        data-bs-target="#featmodal${[i]}">Apply</button>
                     </div>
                   </div>
               </li>
+              </ol>
           </div>
             `
       }
 
       const numOfJobsToDisplay = 4
       for (i = 0; i < numOfJobsToDisplay; i++) {
+
+        // Assigns each card an avg. salary if keywords found in tagDirectory can be matched job's against title & summary
+        let info = ''
+        for (let jobIndex = 0; jobIndex < jobSalaryDirectory.length; jobIndex++) {
+          if (
+            (
+              data[i].jobTitle.toLowerCase() || data[i].summary.toLowerCase()
+            ).includes(jobSalaryDirectory[jobIndex].jobName.toLowerCase())
+          ) {
+            info = `                    
+                    <hr class="dropdown-divider" style="width:360px">
+                    <div class="fw-lighter">${jobSalaryDirectory[jobIndex].avgSalary} <img src="${jobSalaryDirectory[jobIndex].rating}" height="15" style="padding-bottom: 2px"></div>
+                    <hr class="dropdown-divider" style="width:360px">`
+            break
+          }
+        }
+
+        let title = ''
+
+        if(data[i].company != ''){
+          title = `${data[i].company} - ${data[i].location}`
+        }
+        else{
+          title = `${data[i].location}`
+        }
+
         jobList += `
-                <div class="modal fade" id="thanksModal" tabindex="-1" aria-labelledby="thanksModalLabel" aria-hidden="true">
+                <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="thanksModal" tabindex="-1" aria-labelledby="thanksModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                     <div class="modal-header">
@@ -376,21 +484,21 @@
                 </div>
                 </div>
 
-            <div class="modal fade" id="modal${[
+            <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="modal${[
               i,
             ]}" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content ">
                     <div class="modal-header">
                         <div class="fw-lighter" id="job-title"><p></p></div>
-                        <h5 class="modal-title" id="applyModalLabel"><div class="fw-lighter fs-6">${
-                          data[i].company
-                        }</div> ${data[i].jobTitle}</h5>
+                        <h5 class="modal-title" id="applyModalLabel">
+                          <div class="fw-lighter fs-6">${data[i].company} - ${data[i].location}</div> ${data[i].jobTitle}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <p>
                             ${data[i].summary}
+                            ${info}
                         </p>
                         <div  class="fw-light">Is this content inappropriate? <a onclick="report('A user', '${
                           data[i]._id
@@ -414,16 +522,15 @@
             </div>
         </div>
 
-            <div style="padding-top: 10px">
+            <div style="padding-top: 20px">
+              <ol class="list-group list-group">
                 <li class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto" style="max-width: 70%;">
-                        <div class="fw-lighter" id="job-title">${
-                          data[i].company
-                        }</div>
+                      <div class="fw-lighter mb-1" style="font-size:14px"> ${data[i].time}</div>
+                        <div class="fw-light" id="job-title">${title}</div>
                         <div class="fs-5">${data[i].jobTitle}</div>
-                        <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${
-                          data[i].summary
-                        }</div> `
+                        <div class="fs-6 mb-1" style="max-width: 90%; overflow: hidden; max-height: 50px"> ${
+                          data[i].summary}</div> `
 
         // Assigns each job tags if keywords found in tagDirectory can be matched job's against title & summary
         for (let tagIndex = 0; tagIndex < tagDirectory.length; tagIndex++) {
@@ -448,6 +555,7 @@
                     </div>
                   </div>
               </li>
+            </ol>
           </div>
             `
       }
