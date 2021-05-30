@@ -7,10 +7,12 @@ const router = Router()
 router.get('/signup', authController.signup_get)
 router.post('/signup', authController.signup_post)
 router.get('/confirmation/:email/:token', authController.confirmEmail)
+router.get('/yougotmail', authController.yougotmail_get)
 
 // login
 router.get('/login', authController.login_get)
 router.post('/login', authController.login_post)
+router.get('/loginverified', authController.loginverified_get)
 
 // logout
 router.get('/logout', authController.logout_get)

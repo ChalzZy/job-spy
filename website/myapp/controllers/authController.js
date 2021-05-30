@@ -58,8 +58,16 @@ module.exports.signup_get = (req, res) => {
     res.render('signup')
 }
 
+module.exports.yougotmail_get = (req, res) => {
+    res.render('yougotmail')
+}
+
 module.exports.login_get = (req, res) => {
     res.render('login')
+}
+
+module.exports.loginverified_get = (req, res) => {
+    res.render('loginverified')
 }
 
 module.exports.signup_post = async (req, res) => {
@@ -102,7 +110,7 @@ module.exports.signup_post = async (req, res) => {
                     console.log('Error' + err)
                     return res.status(500).send({ msg: 'Technical issue! Please click resend for verification email.' })
                 }
-                return res.status(200).send('A verification email has been sent to ' + user.email + '. It will be expire after one day. If you not get verification Email click on resend token.')
+                return res.sendStatus(200)
             })
         })
     } catch (error) {
@@ -127,7 +135,7 @@ module.exports.confirmEmail = function (req, res, next) {
                         if (err) {
                             return res.status(500).send({ msg: err.message })
                         } else {
-                            return res.status(200).send('Your account has been successfully verified')
+                            return res.redirect('/loginverified')
                         }
                     })
                 }
