@@ -6,6 +6,7 @@ const router = Router()
 // registration
 router.get('/signup', authController.signup_get)
 router.post('/signup', authController.signup_post)
+router.get('/confirmation/:email/:token', authController.confirmEmail)
 
 // login
 router.get('/login', authController.login_get)

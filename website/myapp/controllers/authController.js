@@ -4,14 +4,17 @@ const userFavourites = require('../models/userFavourites')
 const bcrypt = require('bcrypt')
 const fetch = require('node-fetch')
 const { stringify } = require('querystring')
+const Token = require('../models/Token')
 const SECRET = 'nw8d395d243nj8h90!@#*&!)@(#*0wnp9m8edruq2o98i5'
 require('dotenv').config()
+const crypto = require('crypto')
+const nodemailer = require('nodemailer')
 const captchaSecretKey = process.env.CAPTCHA
 
 // handle errors
 const handleErrors = (err) => {
     console.log(err.message, err.code)
-    let errors = { email: '', password: '' }
+    let errors = { email: '', password: '' , isVerified: '' }
 
     // incorrect email
     if (err.message === 'incorrect email') {
@@ -27,6 +30,10 @@ const handleErrors = (err) => {
     if (err.code === 11000) {
         errors.email = 'that email is already registered'
         return errors
+    }
+
+    if (err.message === 'User is not verified') {
+        errors.isVerified = 'Your account is not verified, please check your email.'
     }
 
     // Validation errors
@@ -57,6 +64,7 @@ module.exports.login_get = (req, res) => {
 module.exports.signup_post = async (req, res) => {
     const { email, password, captcha } = req.body
 
+    // Google Captcha
     if (!req.body.captcha) {
         return res.json({ success: false, msg: 'Please select captcha' })
     }
@@ -70,15 +78,61 @@ module.exports.signup_post = async (req, res) => {
 
     const body = await fetch(verifyURL).then(res => res.json())
 
+    // Create new user
     try {
-        const user = await User.create({ email, password })
-        const token = createToken(user._id)
-        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
-        res.status(201).json({ user: user._id })
+        const user = await User.create({ email, password, isVerified: false })
+        // const token = createToken(user._id)
+        // res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
+        // res.status(201).json({ user: user._id })
+        const token = new Token({ _userId: user._id, token: crypto.randomBytes(16).toString('hex') })
+        token.save(function (err) {
+            if (err) {
+                return res.status(500).send({ msg: err.message })
+            }
+            var transporter = nodemailer.createTransport({ service: 'Gmail', auth: { user: process.env.EMAIL, pass: process.env.PASSWORD } })
+            var mailOptions = { 
+                from: 'no-reply@jobspy.co.nz', 
+                to: user.email, 
+                subject: 'JobSpy Account Verification Link', 
+                text: 'Hello, please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/' + user.email + '\/' + token.token + '\n\nThank You!\n',
+            }
+            transporter.sendMail(mailOptions, function(err) {
+                if (err) {
+                    console.log('Error' + err)
+                    return res.status(500).send({ msg: 'Technical issue! Please click resend for verification email.' })
+                }
+                return res.status(200).send('A verification email has been sent to ' + user.email + '. It will be expire after one day. If you not get verification Email click on resend token.')
+            })
+        })
     } catch (error) {
         const errors = handleErrors(error)
         res.status(400).json({ errors })
     }
+}
+
+module.exports.confirmEmail = function (req, res, next) {
+    Token.findOne( { token: req.params.token }, function(err, token) {
+        if (!token) {
+            return res.status(400).send({ msg: 'Your verification link may have expired. Please click resend to verify your email'})
+        } else {
+            User.findOne({ _id: token._userId, email: req.params.email }, function (err, user) {
+                if (!user) {
+                    return res.status(401).send({ msg: 'We were unable to find this user' })
+                } else if (user.isVerified) {
+                    return res.status(200).send('User has been already verified. Please login')
+                } else {
+                    user.isVerified = true
+                    user.save(function (err) {
+                        if (err) {
+                            return res.status(500).send({ msg: err.message })
+                        } else {
+                            return res.status(200).send('Your account has been successfully verified')
+                        }
+                    })
+                }
+            })
+        }
+    })
 }
 
 module.exports.login_post = async (req, res) => {

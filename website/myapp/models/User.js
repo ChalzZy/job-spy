@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Please enter an password'],
         minlength: [6, 'Minimum password length is 6 characters']
     },
+    isVerified: { type: Boolean },
 })
 
 // fire a function after doc save to db
@@ -33,10 +34,13 @@ userSchema.pre('save', async function(next) {
 // static method to login user
 userSchema.statics.login = async function(email, password) {
     const user = await this.findOne({ email })
+    if (!user.isVerified) {
+        throw Error('User is not verified')
+        //return res.status(401).send({ msg:'Your email has not been verified' })
+    } 
     if (user) { 
         const auth = await bcrypt.compare(password, user.password)
         if (auth) {
-
             return user
         } throw Error('incorrect password')
     } throw Error('incorrect email')
