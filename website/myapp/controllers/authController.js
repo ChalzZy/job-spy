@@ -204,12 +204,13 @@ module.exports.login_post = async (req, res) => {
 
     const query = stringify({
         secret: captchaSecretKey,
-        response: req.body.captcha,
-        remoteip: req.connection.remoteAddres
+        response: captcha,
+        remoteip: req.connection.remoteAddress
     })
     const verifyURL = `https://google.com/recaptcha/api/siteverify?${query}`
 
     const body = await fetch(verifyURL).then(res => res.json())
+    console.log(body)
 
     if (body.success !== undefined && !body.success) {
         return res.json({ success: false, msg: 'Failed captcha verification' })
