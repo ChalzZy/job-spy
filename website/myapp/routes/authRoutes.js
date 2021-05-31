@@ -28,6 +28,9 @@ router.get('/profile', authController.profile_get)
 router.post('/profile', authController.profile_post)
 router.delete('/delete', authController.profile_delete)
 
+// change email
+router.post('/email', authController.email_post)
+
 // change password
 router.get('/password', authController.password_get)
 router.post('/password', authController.password_post)
