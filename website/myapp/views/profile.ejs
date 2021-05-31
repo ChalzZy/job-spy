@@ -77,13 +77,29 @@
                             <article class="card-body mx-auto" style="max-width: 400px;">
                                 <h4 class="card-title mt-3 text-center pb-3">Change Email</h4>
                                 <form class="email-form">
-                                    <!-- Enter current password -->
+                                    <!-- Enter current email -->
                                     <div class="form-group input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
                                         </div>
-                                        <input class="form-control" placeholder="New Email" type="text" name="email">
+                                        <input class="form-control" placeholder="Enter current email" type="text" name="currentemail">
                                     </div>
+                                    <!-- Enter new email -->
+                                    <div class="form-group input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+                                        </div>
+                                        <input class="form-control" placeholder="New Email" type="text" name="newemail">
+                                    </div>
+                                    <!-- Enter current password -->
+                                    <div class="form-group input-group pt-3 pb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                                        </div>
+                                        <input class="form-control" placeholder="Current Password" type="password"
+                                            name="password">
+                                    </div>
+                                    
 
                                     <!-- Submit button -->
                                     <div class="d-flex form-group pt-3 justify-content-center">
@@ -207,6 +223,57 @@
                         const data = await res.json()
                         if (data.isPasswordChanged) {
                             location.assign('/login')
+                        }
+                    } catch (err) {
+                        console.log(err)
+                    }
+                })
+                /*
+                * Change email
+                */
+                const emailForm = document.querySelector('.email-form')
+                //const emailError = document.querySelector('.email.error')
+                //const passwordError = document.querySelector('.password.error')
+
+                emailForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    // reset errors
+                    //emailError.textContent = ''
+                    //passwordError.textContent = ''
+
+                    // get the values
+                    //const email = form.email.value
+                    const currentEmail = emailForm.currentemail.value
+                    const newEmail = emailForm.newemail.value
+                    const password = emailForm.password.value
+
+                    try {
+                        const res = await fetch('/email', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                currentEmail,
+                                newEmail,
+                                password,
+                            }),
+                            headers: { 'Content-Type': 'application/json' }
+                        })
+                        const data = await res.json()
+                        if (data.isEmailChanged) {
+                            alert('Your email has been updated, click OK to return to login page')
+                            location.assign('/login')
+                        } else if (data.wrongFormat) {
+                            alert('Your new email is not in email formating. E.g. (example@example.com)')
+                            location.assign('/profile')
+                        } else if (data.sameEmail) {
+                            alert('You cannot change the same email')
+                            location.assign('/profile')
+                        } else if (data.emailTaken) {
+                            alert('Sorry, that email is already taken. Please enter a different email.')
+                            location.assign('profile')
+                        } else {
+                            alert('Your current email or password is incorrect')
+                            location.assign('/profile')
                         }
                     } catch (err) {
                         console.log(err)

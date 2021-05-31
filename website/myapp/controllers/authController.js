@@ -11,6 +11,7 @@ const crypto = require('crypto')
 const nodemailer = require('nodemailer')
 const captchaSecretKey = process.env.CAPTCHA
 const SALT = 10;
+const validator = require('validator')
 
 // handle errors
 const handleErrors = (err) => {
@@ -52,6 +53,56 @@ const createToken = (id) => {
     return jwt.sign({ id }, SECRET, {
         expiresIn: maxAge,
     }) // signs JWT
+}
+
+module.exports.email_post = async (req, res) => {
+    const { currentEmail, newEmail, password } = req.body
+    let isEmailChanged = false
+
+    // check if desired new email already exists
+    User.exists({ email: newEmail }, function (err, doc) {
+        if (err) {
+            console.log('Email already exists: ' + err)
+            res.status(400).json({ emailTaken: true })
+        } else {
+            console.log("Result: " + doc + ", " + newEmail + " is an available email.")
+        }
+    })
+
+    // check if the email entered is the same
+    if (currentEmail == newEmail) {
+        res.status(400).json({ sameEmail: true })
+    }
+    // check if the desired email is in email formatting 
+    else if (validator.isEmail(newEmail) == false) {
+        res.status(400).json({ wrongFormat: true })
+    } else {
+        try {
+            // check password is valid
+            const user = await User.login(currentEmail, password)
+            console.log(user.email + ' is valid')
+            query = { email: currentEmail }
+            setEmail = { $set: { email: newEmail } }
+    
+            // update email
+            await User.updateOne(query, setEmail)
+            console.log(currentEmail + ' has been updated to ' + newEmail)
+            isEmailChanged = true
+            
+            // log out user
+            if (isEmailChanged == true) {
+                res.cookie('jwt', '', { maxAge: 1})
+                res.status(200).json({ isEmailChanged: true })
+                console.log(user.email + ' has been logged out')
+            } else {
+                res.status(400).json({ msg: 'Could not log user out' })
+            }
+    
+        } catch (err) {
+            res.status(400).json({ err })
+            console.log(err)
+        }
+    }
 }
 
 module.exports.signup_get = (req, res) => {
