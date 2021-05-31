@@ -38,6 +38,7 @@ userSchema.statics.login = async function(email, password) {
         throw Error('User is not verified')
         //return res.status(401).send({ msg:'Your email has not been verified' })
     } 
+    console.log('user is verified')
     if (user) { 
         const auth = await bcrypt.compare(password, user.password)
         if (auth) {
