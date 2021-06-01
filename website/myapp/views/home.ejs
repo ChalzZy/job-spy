@@ -414,6 +414,7 @@
             }
           }
 
+          // Modifies the job title displayed depending on if the company name is available
           let title = ''
 
           if (data[i].company != '') {
@@ -722,7 +723,7 @@
         }
       }
 
-      //Enables popovers (for the copy to clipboard button)
+      // Enables popovers (for the copy to clipboard button)
       function initPopover() {
         var popoverTriggerList = [].slice.call(
           document.querySelectorAll('[data-bs-toggle="popover"]')

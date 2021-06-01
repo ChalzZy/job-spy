@@ -202,6 +202,9 @@
             initPopover()
           })
           .catch(function (error) {
+            document.getElementById('results').style.display = 'block'
+            document.getElementById('results').innerHTML = jobText
+            document.getElementById('loading').style.display = 'none'
             console.log('Error: ', error)
           })
       }
@@ -331,6 +334,7 @@
         'Lead',
       ]
 
+      // A list of job salary information based on key words
       let jobSalaryDirectory = [
         //KEY: p1 = <40k, p2 = <60k p3 = <100k, p4 = >100k
         {
@@ -410,6 +414,7 @@
         },
       ]
 
+      // Creates pages buttons
       for (j; j < pages; j++) {
         if (j == currentPage) {
           document.getElementById(
@@ -443,12 +448,13 @@
           }
         }
 
+        // Modifies the job title displayed depending on if the company name is available
         let title = ''
 
-        if(jobs[i].company != ''){
+        if (jobs[i].company != '') {
           title = `${jobs[i].company} - ${jobs[i].location}`
         }
-        else{
+        else {
           title = `${jobs[i].location}`
         }
 
@@ -589,7 +595,7 @@
     }
 
     window.onload = function () {
-      //Setting variables
+      //Sets the variables
       var favColor = document.body.style.backgroundColor
       var textColor =
         document.getElementsByClassName('text-center')[0].style.color
@@ -597,17 +603,17 @@
       var setLocation = document.getElementById('location-selection')
       var setCatergory = document.getElementById('category-selection')
 
-      //setCookies
+      //Sets the cookies
       var searchBar = (document.getElementById(
         'userInput'
       ).style.backgroundColor = 'white')
       setCookie('search', searchBar)
 
-      //setting the ids
+      // Sets the ids
       var searchString =
         document.getElementById('userInput').style.backgroundColor
 
-      //getCookie
+      // Gets the cookie
       var color = getCookie('color')
       var textNewColor = getCookie('textColor')
       var searchBarEngine = getCookie('search')
@@ -619,9 +625,6 @@
         setLocation.style.color = '#808080'
         setCatergory.style.backgroundColor = searchString
         setCatergory.style.color = '#808080'
-
-        // for(var i = 0; i < 4; i++){
-        //   jobs[i].style.backgroundColor = '#808080'
       }
       if (color === 'rgb(26, 26, 26)') {
         document.body.style.backgroundColor = color
@@ -638,13 +641,11 @@
           'navbar navbar-light bg-light',
           'navbar navbar-dark bg-dark'
         )
-        // for(var i = 0; i < 4; i++){
-        //   jobs[i].style.backgroundColor = '#808080'
-        // }
       }
     }
       ; ('<%}%>')
 
+    // Favourites functionality
     async function favourite(i) {
       const id = jobs[i]._id.$oid
       const jobTitle = jobs[i].jobTitle
@@ -687,13 +688,7 @@
       }
     }
 
-    async function promptReport() {
-      let dialogue = ''
-    }
-
-    /**
-     * Send POST request to server with report data
-     */
+    // Send POST request to server with report data
     async function report(user, url) {
       const data = { user, url }
       console.log(url)
@@ -707,7 +702,7 @@
       const response = await fetch('/report', options)
     }
 
-    //Maintains URL
+    // Sets the current URL based on params
     function setURL(search, page, location, category, modal) {
       page += 1
       const urlParams = new URLSearchParams(
@@ -733,6 +728,7 @@
       }
     }
 
+    // Checks the current url and loads the page using any terms found
     function checkURL() {
       const urlParams = new URLSearchParams(location.search)
 
@@ -761,6 +757,7 @@
       }
     }
 
+    // Creates a Boostrap modal object and shows it
     function getModal(mod) {
       if (loadModal != 'undefined' && loadModal != '' && loadModal != null) {
         console.log('loaded' + mod)
@@ -772,6 +769,7 @@
       }
     }
 
+    // Sets the current modal variable and URL whenever a user opens or closes any specific modal
     function setModal(modal) {
       loadModal = modal
       setURL(
@@ -781,13 +779,14 @@
         categorySelection.options[categorySelection.selectedIndex].text,
         loadModal
       )
-      //buildJobList(defaultPage)
     }
 
+    // Copies the current url onto the clipboard
     function copyClipboard() {
       navigator.clipboard.writeText(window.location.href)
     }
 
+    // Opens the sharing API if the browser supports it
     function share(title) {
       if (navigator.share) {
         navigator
@@ -828,6 +827,7 @@
       return 'http://' + window.location.hostname + ':3000/' + urlParams
     }
 
+    // Provides live chat functionality
     var Tawk_API = Tawk_API || {},
       Tawk_LoadStart = new Date()
       ; (function () {
