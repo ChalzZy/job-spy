@@ -186,6 +186,7 @@
     let currentPage = 'detailsPage'
     let currentSetting = ''
 
+    // The variables which constitute a job listing
     let companyName = ''
     let jobTitle = ''
     let jobLocation = ''
@@ -200,10 +201,7 @@
     let phoneNumber = ''
     let applyPreviewElements = ''
 
-    function start() {
-      document.getElementById('listingPage').hidden = false
-    }
-
+    // Changes the page depending on the string passed. Relies on hiding and showing elements rather than files
     function changePage(page) {
       if (page == 'descriptionPage' || page == 'confirmationPage') {
         let companyNameValue = document.getElementById('companyName').value
@@ -290,7 +288,6 @@
           function isValid(value) {
             return value.length != 0 && value != '' && value != ' ' && value != undefined && value != null
           }
-
 
           for (i in tagsList) {
             if (tagsList[i].length >= 15) {
@@ -478,6 +475,7 @@
             '</div>'
         }
 
+        // Template for the job preview
         let jobText = `
         <div class="modal fade" id="applyPreview" tabindex="-1" aria-labelledby="applyPreviewLabel" aria-hidden="true">
                   <div class="modal-dialog">
@@ -577,8 +575,8 @@
       document.getElementById(page + 'BC').disabled = false
       currentPage = page
     }
-    
 
+    // Sends job data to the server in JSON format
     async function sendJobData() {
       let data = {
         "company": companyName,
@@ -606,7 +604,7 @@
     }
 
 
-    // Create an instance of the Stripe object with your publishable API key
+    // Creates a Stripe checkout instance with a test API key
     var stripe = Stripe("pk_test_51IuaGBBnkafDP7DpOmAwgQF9B5Kl4suwCQn3BnAbS87Ue0SXwVRq4k1vca22PQpa0dqd7A7dLNu2bYPRXwmVdpTS00hkeGPdBe");
     var checkoutButton = document.getElementById("checkout-button");
 
@@ -622,9 +620,7 @@
           return stripe.redirectToCheckout({ sessionId: session.id });
         })
         .then(function (result) {
-          // If redirectToCheckout fails due to a browser or network
-          // error, you should display the localized error message to your
-          // customer using error.message.
+          // Error if redirectToCheckout fails due to the browser or network
           if (result.error) {
             alert(result.error.message);
           }
