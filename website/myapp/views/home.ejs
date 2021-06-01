@@ -317,7 +317,7 @@
               i,
             ]}" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content ">
+                <div class="modal-content">
                     <div class="modal-header">
                         <div class="fw-lighter" id="job-title"><p></p></div>
                         <h5 class="modal-title" id="applyModalLabel"><div class="fw-lighter fs-6">${dataFeatured[i].jobData.company
@@ -446,7 +446,7 @@
               i,
             ]}" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content ">
+                <div class="modal-content">
                     <div class="modal-header">
                         <div class="fw-lighter" id="job-title"><p></p></div>
                         <h5 class="modal-title" id="applyModalLabel">
@@ -522,16 +522,50 @@
           document.getElementById('body').style.backgroundColor ===
           'rgb(26, 26, 26)'
         ) {
-          let job_cards = document
+          let jobCards = document
             .getElementById('results')
             .getElementsByClassName(
               'list-group-item d-flex justify-content-between align-items-start'
             )
 
+          let featuredJobCards = document
+            .getElementById('featured')
+            .getElementsByClassName(
+              'list-group-item d-flex justify-content-between align-items-start'
+            )
+
+          let modals = document
+            .getElementById('results')
+            .getElementsByClassName(
+              'modal-content'
+            )
+
+          let featuredModals = document
+            .getElementById('featured')
+            .getElementsByClassName(
+              'modal-content'
+            )
+
           for (var i = 0; i < numOfJobsToDisplay; i++) {
-            job_cards[i].style.backgroundColor = '#404040'
-            job_cards[i].style.color = 'white'
+            jobCards[i].style.backgroundColor = '#404040'
+            jobCards[i].style.color = 'white'
           }
+
+          for (var i = 0; i < dataFeatured.length; i++) {
+            featuredJobCards[i].style.backgroundColor = '#404040'
+            featuredJobCards[i].style.color = 'white'
+          }
+
+          for (var i = 0; i < modals.length; i++) {
+            modals[i].style.backgroundColor = '#404040'
+            modals[i].style.color = 'white'
+          }
+
+          for (var i = 0; i < featuredModals.length; i++) {
+            featuredModals[i].style.backgroundColor = '#404040'
+            featuredModals[i].style.color = 'white'
+          }
+
         }
 
         var test = document
@@ -610,8 +644,7 @@
       window.onload = function () {
         // Sets the variables
         var favColor = document.body.style.backgroundColor
-        var textColor =
-          document.getElementsByClassName('text-center')[0].style.color
+        var textColor = document.getElementsByClassName('text-center')[0].style.color
         var h2Tag = document.getElementsByClassName('lead text-center')[0]
         var setLocation = document.getElementById('location-selection')
         var setCatergory = document.getElementById('category-selection')
