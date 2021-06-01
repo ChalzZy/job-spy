@@ -1,0 +1,23 @@
+<%- include('partials/header'); -%>
+    <body>
+        <div class="cover-container d-flex h-100 p-5 mx-auto flex-column text-center">
+            <main id="startPage" role="main" class="inner cover my-5">
+                <h1 class="cover-heading">Have your job <ins class="text-decoration-underline">featured</ins> on JobSpy.
+                </h1>
+                <p class="lead"> JobSpy will feature your post for just $1.</p>
+
+                <% if (user) { %>
+                    <div class="container">
+                        <a class="btn btn-primary mt-5 mx-2 btn-lg" href="/postlisting" role="button">Create a new job
+                            post!</a>
+                    </div>
+                    <button type="button" class="btn btn-primary mt-3 mb-5 mx-2" disabled>Renew a previous post</button>
+            </main>
+        </div>
+
+        <% } else { %>
+            <div class="mb-5 text-center">
+                <p class="lead m-5"><a href="/signup">Sign up</a> to get started.</p>
+            </div>
+            <% } %>
+                <%- include('partials/footer'); -%>

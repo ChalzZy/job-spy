@@ -1,0 +1,634 @@
+<%- include('partials/header'); -%>
+
+  <body>
+    <div id="listingPage" class="container-sm mt-4" style="max-width: 75%">
+      <nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+        <ol class="breadcrumb w-75">
+          <li class="breadcrumb-item"><button type="button" id="detailsPageBC" class="btn btn-link"
+              onclick="changePage('detailsPage')">Job Details</button></li>
+          <li class="breadcrumb-item"><i class="far fa-angle-right" style="color:grey"></i><button type="button"
+              id="descriptionPageBC" class="btn btn-link" onclick="changePage('descriptionPage')" disabled>Job
+              Description</button></li>
+          <li class="breadcrumb-item"><i class="far fa-angle-right" style="color:grey"></i><button type="button"
+              id="payPageBC" class="btn btn-link" onclick="changePage('payPage')" disabled>Job Pay</button></li>
+          <li class="breadcrumb-item"><i class="far fa-angle-right" style="color:grey"></i><button type="button"
+              id="applicationDetailsPageBC" class="btn btn-link" onclick="changePage('applicationDetailsPage')"
+              disabled>Application Details</button></li>
+          <li class="breadcrumb-item"><i class="far fa-angle-right" style="color:grey"></i><button type="button"
+              id="confirmationPageBC" class="btn btn-link" onclick="changePage('confirmationPage')"
+              disabled>Confirmation</button>
+          </li>
+        </ol>
+      </nav>
+
+      <div id="detailsPage">
+        <div class="fs-4 fw-bold">Job Details</div>
+        <p class="fs-6 fw-light">Provide basic details about your job.</p>
+
+        <div class="mb-3">
+          <label for="companyName" class="form-label">Company Name</label>
+          <input type="text" class="form-control" id="companyName" placeholder="eg. Niwon Ltd.">
+          <p id="companyNameWarning" class="fw-light" style="color: red; font-size:90%"></p>
+        </div>
+
+        <div class="mb-3">
+          <label for="jobTitle" class="form-label">Job Title</label>
+          <input type="text" class="form-control" id="jobTitle" placeholder="eg. Software Developer">
+          <p id="jobTitleWarning" class="fw-light" style="color: red; font-size:90%"></p>
+        </div>
+
+
+        <div class="mb-3">
+          <label for="location" class="form-label">Job Location</label>
+          <select id="location" class="form-select mb-3" aria-label="location-form">
+            <option selected>Choose a Location</option>
+            <option value="1">Auckland</option>
+            <option value="2">Wellington</option>
+            <option value="3">Christchurch</option>
+            <option value="4">Dunedin</option>
+            <option value="4">Remote</option>
+          </select>
+          <p id="locationWarning" class="fw-light" style="color: red; font-size:90%"></p>
+        </div>
+
+        <div class="mb-3">
+          <label for="category" class="form-label">Job Category</label>
+          <select id="category" class="form-select mb-3" aria-label="category-form">
+            <option selected>Choose a Category</option>
+            <option value="1">Junior</option>
+            <option value="2">Intermediate</option>
+            <option value="3">Senior</option>
+            <option value="4">Internship</option>
+          </select>
+          <p id="categoryWarning" class="fw-light" style="color: red; font-size:90%"></p>
+        </div>
+        <div id="detailsNext" class="d-flex justify-content-end mb-5"><button type="button" class="btn btn-primary"
+            onclick="changePage('descriptionPage')">Next</button></div>
+      </div>
+
+
+      <div id="descriptionPage" hidden>
+        <div class="fs-4 fw-bold">Job Description</div>
+        <p class="fs-6 fw-light">Provide further details about your job.</p>
+
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea class="form-control" id="description" rows="3"></textarea>
+          <p id="descriptionWarning" class="fw-light" style="color: red; font-size:90%"></p>
+        </div>
+
+        <div class="mb-3">
+          <label for="tags" class="form-label">Tags</label>
+          <input type="text" class="form-control" id="tags" placeholder="Enter tags seperated by a comma">
+          <p id="tagsWarning" class="fw-light" style="color: red; font-size:90%"></p>
+        </div>
+
+        <div class="mb-3">
+          <label for="worktype" class="form-label">Work Type (optional)</label>
+          <select id="worktype" class="form-select mb-3" aria-label="worktype-form">
+            <option selected>Choose a Work Type</option>
+            <option value="1">Full Time</option>
+            <option value="2">Part Time</option>
+            <option value="3">Casual</option>
+            <option value="4">Contract</option>
+          </select>
+        </div>
+
+        <div id="descriptionNext" class="d-flex justify-content-end mb-5"><button type="button" class="btn btn-primary"
+            onclick="changePage('payPage')">Next</button></div>
+      </div>
+
+      <div id="payPage" hidden>
+        <div class="fs-4 fw-bold">Job Pay</div>
+        <p class="fs-6 fw-light">Provide details about how your job's pay range.</p>
+
+        <div class="mb-3">
+          <label for="salary" class="form-label">Salary Details (optional)</label>
+          <input type="text" class="form-control" id="salary" placeholder="eg. $80,000 including holiday pay">
+        </div>
+
+        <div class="mb-3">
+          <label for="salaryType" class="form-label">Salary Type (optional)</label>
+          <select id="salaryType" class="form-select mb-3" aria-label="worktype-form">
+            <option selected>Choose a Salary Type</option>
+            <option value="1">Annual</option>
+            <option value="2">Hourly</option>
+          </select>
+        </div>
+        <div id="payNext" class="d-flex justify-content-end mb-5"><button type="button" class="btn btn-primary"
+            onclick="changePage('applicationDetailsPage')">Next</button></div>
+      </div>
+
+      <div id="applicationDetailsPage" hidden>
+        <div class="fs-4 fw-bold">Application Details</div>
+        <p class="fs-6 fw-light">Choose what to present when an applicant presses apply.</p>
+
+        <div class="mb-3">
+          <label for="applicationMethod" class="form-label">Application Method</label>
+          <select id="applicationMethod" class="form-select mb-3" aria-label="worktype-form">
+            <option selected>Choose an Application Method</option>
+            <option value="1">External Link</option>
+            <option value="2">Email/Phone Number</option>
+          </select>
+          <p id="applicationMethodWarning" class="fw-light" style="color: red; font-size:90%"></p>
+        </div>
+
+        <div id="externalLink" class="mb-3" hidden>
+          <label for="link" class="form-label">External Link</label>
+          <input type="text" class="form-control" id="link" placeholder="eg. http://www.seek.com/listings/12345">
+          <p id="externalLinkWarning" class="fw-light" style="color: red; font-size:90%"></p>
+        </div>
+
+        <div id="emailNumber" hidden>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="eg. johnsmith@gmail.com">
+            <p id="emailWarning" class="fw-light" style="color: red; font-size:90%"></p>
+          </div>
+          <div class="mb-3">
+            <label for="number" class="form-label">Phone Number</label>
+            <input type="text" class="form-control" id="number" placeholder="eg. 02112345678">
+            <p id="numberWarning" class="fw-light" style="color: red; font-size:90%"></p>
+          </div>
+          <p id="emailNumberWarning" class="fw-light" style="color: red; font-size:90%"></p>
+        </div>
+
+        <div id="applicationNext" class="d-flex justify-content-end mb-5"><button type="button"
+            class="btn btn-primary">Next</button></div>
+      </div>
+
+      <div id="confirmationPage" hidden>
+        <div class="fs-4 fw-bold">Confirmation</div>
+        <p class="fs-6 fw-light">Check that all your details are correct.</p>
+        <p id="confirmation">
+        <div class="border rounded p-3">
+          <p class="fw-bold">Preview</p>
+          <div id="preview" class="mx-3"></div>
+        </div>
+        <div class="border rounded p-3">
+          <p class="fw-bold">Job Post</p>
+          Type<p class="text-muted">Featured Job Listing</p>
+          Duration<p class="text-muted">1 Month</p>
+          Price<p class="text-muted">$1.00 (including GST)</p>
+        </div>
+
+        </p>
+        <div class="d-flex justify-content-end mb-5"><button type="button" class="btn btn-primary"
+            id="checkout-button">Purchase Job Post</button></div>
+      </div>
+
+    </div>
+
+    <%- include('partials/footer'); -%>
+  </body>
+
+  <script>
+    let currentPage = 'detailsPage'
+    let currentSetting = ''
+
+    // The variables which constitute a job listing
+    let companyName = ''
+    let jobTitle = ''
+    let jobLocation = ''
+    let jobCategory = ''
+    let jobDescription = ''
+    let tags = []
+    let workType = ''
+    let salaryDetails = ''
+    let salaryType = ''
+    let externalLink = ''
+    let email = ''
+    let phoneNumber = ''
+    let applyPreviewElements = ''
+
+    // Changes the page depending on the string passed. Relies on hiding and showing elements rather than files
+    function changePage(page) {
+      if (page == 'descriptionPage' || page == 'confirmationPage') {
+        let companyNameValue = document.getElementById('companyName').value
+        let jobTitleValue = document.getElementById('jobTitle').value
+        let jobLocationValue = document.getElementById('location').options[document.getElementById('location').selectedIndex].text
+        let jobCategoryValue = document.getElementById('category').options[document.getElementById('category').selectedIndex].text
+
+        if (companyNameValue == '') {
+          document.getElementById('companyNameWarning').innerHTML = "Please provide a company name."
+          return
+        }
+        else if (companyNameValue >= 50) {
+          document.getElementById('companyNameWarning').innerHTML = "Please shorten your company name below 50 characters."
+          return
+        }
+        else {
+          document.getElementById('companyNameWarning').innerHTML = ""
+        }
+        if (jobTitleValue == '') {
+          document.getElementById('jobTitleWarning').innerHTML = "Please provide a job title."
+          return
+        }
+        else if (jobTitleValue >= 50) {
+          document.getElementById('jobTitleWarning').innerHTML = "Please shorten your job title below 50 characters."
+          return
+        }
+        else {
+          document.getElementById('jobTitleWarning').innerHTML = ""
+        }
+
+        if (jobLocationValue == 'Choose a Location') {
+          document.getElementById('locationWarning').innerHTML = "Please provide a location."
+          return
+        }
+        else {
+          document.getElementById('locationWarning').innerHTML = ""
+        }
+
+        if (jobCategoryValue == 'Choose a Category') {
+          document.getElementById('categoryWarning').innerHTML = "Please provide a category."
+          return
+        }
+        else {
+          document.getElementById('categoryWarning').innerHTML = ""
+        }
+        companyName = companyNameValue
+        jobTitle = jobTitleValue
+        jobLocation = jobLocationValue
+        jobCategory = jobCategoryValue
+      }
+
+      if (page == 'payPage' || page == 'confirmationPage') {
+        let jobDescriptionValue = document.getElementById('description').value
+        let tagsValue = document.getElementById('tags').value
+        let workTypeValue = document.getElementById('worktype').options[document.getElementById('worktype').selectedIndex].text
+
+        if (jobDescriptionValue.length == 0) {
+          document.getElementById('descriptionWarning').innerHTML = "Please provide a job description."
+          return
+        }
+        if (jobDescriptionValue.length >= 500) {
+          document.getElementById('descriptionWarning').innerHTML = 'Please shorten your job description below 500 characters.'
+          return
+        }
+        else {
+          document.getElementById('descriptionWarning').innerHTML = ''
+        }
+
+        jobDescription = jobDescriptionValue
+
+        if (workTypeValue != 'Choose a Work Type') {
+
+          workType = workTypeValue
+        }
+        else {
+          workType = ''
+        }
+
+        if (tagsValue != '') {
+          tagsList = tagsValue.split(',')
+
+          var tagsList = tagsList.filter(isValid);
+
+          function isValid(value) {
+            return value.length != 0 && value != '' && value != ' ' && value != undefined && value != null
+          }
+
+          for (i in tagsList) {
+            if (tagsList[i].length >= 15) {
+              document.getElementById('tagsWarning').innerHTML = "Please keep the length of each tag under 15 characters."
+              return
+            }
+            tagsList[i].trim()
+          }
+
+          var tagsList = tagsList.filter(isValid);
+
+          if (tagsList.length >= 6) {
+            document.getElementById('tagsWarning').innerHTML = "Please remove some tags (maximum 5 tags)."
+            return
+          }
+
+          document.getElementById('tagsWarning').innerHTML = ""
+          tags = tagsList
+        }
+      }
+
+      if (page == 'applicationDetailsPage' || page == 'confirmationPage') {
+        let salaryDetailsValue = document.getElementById('salary').value
+        let salaryTypeValue = document.getElementById('salaryType').options[document.getElementById('salaryType').selectedIndex].text
+        if (salaryTypeValue != 'Choose a Salary Type') {
+          salaryType = salaryTypeValue
+        }
+        else {
+          salaryType = ''
+        }
+        salaryDetails = salaryDetailsValue
+      }
+
+      if (page == 'applicationDetailsPage' || page == 'confirmationPage') {
+        document.getElementById('applicationNext').addEventListener('click', function () {
+          let externalLinkValue = document.getElementById('link').value
+          let emailValue = document.getElementById('email').value
+          let numberValue = document.getElementById('number').value
+
+          if (currentSetting == '') {
+            document.getElementById('applicationMethodWarning').innerHTML = 'Please select an application method.'
+            return
+          }
+
+          if (currentSetting != '') {
+            document.getElementById('applicationMethodWarning').innerHTML = ''
+          }
+
+          if (currentSetting == 'External Link' && !(externalLinkValue.includes('https://') || externalLinkValue.includes('http://'))) {
+            document.getElementById('externalLinkWarning').innerHTML = 'Please select a valid link.'
+            return
+          }
+
+          if (externalLinkValue == '' && currentSetting == 'External Link') {
+            document.getElementById('externalLinkWarning').innerHTML = 'Please enter an external link.'
+            return
+          }
+          else if (externalLinkValue != '' && currentSetting == 'External Link') {
+            externalLink = externalLinkValue
+            document.getElementById('externalLinkWarning').innerHTML = ''
+            changePage('confirmationPage')
+          }
+
+          if (currentSetting == 'Email/Phone Number' && emailValue == '' || numberValue == '') {
+            document.getElementById('emailNumberWarning').innerHTML = 'Please enter your application email and phone number.'
+            return
+          }
+
+          else if (emailValue != '' && numberValue != '' && currentSetting == 'Email/Phone Number') {
+            email = emailValue
+            phoneNumber = numberValue
+            document.getElementById('emailNumberWarning').innerHTML = ''
+            applyPreviewElements = '<p class="fs-4">Email: ' + email + '</p> <p class="fs-4">Contact Number: ' + phoneNumber + '</p>'
+            changePage('confirmationPage')
+          }
+        })
+
+        document.getElementById('confirmationPageBC').addEventListener('click', function () {
+          let externalLinkValue = document.getElementById('link').value
+          let emailValue = document.getElementById('email').value
+          let numberValue = document.getElementById('number').value
+
+          if (currentSetting == '') {
+            document.getElementById('applicationMethodWarning').innerHTML = 'Please select an application method.'
+            return
+          }
+
+          if (currentSetting != '') {
+            document.getElementById('applicationMethodWarning').innerHTML = ''
+          }
+
+          if (currentSetting == 'External Link' && !(externalLinkValue.includes('https://') || externalLinkValue.includes('http://'))) {
+            document.getElementById('externalLinkWarning').innerHTML = 'Please select a valid link.'
+            return
+          }
+
+          if (externalLinkValue == '' && currentSetting == 'External Link') {
+            document.getElementById('externalLinkWarning').innerHTML = 'Please enter an external link.'
+            return
+          }
+          else if (externalLinkValue != '' && currentSetting == 'External Link') {
+            externalLink = externalLinkValue
+            document.getElementById('externalLinkWarning').innerHTML = ''
+            changePage('confirmationPage')
+          }
+
+          if (currentSetting == 'Email/Phone Number' && emailValue == '' || numberValue == '') {
+            document.getElementById('emailNumberWarning').innerHTML = 'Please enter your application email and phone number.'
+            return
+          }
+
+          else if (emailValue != '' && numberValue != '' && currentSetting == 'Email/Phone Number') {
+            email = emailValue
+            phoneNumber = numberValue
+            document.getElementById('emailNumberWarning').innerHTML = ''
+            applyPreviewElements = email + ' ' + phoneNumber
+            changePage('confirmationPage')
+          }
+        })
+
+        document.getElementById('applicationMethod').addEventListener('change', function () {
+          let ApplicationMethodValue = document.getElementById('applicationMethod').options[document.getElementById('applicationMethod').selectedIndex].text
+
+          if (ApplicationMethodValue == 'External Link') {
+            document.getElementById('externalLink').hidden = false
+            document.getElementById('emailNumber').hidden = true
+            currentSetting = 'External Link'
+          }
+          else if (ApplicationMethodValue == 'Email/Phone Number') {
+            document.getElementById('externalLink').hidden = true
+            document.getElementById('emailNumber').hidden = false
+            currentSetting = 'Email/Phone Number'
+          }
+          else {
+            document.getElementById('externalLink').hidden = true
+            document.getElementById('emailNumber').hidden = true
+            currentSetting = ''
+          }
+
+          if (currentSetting != '') {
+            document.getElementById('applicationMethodWarning').innerHTML = ''
+          }
+        })
+      }
+
+      if (page == 'confirmationPage') {
+        document.getElementById('confirmation').innerHTML =
+          '<div class="border rounded p-3"><p class="fw-bold">Job Details</p>' +
+          'Company Name<p class="text-muted">' +
+          companyName +
+          '</p>Job Title<p class="text-muted">' +
+          jobTitle +
+          '</p>Job Location<p class="text-muted">' +
+          jobLocation +
+          '</p>Job Category<p class="text-muted">' +
+          jobCategory +
+          '</div><div class="border rounded p-3"><p class="fw-bold">Job Description</p>' +
+          '</p>Description<p class="text-muted">' +
+          jobDescription +
+          '</p>Job Tags<p class="text-muted">' +
+          tags +
+          '</p>Work Type<p class="text-muted">' +
+          workType +
+          '</div><div class="border rounded p-3"><p class="fw-bold">Job Pay</p>' +
+          '</p>Salary Details<p class="text-muted">' +
+          salaryDetails +
+          '</p>Salary Type<p class="text-muted">' +
+          salaryType +
+          '</p></div>'
+
+        if (currentSetting == 'External Link') {
+          document.getElementById('confirmation').innerHTML +=
+            '<div class="border rounded p-3"><p class="fw-bold">Application Method</p>' +
+            '</p>External Link<p class="text-muted">' +
+            externalLink +
+            '</div>'
+        }
+        else if (currentSetting == 'Email/Phone Number') {
+          document.getElementById('confirmation').innerHTML +=
+            '<div class="border rounded p-3"><p class="fw-bold">Application Method</p>' +
+            '</p>Email<p class="text-muted">' +
+            email +
+            '</p>Phone Number<p class="text-muted">' +
+            phoneNumber +
+            '</div>'
+        }
+
+        // Template for the job preview
+        let jobText = `
+        <div class="modal fade" id="applyPreview" tabindex="-1" aria-labelledby="applyPreviewLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title">Apply</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          ${applyPreviewElements}
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      </div>
+                      </div>
+                  </div>
+                  </div>
+
+                  <div class="modal fade" id="thanksModal" tabindex="-1" aria-labelledby="thanksModalLabel" aria-hidden="true" data-bs-dismiss="modal" data-bs-toggle="modal">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="thanksModalLabel">Thank you for reporting.</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          If we find this content is inappropriate, we will remove it.
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      </div>
+                      </div>
+                  </div>
+                  </div>
+
+              <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true" data-bs-dismiss="modal" data-bs-toggle="modal">
+              <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                  <div class="modal-content ">
+                      <div class="modal-header">
+                          <div class="fw-lighter" id="job-title"><p></p></div>
+                          <h5 class="modal-title" id="applyModalLabel"><div class="fw-lighter fs-6">${companyName}</div>${jobTitle}</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close""></button>
+                      </div>
+                      <div class="modal-body">
+                          <p>
+                            ${jobDescription}
+                          </p>
+                          <div class="fw-light">Is this content inappropriate? Report</div>
+                      </div>
+                          <div class="modal-footer">
+                          <a tabindex="0" class="btn btn-outline-primary d-none d-lg-block" role="button" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-content="Copied to clipboard"><i class="far fa-copy"></i></a>
+                          <a tabindex="0" class="btn btn-outline-primary d-lg-none" role="button"><i class="fas fa-share"></i></i></a>
+                          <button type="button" class="btn btn-outline-primary">♡</button>
+                          <a href="#"><button data-bs-toggle="modal"
+                    data-bs-target="#applyPreview"  type="button" class="btn btn-primary" data-bs-dismiss="modal">Apply</button></a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div style="padding-top: 20px">
+            <ol class="list-group list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-start border border-primary border-2">
+                <div class="ms-2 me-auto" style="max-width: 70%;">
+                  <div class="fw-lighter">${companyName} - ${jobLocation}</div>
+                    <div class="fs-5">${jobTitle}</div>
+                    <div class="fs-6" style="max-width: 90%; overflow: hidden; max-height: 50px">${jobDescription}</div>
+                    `
+
+        // Assigns each job tags if keywords found in tagDirectory can be matched job's against title & summary
+        for (let tagIndex = 0; tagIndex < tags.length; tagIndex++) {
+          jobText += `<button style="border-radius: 16px; font-size: 0.9em" type="button" class="btn btn-primary btn-sm py-0">${tags[tagIndex]}</button> `
+        }
+        jobText += `<button style="border-radius: 16px; font-size: 0.9em" type="button" class="btn btn-light btn-sm py-0">${jobCategory}</button> `
+
+        if (workType != '') {
+          jobText += `<button style="border-radius: 16px; font-size: 0.9em" type="button" class="btn btn-light btn-sm py-0">${workType}</button> `
+        }
+
+        jobText += `
+                </div>
+                  <div class="my-auto d-flex">
+                    <button type="button" class="btn btn-outline-primary mx-1">♡</button>
+                    <button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal"
+                    data-bs-target="#previewModal" >Apply</button>
+                  </div>
+                </div>
+              </li>
+            </ol>
+          </div>
+          `
+
+        document.getElementById('preview').innerHTML = jobText
+      }
+
+      document.getElementById(currentPage).hidden = true
+      document.getElementById(page).hidden = false
+      document.getElementById(page + 'BC').disabled = false
+      currentPage = page
+    }
+
+    // Sends job data to the server in JSON format
+    async function sendJobData() {
+      let data = {
+        "company": companyName,
+        "jobTitle": jobTitle,
+        "location": jobLocation,
+        "jobCategory": jobCategory,
+        "summary": jobDescription,
+        "tags": tags,
+        "workType": workType,
+        "salary": salaryDetails,
+        "salaryType": salaryType,
+        "link": externalLink,
+        "email": email,
+        "phoneNumber": phoneNumber,
+        "currentSetting": currentSetting
+      }
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }
+      const response = await fetch('/sendJobData', options)
+    }
+
+
+    // Creates a Stripe checkout instance with a test API key
+    var stripe = Stripe("pk_test_51IuaGBBnkafDP7DpOmAwgQF9B5Kl4suwCQn3BnAbS87Ue0SXwVRq4k1vca22PQpa0dqd7A7dLNu2bYPRXwmVdpTS00hkeGPdBe");
+    var checkoutButton = document.getElementById("checkout-button");
+
+    checkoutButton.addEventListener("click", function () {
+      sendJobData()
+      fetch("/create-checkout-session", {
+        method: "POST",
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (session) {
+          return stripe.redirectToCheckout({ sessionId: session.id });
+        })
+        .then(function (result) {
+          // Error if redirectToCheckout fails due to the browser or network
+          if (result.error) {
+            alert(result.error.message);
+          }
+        })
+        .catch(function (error) {
+          console.error("Error:", error);
+        });
+    });
+
+
+  </script>
