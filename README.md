@@ -1,13 +1,13 @@
 # JobSpy
 
-JobSpy searches the web for software job openings and presents them in one simple to use website.
+JobSpy searches the web for job openings in software development and presents them in one simple to use website.
 
 
 ## Description
 
 ![alt text](https://i.imgur.com/X4AFZu2.png "JobSpy's home page")
 
-JobSpy uses an advaced job scraping algoritm to find relevant jobs on popular jobseeker websites such as Seek and Trade Me. 
+JobSpy uses an advanced job scraping algorithm to find developer jobs on popular jobseeker websites such as Seek and Trade Me. All the user has to do is search for their desired job and be presented with relevant results. Users are also able to create and list their own job listings and have them featured for $1.
 
 ## Getting Started
 
