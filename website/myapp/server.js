@@ -14,10 +14,10 @@ const stripe = require('stripe')(
 const bodyParser = require('body-parser');
 const app = express()
 
-// middleware
+// Middleware
 app.use('/testjs', express.static('testjs'))
 app.use(express.static('public'))
-//app.use(express.json()) // Takes any json data, parses it into js
+// Takes any json data, parses it into js
 app.use((req, res, next) => {
     if (req.originalUrl.startsWith('/webhook')) {
         next();
@@ -29,10 +29,10 @@ app.use((req, res, next) => {
 
 app.use(cookieParser())
 
-// view engine
+// Views the engine
 app.set('view engine', 'ejs')
 
-// database connection
+// Database connection
 const dbURI = 'mongodb://localhost:27017/node-auth'
 mongoose
     .connect(dbURI, {
@@ -44,13 +44,13 @@ mongoose
     .catch((err) => console.log(err))
 console.log('Server open on localhost:3000')
 
-// routes
+// Routes
 app.get('*', checkUser)
 app.get('/', (req, res) => res.render('home'))
 app.get('/smoothies', requireAuth, (req, res) => res.render('smoothies'))
 app.use(authRoutes)
 
-// job search funtionality
+// Job search funtionality
 const url = process.env.URI
 app.get('/featured', function (req, res) {
     MongoClient.connect(url, function (err, db) {
@@ -79,9 +79,9 @@ app.get('/data', function (req, res) {
     })
 })
 
-// report/email funtionality
+// Report/email funtionality
 
-//email settings
+// Email settings
 var email = 'jobspyreport@gmail.com'
 
 var transporter = nodemailer.createTransport({
@@ -92,7 +92,7 @@ var transporter = nodemailer.createTransport({
     },
 })
 
-//emails jobspyreport@gmail.com after getting the post request containing the data
+// Emails jobspyreport@gmail.com after getting the post request containing the data
 app.post('/report', (request, response) => {
     const data = request.body.url
     const userData = request.body.user
@@ -125,7 +125,7 @@ let jobData = ''
 
 app.post('/sendJobData', (request, response) => {
     jobData = request.body
-    console.log('the data ' + jobData)
+    console.log('Sent job data: ' + jobData)
 })
 
 
@@ -146,6 +146,7 @@ app.post('/create-checkout-session', async (req, res) => {
             },
         ],
         mode: 'payment',
+        //TODO: Add success and failure pages
         success_url: `${YOUR_DOMAIN}/`,
         cancel_url: `${YOUR_DOMAIN}/createpost`,
     })
@@ -154,10 +155,7 @@ app.post('/create-checkout-session', async (req, res) => {
 })
 
 const fulfillOrder = (session) => {
-    console.log('testing the ' + JSON.stringify(jobData) + jobData)
     console.log("Fulfilling order", session);
-
-
 
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
@@ -165,18 +163,18 @@ const fulfillOrder = (session) => {
         //Job listings in the database are set to expire after 1 month (2,629,746 seconds)
         //dbo.collection("featured").dropIndex( { "createdAt": 1 } )
         //dbo.collection("featured").createIndex({ "createdAt": 1 }, { expireAfterSeconds: 2629746 })
-        
+
         dbo.collection("featured").insertOne({
             "createdAt": new Date(),
             jobData
         })
-        try{
-            dbo.collection("featured").find().sort({"createdAt": -1})
+        try {
+            dbo.collection("featured").find().sort({ "createdAt": -1 })
         }
-        catch(err){
+        catch (err) {
             console.log(err.message)
         }
-        
+
     });
 }
 
@@ -206,7 +204,7 @@ app.post('/webhook', bodyParser.raw({ type: 'application/json' }), (request, res
     switch (event.type) {
         case 'checkout.session.completed': {
             const session = event.data.object;
-            // Save an order in your database, marked as 'awaiting payment'
+            // Save an order in database, marked as 'awaiting payment'
             createOrder(session);
 
             // Check if the order is paid (e.g., from a card payment)
@@ -223,19 +221,14 @@ app.post('/webhook', bodyParser.raw({ type: 'application/json' }), (request, res
 
         case 'checkout.session.async_payment_succeeded': {
             const session = event.data.object;
-
-            // Fulfill the purchase...
+            // Fulfills the purchase
             fulfillOrder(session);
-
             break;
         }
 
         case 'checkout.session.async_payment_failed': {
             const session = event.data.object;
-
-            // Send an email to the customer asking them to retry their order
-            emailCustomerAboutFailedPayment(session);
-
+            // TODO: send an email to the customer asking them to retry their order
             break;
         }
     }

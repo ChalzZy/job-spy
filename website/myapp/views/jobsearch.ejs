@@ -201,11 +201,10 @@
             getModal(loadModal)
             initPopover()
           })
-          .catch(function (error) {
+          .catch(function (err) {
             document.getElementById('results').style.display = 'block'
             document.getElementById('results').innerHTML = jobText
             document.getElementById('loading').style.display = 'none'
-            console.log('Error: ', error)
           })
       }
 
@@ -722,19 +721,11 @@
         null,
         window.location.pathname + '?' + urlParams
       )
-
-      for (const [key, value] of urlParams) {
-        console.log(`${key}:${value}`)
-      }
     }
 
     // Checks the current url and loads the page using any terms found
     function checkURL() {
       const urlParams = new URLSearchParams(location.search)
-
-      for (const [key, value] of urlParams) {
-        console.log(`${key}:${value}`)
-      }
 
       if (urlParams.has('search')) {
         if (urlParams.has('page')) {
@@ -750,7 +741,6 @@
         }
         if (urlParams.has('modal')) {
           loadModal = urlParams.get('modal')
-          console.log('testing ' + loadModal)
         }
         document.getElementById('userInput').value = urlParams.get('search')
         userAction()
@@ -760,7 +750,6 @@
     // Creates a Boostrap modal object and shows it
     function getModal(mod) {
       if (loadModal != 'undefined' && loadModal != '' && loadModal != null) {
-        console.log('loaded' + mod)
         var myModal = new bootstrap.Modal(document.getElementById(mod), {
           keyboard: false,
           backdrop: 'static'
@@ -799,7 +788,6 @@
           .catch((error) => console.log('Error sharing', error))
       } else {
         console.log('Sharing not supported, copied to clipboard')
-        navigator.clipboard.writeText(error)
       }
     }
 
