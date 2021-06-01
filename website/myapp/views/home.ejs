@@ -393,6 +393,7 @@
               </ol>
           </div>
             `
+
         }
 
         const numOfJobsToDisplay = 4
@@ -516,6 +517,62 @@
         document.getElementById('results').innerHTML = jobList
         document.getElementById('loading').style.display = 'none'
 
+        
+        
+
+
+        var  feature = document.getElementById('featured').getElementsByClassName('btn btn-outline-primary mx-1')
+        
+        //featured favourites
+        for (let index = 0; index < dataFeatured.length; index++) {
+
+         feature[index].addEventListener("click", favourite)
+
+          async function favourite() {
+        
+
+            const id = dataFeatured[index]._id
+            const jobTitle = dataFeatured[index].jobData.jobTitle
+            const company = dataFeatured[index].jobData.company
+            const summary = dataFeatured[index].jobData.summary
+            const salary = dataFeatured[index].jobData.salary
+            const locations = dataFeatured[index].jobData.location
+            const time = dataFeatured[index].jobData.time
+            const link = dataFeatured[index].jobData.link
+            var email = ''
+              ; ('<% if(user){%>')
+            email = '<%=user.email%>'
+              ; ('<% } %>')
+
+              
+            try {
+              const res = await fetch('/profile', {
+                method: 'POST',
+                body: JSON.stringify({
+                  id,
+                  jobTitle,
+                  company,
+                  summary,
+                  salary,
+                  locations,
+                  time,
+                  link,
+                  email,
+                }),
+                headers: { 'Content-Type': 'application/json' },
+              })
+
+              const data = await res.json()
+              console.log(data)
+              if (data.errors) {
+              }
+            } catch (err) {
+              console.log(err)
+            }
+
+          }
+        }
+
         numberOfJobs = document.getElementById('results').innerHTML
 
         if (
@@ -572,6 +629,8 @@
           .getElementById('results')
           .getElementsByClassName('btn btn-outline-primary mx-1')
 
+          console.log(
+        numberOfJobs = document.getElementById('results'))
 
         // Manages favourites
         for (let index = 0; index < numOfJobsToDisplay; index++) {
@@ -618,6 +677,7 @@
           }
         }
       }
+
 
       ; ('<%if(user){ %>')
       var setCookie = function (n, val) {
